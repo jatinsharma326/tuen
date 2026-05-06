@@ -35,28 +35,37 @@ ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.api_keys ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.usage_logs ENABLE ROW LEVEL SECURITY;
 
--- 5. RLS Policies
--- Profiles: users can read/update their own
+-- 5. RLS Policies (drop first so re-runs are safe)
+-- Profiles
+DROP POLICY IF EXISTS "Users can read own profile" ON public.profiles;
 CREATE POLICY "Users can read own profile" ON public.profiles
   FOR SELECT USING (auth.uid() = id);
+DROP POLICY IF EXISTS "Users can update own profile" ON public.profiles;
 CREATE POLICY "Users can update own profile" ON public.profiles
   FOR UPDATE USING (auth.uid() = id);
+DROP POLICY IF EXISTS "Users can insert own profile" ON public.profiles;
 CREATE POLICY "Users can insert own profile" ON public.profiles
   FOR INSERT WITH CHECK (auth.uid() = id);
 
--- API keys: users can CRUD their own
+-- API keys
+DROP POLICY IF EXISTS "Users can read own keys" ON public.api_keys;
 CREATE POLICY "Users can read own keys" ON public.api_keys
   FOR SELECT USING (auth.uid() = user_id);
+DROP POLICY IF EXISTS "Users can insert own keys" ON public.api_keys;
 CREATE POLICY "Users can insert own keys" ON public.api_keys
   FOR INSERT WITH CHECK (auth.uid() = user_id);
+DROP POLICY IF EXISTS "Users can delete own keys" ON public.api_keys;
 CREATE POLICY "Users can delete own keys" ON public.api_keys
   FOR DELETE USING (auth.uid() = user_id);
+DROP POLICY IF EXISTS "Users can update own keys" ON public.api_keys;
 CREATE POLICY "Users can update own keys" ON public.api_keys
   FOR UPDATE USING (auth.uid() = user_id);
 
--- Usage logs: users can read their own, server can insert
+-- Usage logs
+DROP POLICY IF EXISTS "Users can read own logs" ON public.usage_logs;
 CREATE POLICY "Users can read own logs" ON public.usage_logs
   FOR SELECT USING (auth.uid() = user_id);
+DROP POLICY IF EXISTS "Server can insert logs" ON public.usage_logs;
 CREATE POLICY "Server can insert logs" ON public.usage_logs
   FOR INSERT WITH CHECK (auth.uid() = user_id);
 
