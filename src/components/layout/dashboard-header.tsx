@@ -3,8 +3,9 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Search, Bell, ChevronRight } from "lucide-react";
+import { Search, Bell, ChevronRight, LogOut } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import { useRouter } from "next/navigation";
 
 function getBreadcrumbs(pathname: string) {
   if (pathname === "/dashboard") return [{ label: "Dashboard", href: "/dashboard" }];
@@ -27,6 +28,7 @@ function getBreadcrumbs(pathname: string) {
 
 export function DashboardHeader() {
   const pathname = usePathname();
+  const router = useRouter();
   const breadcrumbs = getBreadcrumbs(pathname);
   const [user, setUser] = useState<{ name: string; email: string } | null>(null);
 
@@ -86,6 +88,18 @@ export function DashboardHeader() {
             <p className="text-[12px] font-medium text-text-primary leading-none">{user?.name || "Loading..."}</p>
             <p className="text-[11px] text-text-muted mt-0.5">{user?.email}</p>
           </div>
+          <button
+            onClick={async () => {
+              const supabase = createClient();
+              await supabase.auth.signOut();
+              router.push("/");
+              router.refresh();
+            }}
+            className="flex h-8 w-8 items-center justify-center rounded-lg text-text-muted hover:text-error hover:bg-error/5 transition-colors"
+            title="Sign out"
+          >
+            <LogOut size={14} />
+          </button>
         </div>
       </div>
     </header>
