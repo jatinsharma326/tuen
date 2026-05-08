@@ -85,7 +85,7 @@ export function CustomCursor() {
         <div className="relative h-6 w-6">
           <div className="absolute left-1/2 top-0 h-full w-[1px] -translate-x-1/2 bg-white" />
           <div className="absolute left-0 top-1/2 h-[1px] w-full -translate-y-1/2 bg-white" />
-          <div className="absolute left-1/2 top-1/2 h-1 w-1 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#FF3131]" />
+          <div className="absolute left-1/2 top-1/2 h-1 w-1 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#ef4444]" />
         </div>
       ) : (
         // Dot

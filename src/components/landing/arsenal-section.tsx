@@ -55,7 +55,7 @@ function ModelCanvas({ generator }: { generator: ModelCardProps["canvasGenerator
 }
 
 function imageGenCanvas(ctx: CanvasRenderingContext2D, time: number, w: number, h: number) {
-  ctx.fillStyle = "#050505";
+  ctx.fillStyle = "#0c0c12";
   ctx.fillRect(0, 0, w, h);
 
   // Grid
@@ -103,7 +103,7 @@ function imageGenCanvas(ctx: CanvasRenderingContext2D, time: number, w: number, 
 }
 
 function llmCanvas(ctx: CanvasRenderingContext2D, time: number, w: number, h: number) {
-  ctx.fillStyle = "#050505";
+  ctx.fillStyle = "#0c0c12";
   ctx.fillRect(0, 0, w, h);
 
   const lines = [
@@ -146,11 +146,11 @@ function llmCanvas(ctx: CanvasRenderingContext2D, time: number, w: number, h: nu
       if (line.startsWith("import") || line.startsWith("const") || line.startsWith("console")) {
         ctx.fillStyle = "#c084fc";
       } else if (ch === "'" || ch === '"' || line.includes("'")) {
-        ctx.fillStyle = "#39FF14";
+        ctx.fillStyle = "#c084fc";
       } else if (!isNaN(Number(ch)) && ch !== " ") {
-        ctx.fillStyle = "#00E5FF";
+        ctx.fillStyle = "#06b6d4";
       } else if (ch === "(" || ch === ")" || ch === "{" || ch === "}") {
-        ctx.fillStyle = "#FF3131";
+        ctx.fillStyle = "#ef4444";
       } else {
         ctx.fillStyle = "#e4e4e7";
       }
@@ -164,13 +164,13 @@ function llmCanvas(ctx: CanvasRenderingContext2D, time: number, w: number, h: nu
     const cursorLine = Math.floor(currentChar / 40);
     const cursorX = padding + 20 + (currentChar % 40) * charWidth;
     const cursorY = padding + cursorLine * lineHeight;
-    ctx.fillStyle = "#39FF14";
+    ctx.fillStyle = "#c084fc";
     ctx.fillRect(cursorX, cursorY - 10, 7, 14);
   }
 }
 
 function videoCanvas(ctx: CanvasRenderingContext2D, time: number, w: number, h: number) {
-  ctx.fillStyle = "#050505";
+  ctx.fillStyle = "#0c0c12";
   ctx.fillRect(0, 0, w, h);
 
   const cx = w / 2;
@@ -224,7 +224,7 @@ function videoCanvas(ctx: CanvasRenderingContext2D, time: number, w: number, h: 
 }
 
 function ttsCanvas(ctx: CanvasRenderingContext2D, time: number, w: number, h: number) {
-  ctx.fillStyle = "#050505";
+  ctx.fillStyle = "#0c0c12";
   ctx.fillRect(0, 0, w, h);
 
   // Waveform
@@ -251,7 +251,7 @@ function ttsCanvas(ctx: CanvasRenderingContext2D, time: number, w: number, h: nu
 }
 
 function transcribeCanvas(ctx: CanvasRenderingContext2D, time: number, w: number, h: number) {
-  ctx.fillStyle = "#050505";
+  ctx.fillStyle = "#0c0c12";
   ctx.fillRect(0, 0, w, h);
 
   // Spectrogram
@@ -329,7 +329,7 @@ function ArsenalCard({ model }: { model: ModelCardProps }) {
 
   return (
     <div
-      className={`group relative overflow-hidden rounded-lg border border-white/5 bg-[#0a0a0c] ${sizeClasses[model.size || "normal"]} min-h-[220px]`}
+      className={`group relative overflow-hidden rounded-lg border border-white/5 bg-[#12121a] ${sizeClasses[model.size || "normal"]} min-h-[220px]`}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       data-cursor="crosshair"
@@ -341,14 +341,14 @@ function ArsenalCard({ model }: { model: ModelCardProps }) {
       <div className="absolute bottom-0 left-0 right-0 z-10 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-4 pt-12">
         <div className="flex items-center gap-2">
           <span
-            className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#39FF14]/70"
+            className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#c084fc]/70"
             style={{ fontFamily: "var(--font-jetbrains-mono)" }}
           >
             {model.type}
           </span>
           <span className="text-[9px] text-white/30">|</span>
           <span
-            className="text-[9px] text-[#00E5FF]/70"
+            className="text-[9px] text-[#06b6d4]/70"
             style={{ fontFamily: "var(--font-jetbrains-mono)" }}
           >
             {model.latency}
@@ -373,22 +373,22 @@ function ArsenalCard({ model }: { model: ModelCardProps }) {
       >
         <div className="w-full max-w-sm">
           <div className="mb-2 flex items-center gap-2">
-            <span className="h-1.5 w-1.5 rounded-full bg-[#39FF14]" />
+            <span className="h-1.5 w-1.5 rounded-full bg-[#c084fc]" />
             <span
-              className="text-[10px] uppercase tracking-wider text-[#39FF14]/70"
+              className="text-[10px] uppercase tracking-wider text-[#c084fc]/70"
               style={{ fontFamily: "var(--font-jetbrains-mono)" }}
             >
               cURL Request
             </span>
           </div>
           <pre
-            className="overflow-x-auto rounded border border-white/10 bg-black/60 p-3 text-[10px] leading-relaxed text-[#00E5FF]/90"
+            className="overflow-x-auto rounded border border-white/10 bg-black/60 p-3 text-[10px] leading-relaxed text-[#06b6d4]/90"
             style={{ fontFamily: "var(--font-jetbrains-mono)" }}
           >
             <code>{model.curl}</code>
           </pre>
           <button
-            className="mt-3 w-full rounded border border-[#39FF14]/30 bg-[#39FF14]/10 py-2 text-[11px] font-medium text-[#39FF14] transition-all hover:bg-[#39FF14]/20"
+            className="mt-3 w-full rounded border border-[#c084fc]/30 bg-[#c084fc]/10 py-2 text-[11px] font-medium text-[#c084fc] transition-all hover:bg-[#c084fc]/20"
             style={{ fontFamily: "var(--font-jetbrains-mono)" }}
             onClick={() => navigator.clipboard.writeText(model.curl.replace(/\\\n\s*/g, " "))}
           >
@@ -402,15 +402,15 @@ function ArsenalCard({ model }: { model: ModelCardProps }) {
 
 export function ArsenalSection() {
   return (
-    <section className="relative w-full bg-[#050505] px-4 py-24 md:px-8">
+    <section className="relative w-full bg-[#0c0c12] px-4 py-24 md:px-8">
       <div className="mx-auto max-w-6xl">
         {/* Section header */}
         <div className="mb-16 flex flex-col items-start gap-4 md:flex-row md:items-end md:justify-between">
           <div>
             <div className="mb-3 flex items-center gap-3">
-              <div className="h-[1px] w-6 bg-[#FF3131]" />
+              <div className="h-[1px] w-6 bg-[#ef4444]" />
               <span
-                className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#FF3131]/70"
+                className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#ef4444]/70"
                 style={{ fontFamily: "var(--font-jetbrains-mono)" }}
               >
                 Section 01
@@ -431,7 +431,7 @@ export function ArsenalSection() {
           </div>
           <a
             href="/models"
-            className="group flex items-center gap-2 text-[11px] uppercase tracking-wider text-white/40 transition-colors hover:text-[#00E5FF]"
+            className="group flex items-center gap-2 text-[11px] uppercase tracking-wider text-white/40 transition-colors hover:text-[#06b6d4]"
             style={{ fontFamily: "var(--font-jetbrains-mono)" }}
           >
             View all models

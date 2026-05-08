@@ -115,17 +115,17 @@ void main() {
   float zoom = 1.0 + t * 0.3;
   vec2 diveP = p * zoom + vec2(t * 0.2, t * 0.15);
   
-  // Base abyss
-  vec3 col = vec3(0.02, 0.02, 0.02);
+  // Base abyss — deep purple-tinted void
+  vec3 col = vec3(0.04, 0.03, 0.06);
   
   // Silicon wafer substrate
   float wafer = silicon(diveP, t);
-  col += vec3(0.05, 0.08, 0.10) * wafer * 0.4;
+  col += vec3(0.08, 0.05, 0.12) * wafer * 0.4;
   
   // Circuit grid layer
   float circ = circuit(diveP * 3.0, t);
-  col += vec3(0.0, 0.8, 1.0) * circ * 0.35; // cyan circuits
-  col += vec3(0.15, 1.0, 0.08) * circ * wafer * 0.2; // neon green on wafer
+  col += vec3(0.02, 0.71, 0.83) * circ * 0.35; // accent cyan
+  col += vec3(0.75, 0.52, 0.99) * circ * wafer * 0.2; // accent purple on wafer
   
   // High-speed data highways
   vec3 highway = vec3(0.0);
@@ -134,7 +134,7 @@ void main() {
     vec2 start = vec2(h * 4.0 - 2.0, -2.0 + h);
     vec2 end = vec2(h * 3.0 - 1.5, 2.0);
     float speed = 1.0 + h * 2.0;
-    vec3 lineColor = h > 0.5 ? vec3(0.0, 0.9, 1.0) : vec3(0.22, 1.0, 0.08);
+    vec3 lineColor = h > 0.5 ? vec3(0.02, 0.71, 0.83) : vec3(0.75, 0.52, 0.99);
     highway += glowLine(p, start, end, 0.003 + h * 0.002, lineColor, t * speed + h * 10.0);
   }
   col += highway * 0.6;
@@ -145,7 +145,7 @@ void main() {
     float y = h * 2.0 - 1.0;
     float stream = smoothstep(0.08, 0.0, abs(p.y - y - sin(p.x * 3.0 + t * 2.0 + h * 10.0) * 0.3));
     float travel = smoothstep(0.15, 0.0, abs(fract(p.x * 0.5 - t * (1.0 + h) + h) - 0.5));
-    vec3 streamCol = mix(vec3(0.0, 0.9, 1.0), vec3(0.22, 1.0, 0.08), h);
+    vec3 streamCol = mix(vec3(0.02, 0.71, 0.83), vec3(0.75, 0.52, 0.99), h);
     col += streamCol * stream * travel * 0.8;
   }
   
@@ -160,7 +160,7 @@ void main() {
     float d = length(p - particlePos);
     float size = 0.003 + hash(vec2(i, 3.0)) * 0.005;
     float brightness = sin(t * 3.0 + h1 * 20.0) * 0.5 + 0.5;
-    vec3 pCol = h1 > 0.5 ? vec3(0.0, 0.9, 1.0) : vec3(0.22, 1.0, 0.08);
+    vec3 pCol = h1 > 0.5 ? vec3(0.02, 0.71, 0.83) : vec3(0.75, 0.52, 0.99);
     col += pCol * smoothstep(size, 0.0, d) * brightness * 1.5;
   }
   
@@ -168,7 +168,7 @@ void main() {
   vec2 mouseUV = u_mouse / u_resolution;
   vec2 mouseP = (mouseUV - 0.5) * aspect;
   float mouseDist = length(p - mouseP);
-  col += vec3(0.0, 0.9, 1.0) * exp(-mouseDist * mouseDist * 20.0) * 0.3;
+  col += vec3(0.02, 0.71, 0.83) * exp(-mouseDist * mouseDist * 20.0) * 0.3;
   
   // Vignette
   float vig = 1.0 - length(uv - 0.5) * 1.2;

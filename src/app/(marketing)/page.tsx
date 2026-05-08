@@ -8,7 +8,7 @@ import { CustomCursor } from "@/components/landing/custom-cursor";
 
 export default function HomePage() {
   return (
-    <div className="relative bg-[#050505] dark">
+    <div className="relative bg-[#0c0c12]">
       <CustomCursor />
       <HeroSection />
       <ArsenalSection />
@@ -18,7 +18,7 @@ export default function HomePage() {
       <DeploySection />
 
       {/* Footer */}
-      <footer className="w-full border-t border-white/5 bg-[#050505] px-4 py-12 md:px-8">
+      <footer className="w-full border-t border-border-subtle bg-[#0c0c12] px-4 py-12 md:px-8">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 md:flex-row">
           <div className="flex items-center gap-4">
             <span
@@ -28,7 +28,7 @@ export default function HomePage() {
               TUEN
             </span>
             <span
-              className="text-[10px] text-white/20"
+              className="text-[10px] text-text-muted"
               style={{ fontFamily: "var(--font-jetbrains-mono)" }}
             >
               v2.4.0
@@ -39,7 +39,7 @@ export default function HomePage() {
               <a
                 key={link}
                 href={`/${link.toLowerCase()}`}
-                className="text-[11px] uppercase tracking-wider text-white/30 transition-colors hover:text-[#00E5FF]"
+                className="text-[11px] uppercase tracking-wider text-text-tertiary transition-colors hover:text-[#06b6d4]"
                 style={{ fontFamily: "var(--font-jetbrains-mono)" }}
               >
                 {link}
@@ -47,7 +47,7 @@ export default function HomePage() {
             ))}
           </div>
           <span
-            className="text-[10px] text-white/15"
+            className="text-[10px] text-text-muted"
             style={{ fontFamily: "var(--font-jetbrains-mono)" }}
           >
             © 2025 TUEN. All systems nominal.

@@ -39,7 +39,7 @@ function MatrixRain() {
         const y = drops[i] * fontSize;
 
         // Head is bright
-        c.fillStyle = "#39FF14";
+        c.fillStyle = "#c084fc";
         c.fillText(char, x, y);
 
         // Trail fades
@@ -80,7 +80,7 @@ const DEVELOPERS = [
 
 export function WallOfFameSection() {
   return (
-    <section className="relative w-full overflow-hidden bg-[#050505] py-24">
+    <section className="relative w-full overflow-hidden bg-[#0c0c12] py-24">
       {/* Matrix rain background */}
       <div className="absolute inset-0 opacity-40">
         <MatrixRain />

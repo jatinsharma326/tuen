@@ -17,7 +17,7 @@ export function TypingText({
   delay = 0,
   speed = 40,
   showCursor = true,
-  cursorColor = "#39FF14",
+  cursorColor = "#c084fc",
 }: TypingTextProps) {
   const [display, setDisplay] = useState("");
   const [started, setStarted] = useState(false);

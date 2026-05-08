@@ -45,7 +45,7 @@ function TPSMeter({ label, value, max }: { label: string; value: number; max: nu
       }
 
       // Graph line
-      c.strokeStyle = "#00E5FF";
+      c.strokeStyle = "#06b6d4";
       c.lineWidth = 2;
       c.beginPath();
       history.forEach((v, i) => {
@@ -70,7 +70,7 @@ function TPSMeter({ label, value, max }: { label: string; value: number; max: nu
       c.fill();
 
       // Current value text
-      c.fillStyle = "#00E5FF";
+      c.fillStyle = "#06b6d4";
       c.font = 'bold 20px "JetBrains Mono", monospace';
       c.fillText(`${Math.round(currentVal)}`, 10, 30);
       c.fillStyle = "rgba(0,229,255,0.5)";
@@ -135,7 +135,7 @@ function LatencyGraph() {
       c.setLineDash([]);
 
       // History line
-      c.strokeStyle = "#39FF14";
+      c.strokeStyle = "#c084fc";
       c.lineWidth = 2;
       c.beginPath();
       history.forEach((v, i) => {
@@ -154,7 +154,7 @@ function LatencyGraph() {
 
       // Current
       const current = history[history.length - 1];
-      c.fillStyle = "#39FF14";
+      c.fillStyle = "#c084fc";
       c.font = 'bold 14px "JetBrains Mono", monospace';
       c.fillText(`${current.toFixed(1)}ms`, can.width - 60, 20);
 
@@ -240,7 +240,7 @@ function GPUClusterMap() {
         c.stroke();
 
         // Core
-        c.fillStyle = load > 0.7 ? "#FF3131" : "#00E5FF";
+        c.fillStyle = load > 0.7 ? "#ef4444" : "#06b6d4";
         c.beginPath();
         c.arc(cx, cy, 4, 0, Math.PI * 2);
         c.fill();
@@ -291,7 +291,7 @@ export function ArchitectureSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative w-full overflow-hidden bg-[#050505] py-24">
+    <section ref={sectionRef} className="relative w-full overflow-hidden bg-[#0c0c12] py-24">
       {/* Parallax background - server blades effect */}
       <div
         className="absolute inset-0"
@@ -312,7 +312,7 @@ export function ArchitectureSection() {
               rgba(57,255,20,0.015) 120px,
               rgba(57,255,20,0.015) 121px
             ),
-            linear-gradient(180deg, #050505 0%, #0a0a10 50%, #050505 100%)
+            linear-gradient(180deg, #0c0c12 0%, #0a0a10 50%, #0c0c12 100%)
           `,
         }}
       />
@@ -337,9 +337,9 @@ export function ArchitectureSection() {
         {/* Section header */}
         <div className="mb-16">
           <div className="mb-3 flex items-center gap-3">
-            <div className="h-[1px] w-6 bg-[#00E5FF]" />
+            <div className="h-[1px] w-6 bg-[#06b6d4]" />
             <span
-              className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#00E5FF]/70"
+              className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#06b6d4]/70"
               style={{ fontFamily: "var(--font-jetbrains-mono)" }}
             >
               Section 02
@@ -362,7 +362,7 @@ export function ArchitectureSection() {
         {/* Data panels */}
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {/* TPS Panel */}
-          <div className="rounded-lg border border-white/5 bg-[#0a0a0c]/80 p-5 backdrop-blur-sm">
+          <div className="rounded-lg border border-white/5 bg-[#12121a]/80 p-5 backdrop-blur-sm">
             <div className="mb-4 flex items-center justify-between">
               <span
                 className="text-[10px] uppercase tracking-wider text-white/40"
@@ -370,7 +370,7 @@ export function ArchitectureSection() {
               >
                 Throughput (TPS)
               </span>
-              <span className="flex h-2 w-2 animate-pulse rounded-full bg-[#00E5FF]" />
+              <span className="flex h-2 w-2 animate-pulse rounded-full bg-[#06b6d4]" />
             </div>
             <TPSMeter label="tok/sec" value={2847} max={4000} />
             <div className="mt-3 flex justify-between text-[10px] text-white/30" style={{ fontFamily: "var(--font-jetbrains-mono)" }}>
@@ -380,7 +380,7 @@ export function ArchitectureSection() {
           </div>
 
           {/* Latency Panel */}
-          <div className="rounded-lg border border-white/5 bg-[#0a0a0c]/80 p-5 backdrop-blur-sm">
+          <div className="rounded-lg border border-white/5 bg-[#12121a]/80 p-5 backdrop-blur-sm">
             <div className="mb-4 flex items-center justify-between">
               <span
                 className="text-[10px] uppercase tracking-wider text-white/40"
@@ -388,17 +388,17 @@ export function ArchitectureSection() {
               >
                 Latency (p50)
               </span>
-              <span className="flex h-2 w-2 animate-pulse rounded-full bg-[#39FF14]" />
+              <span className="flex h-2 w-2 animate-pulse rounded-full bg-[#c084fc]" />
             </div>
             <LatencyGraph />
             <div className="mt-3 flex justify-between text-[10px] text-white/30" style={{ fontFamily: "var(--font-jetbrains-mono)" }}>
               <span>Target: &lt;5ms</span>
-              <span className="text-[#39FF14]">✓ Within SLO</span>
+              <span className="text-[#c084fc]">✓ Within SLO</span>
             </div>
           </div>
 
           {/* GPU Cluster Map */}
-          <div className="rounded-lg border border-white/5 bg-[#0a0a0c]/80 p-5 backdrop-blur-sm md:col-span-2 lg:col-span-1">
+          <div className="rounded-lg border border-white/5 bg-[#12121a]/80 p-5 backdrop-blur-sm md:col-span-2 lg:col-span-1">
             <div className="mb-4 flex items-center justify-between">
               <span
                 className="text-[10px] uppercase tracking-wider text-white/40"
@@ -406,7 +406,7 @@ export function ArchitectureSection() {
               >
                 Active Clusters
               </span>
-              <span className="text-[10px] text-[#00E5FF]" style={{ fontFamily: "var(--font-jetbrains-mono)" }}>
+              <span className="text-[10px] text-[#06b6d4]" style={{ fontFamily: "var(--font-jetbrains-mono)" }}>
                 5 regions
               </span>
             </div>
@@ -414,13 +414,13 @@ export function ArchitectureSection() {
           </div>
 
           {/* Specs panel */}
-          <div className="rounded-lg border border-white/5 bg-[#0a0a0c]/80 p-5 backdrop-blur-sm md:col-span-2 lg:col-span-3">
+          <div className="rounded-lg border border-white/5 bg-[#12121a]/80 p-5 backdrop-blur-sm md:col-span-2 lg:col-span-3">
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {[
-                { label: "Total GPUs", value: "2,048", sub: "H100 / A100 mix", color: "#00E5FF" },
-                { label: "Uptime", value: "99.997%", sub: "Last 30 days", color: "#39FF14" },
-                { label: "Cold Boot", value: "0ms", sub: "Always warm", color: "#FF3131" },
-                { label: "Throughput", value: "12.4M", sub: "Requests/day", color: "#00E5FF" },
+                { label: "Total GPUs", value: "2,048", sub: "H100 / A100 mix", color: "#06b6d4" },
+                { label: "Uptime", value: "99.997%", sub: "Last 30 days", color: "#c084fc" },
+                { label: "Cold Boot", value: "0ms", sub: "Always warm", color: "#ef4444" },
+                { label: "Throughput", value: "12.4M", sub: "Requests/day", color: "#06b6d4" },
               ].map((stat) => (
                 <div key={stat.label} className="text-center">
                   <div

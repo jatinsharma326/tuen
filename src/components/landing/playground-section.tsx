@@ -27,21 +27,21 @@ generateImage().then(console.log);`);
     // Simple syntax highlighting
     let html = line
       .replace(/(import|from|const|let|var|async|function|return|await|new|if|else|then|catch)/g, '<span style="color:#c084fc">$1</span>')
-      .replace(/(".*?"|'.*?'|`.*?`)/g, '<span style="color:#39FF14">$1</span>')
-      .replace(/(\d+)/g, '<span style="color:#00E5FF">$1</span>')
+      .replace(/(".*?"|'.*?'|`.*?`)/g, '<span style="color:#c084fc">$1</span>')
+      .replace(/(\d+)/g, '<span style="color:#06b6d4">$1</span>')
       .replace(/(\/\/.*)/g, '<span style="color:rgba(255,255,255,0.25)">$1</span>')
-      .replace(/(\{|\}|\(|\)|\[|\])/g, '<span style="color:#FF3131">$1</span>');
+      .replace(/(\{|\}|\(|\)|\[|\])/g, '<span style="color:#ef4444">$1</span>');
     return html;
   }
 
   return (
-    <div className="flex h-full flex-col rounded-lg border border-white/10 bg-[#0c0c10] overflow-hidden">
+    <div className="flex h-full flex-col rounded-lg border border-white/10 bg-[#12121a] overflow-hidden">
       {/* Editor header */}
       <div className="flex items-center gap-2 border-b border-white/5 px-4 py-2">
         <div className="flex gap-1.5">
-          <div className="h-2.5 w-2.5 rounded-full bg-[#FF3131]/60" />
-          <div className="h-2.5 w-2.5 rounded-full bg-[#FF3131]/60" />
-          <div className="h-2.5 w-2.5 rounded-full bg-[#FF3131]/60" />
+          <div className="h-2.5 w-2.5 rounded-full bg-[#ef4444]/60" />
+          <div className="h-2.5 w-2.5 rounded-full bg-[#ef4444]/60" />
+          <div className="h-2.5 w-2.5 rounded-full bg-[#ef4444]/60" />
         </div>
         <span
           className="ml-3 text-[10px] text-white/30"
@@ -152,7 +152,7 @@ function RoboticArmCanvas() {
       // Joints
       [baseX, j1x, j2x, ex].forEach((x, i) => {
         const y = [baseY, j1y, j2y, ey][i];
-        c.fillStyle = i === 3 ? "#39FF14" : "#00E5FF";
+        c.fillStyle = i === 3 ? "#c084fc" : "#06b6d4";
         c.beginPath();
         c.arc(x, y, i === 3 ? 5 : 6, 0, Math.PI * 2);
         c.fill();
@@ -191,21 +191,21 @@ function RoboticArmCanvas() {
   return (
     <canvas
       ref={canvasRef}
-      className="h-full w-full rounded-lg border border-white/10 bg-[#0a0a0c]"
+      className="h-full w-full rounded-lg border border-white/10 bg-[#12121a]"
     />
   );
 }
 
 export function PlaygroundSection() {
   return (
-    <section className="relative w-full bg-[#050505] px-4 py-24 md:px-8">
+    <section className="relative w-full bg-[#0c0c12] px-4 py-24 md:px-8">
       <div className="mx-auto max-w-6xl">
         {/* Section header */}
         <div className="mb-16">
           <div className="mb-3 flex items-center gap-3">
-            <div className="h-[1px] w-6 bg-[#39FF14]" />
+            <div className="h-[1px] w-6 bg-[#c084fc]" />
             <span
-              className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#39FF14]/70"
+              className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#c084fc]/70"
               style={{ fontFamily: "var(--font-jetbrains-mono)" }}
             >
               Section 03

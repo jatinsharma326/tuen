@@ -59,7 +59,7 @@ export function GlitchText({ text, className = "", delay = 0, speed = 30, onComp
       {display.split("").map((char, i) => (
         <span
           key={i}
-          className={i < revealed ? "text-white" : "text-[#39FF14]/60"}
+          className={i < revealed ? "text-white" : "text-[#c084fc]/60"}
           style={{ fontVariantNumeric: "tabular-nums" }}
         >
           {char === " " ? "\u00A0" : char}

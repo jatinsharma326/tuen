@@ -31,7 +31,7 @@ function ParticleCanvas({ trigger }: { trigger: number }) {
     const cx = canvas.width / 2;
     const cy = canvas.height / 2;
 
-    const colors = ["#39FF14", "#00E5FF", "#FF3131", "#ffffff"];
+    const colors = ["#c084fc", "#06b6d4", "#ef4444", "#ffffff"];
 
     for (let i = 0; i < 120; i++) {
       const angle = Math.random() * Math.PI * 2;
@@ -155,7 +155,7 @@ export function DeploySection() {
   };
 
   return (
-    <section className="relative w-full overflow-hidden bg-[#050505] px-4 py-32 md:px-8">
+    <section className="relative w-full overflow-hidden bg-[#0c0c12] px-4 py-32 md:px-8">
       {/* Background circuit pattern */}
       <div
         className="absolute inset-0 opacity-20"
@@ -173,14 +173,14 @@ export function DeploySection() {
       <div className="relative z-10 mx-auto max-w-2xl text-center">
         {/* Section header */}
         <div className="mb-3 flex items-center justify-center gap-3">
-          <div className="h-[1px] w-6 bg-[#FF3131]" />
+          <div className="h-[1px] w-6 bg-[#ef4444]" />
           <span
-            className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#FF3131]/70"
+            className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#ef4444]/70"
             style={{ fontFamily: "var(--font-jetbrains-mono)" }}
           >
             Section 05
           </span>
-          <div className="h-[1px] w-6 bg-[#FF3131]" />
+          <div className="h-[1px] w-6 bg-[#ef4444]" />
         </div>
 
         <h2
@@ -199,14 +199,14 @@ export function DeploySection() {
         {/* Terminal input */}
         <div className="mt-12">
           <div
-            className="relative rounded-lg border border-white/10 bg-[#0a0a0c] p-6 text-left"
+            className="relative rounded-lg border border-white/10 bg-[#12121a] p-6 text-left"
             onClick={() => inputRef.current?.focus()}
           >
             {/* Terminal header */}
             <div className="mb-4 flex items-center gap-2">
-              <div className="h-2.5 w-2.5 rounded-full bg-[#FF3131]/60" />
-              <div className="h-2.5 w-2.5 rounded-full bg-[#FF3131]/60" />
-              <div className="h-2.5 w-2.5 rounded-full bg-[#FF3131]/60" />
+              <div className="h-2.5 w-2.5 rounded-full bg-[#ef4444]/60" />
+              <div className="h-2.5 w-2.5 rounded-full bg-[#ef4444]/60" />
+              <div className="h-2.5 w-2.5 rounded-full bg-[#ef4444]/60" />
               <span
                 className="ml-2 text-[10px] text-white/20"
                 style={{ fontFamily: "var(--font-jetbrains-mono)" }}
@@ -218,7 +218,7 @@ export function DeploySection() {
             {/* Prompt */}
             <div className="flex items-center gap-2">
               <span
-                className="shrink-0 text-[#39FF14]"
+                className="shrink-0 text-[#c084fc]"
                 style={{ fontFamily: "var(--font-jetbrains-mono)", fontSize: "14px" }}
               >
                 &gt;
@@ -251,7 +251,7 @@ export function DeploySection() {
                   <span
                     className="pointer-events-none absolute left-0 top-0 h-[1.2em] w-[2px]"
                     style={{
-                      backgroundColor: cursorVisible ? "#39FF14" : "transparent",
+                      backgroundColor: cursorVisible ? "#c084fc" : "transparent",
                       transform: `translateX(${input.length * 8.4 + 2}px)`,
                       transition: "background-color 0.1s",
                     }}
@@ -264,7 +264,7 @@ export function DeploySection() {
             {submitted && (
               <div className="mt-4 flex items-center gap-2">
                 <span
-                  className="animate-pulse text-[#00E5FF]"
+                  className="animate-pulse text-[#06b6d4]"
                   style={{ fontFamily: "var(--font-jetbrains-mono)", fontSize: "12px" }}
                 >
                   [<span className="mx-0.5 inline-block animate-pulse">◆</span>]
@@ -280,7 +280,7 @@ export function DeploySection() {
 
             {/* Success message */}
             {submitted && (
-              <div className="mt-3 text-[11px] text-[#39FF14]/70" style={{ fontFamily: "var(--font-jetbrains-mono)" }}>
+              <div className="mt-3 text-[11px] text-[#c084fc]/70" style={{ fontFamily: "var(--font-jetbrains-mono)" }}>
                 ✓ Check your inbox for the activation link.
               </div>
             )}
