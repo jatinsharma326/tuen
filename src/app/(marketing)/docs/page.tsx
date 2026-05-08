@@ -96,7 +96,7 @@ export default function DocsPage() {
 
           <div>
             <p className="text-[12px] font-bold uppercase tracking-[0.15em] text-accent">API Reference</p>
-            <h1 className="mt-2 font-display text-[32px] font-extrabold tracking-tight text-text-primary">aiops API Documentation</h1>
+            <h1 className="mt-2 font-display text-[32px] font-extrabold tracking-tight text-text-primary">tuen API Documentation</h1>
             <p className="mt-3 text-[14px] text-text-tertiary leading-relaxed max-w-2xl">
               Generate images, convert text to speech, and transcribe audio using simple REST endpoints.
               Perfect for n8n, Zapier, Make.com, or any custom integration.
@@ -112,7 +112,7 @@ export default function DocsPage() {
             <div className="space-y-6">
               <Step num={1} title="Get your API key">
                 <p className="text-[13px] text-text-tertiary">
-                  Sign in and go to <a href="/dashboard/api-keys" className="text-accent hover:underline">API Keys</a>. Copy your key — it starts with <code className="text-text-secondary">aiops_sk_</code>.
+                  Sign in and go to <a href="/dashboard/api-keys" className="text-accent hover:underline">API Keys</a>. Copy your key — it starts with <code className="text-text-secondary">tuen_sk_</code>.
                 </p>
               </Step>
               <Step num={2} title="Make your first request">
@@ -120,7 +120,7 @@ export default function DocsPage() {
                   Send a POST request with your key in the <code className="text-text-secondary">Authorization</code> header.
                 </p>
                 <CodeBlock lang="curl" code={`curl -X POST ${DOMAIN}/api/services/image_gen \\
-  -H "Authorization: Bearer aiops_sk_xxxxxxxxxxxxxxxx" \\
+  -H "Authorization: Bearer tuen_sk_xxxxxxxxxxxxxxxx" \\
   -H "Content-Type: application/json" \\
   -d '{"prompt": "a futuristic city at sunset"}'`} />
               </Step>
@@ -138,7 +138,7 @@ export default function DocsPage() {
             <p className="text-[13px] text-text-tertiary">
               All API requests require an <code className="text-text-secondary">Authorization</code> header with your API key.
             </p>
-            <CodeBlock lang="Header" code={`Authorization: Bearer aiops_sk_xxxxxxxxxxxxxxxx`} />
+            <CodeBlock lang="Header" code={`Authorization: Bearer tuen_sk_xxxxxxxxxxxxxxxx`} />
             <div className="rounded-xl border border-warning/20 bg-warning/5 px-4 py-3">
               <p className="text-[12px] text-text-secondary">
                 <strong>Security tip:</strong> Never expose your API key in client-side code or public repositories. Use environment variables.
@@ -186,7 +186,7 @@ export default function DocsPage() {
             <h3 className="text-[13px] font-bold uppercase tracking-[0.1em] text-text-muted">Example request</h3>
             <LangTabs id="image" tabs={{
               curl: `curl -X POST ${DOMAIN}/api/services/image_gen \\
-  -H "Authorization: Bearer aiops_sk_xxxxxxxxxxxxxxxx" \\
+  -H "Authorization: Bearer tuen_sk_xxxxxxxxxxxxxxxx" \\
   -H "Content-Type: application/json" \\
   -d '{
     "prompt": "a futuristic cyberpunk city at sunset, neon lights, 8k detail",
@@ -198,7 +198,7 @@ export default function DocsPage() {
 
 res = requests.post(
     "${DOMAIN}/api/services/image_gen",
-    headers={"Authorization": "Bearer aiops_sk_xxxxxxxxxxxxxxxx"},
+    headers={"Authorization": "Bearer tuen_sk_xxxxxxxxxxxxxxxx"},
     json={
         "prompt": "a futuristic cyberpunk city at sunset, neon lights, 8k detail",
         "aspect_ratio": "16:9",
@@ -211,7 +211,7 @@ print(data["image_url"])  # https://cdn.../image.webp`,
               javascript: `const res = await fetch("${DOMAIN}/api/services/image_gen", {
   method: "POST",
   headers: {
-    "Authorization": "Bearer aiops_sk_xxxxxxxxxxxxxxxx",
+    "Authorization": "Bearer tuen_sk_xxxxxxxxxxxxxxxx",
     "Content-Type": "application/json"
   },
   body: JSON.stringify({
@@ -278,7 +278,7 @@ console.log(image_url);`,
             <h3 className="text-[13px] font-bold uppercase tracking-[0.1em] text-text-muted">Example request</h3>
             <LangTabs id="tts" tabs={{
               curl: `curl -X POST ${DOMAIN}/api/services/tts \\
-  -H "Authorization: Bearer aiops_sk_xxxxxxxxxxxxxxxx" \\
+  -H "Authorization: Bearer tuen_sk_xxxxxxxxxxxxxxxx" \\
   -H "Content-Type: application/json" \\
   -d '{
     "text": "Welcome to the future of AI. Everything you need is just one API call away.",
@@ -288,7 +288,7 @@ console.log(image_url);`,
 
 res = requests.post(
     "${DOMAIN}/api/services/tts",
-    headers={"Authorization": "Bearer aiops_sk_xxxxxxxxxxxxxxxx"},
+    headers={"Authorization": "Bearer tuen_sk_xxxxxxxxxxxxxxxx"},
     json={
         "text": "Welcome to the future of AI.",
         "voice": "en-Emily_woman"
@@ -300,7 +300,7 @@ print(data["audio_url"])  # https://cdn.../audio.mp3`,
               javascript: `const res = await fetch("${DOMAIN}/api/services/tts", {
   method: "POST",
   headers: {
-    "Authorization": "Bearer aiops_sk_xxxxxxxxxxxxxxxx",
+    "Authorization": "Bearer tuen_sk_xxxxxxxxxxxxxxxx",
     "Content-Type": "application/json"
   },
   body: JSON.stringify({
@@ -366,7 +366,7 @@ console.log(audio_url);`,
             <h3 className="text-[13px] font-bold uppercase tracking-[0.1em] text-text-muted">Example request</h3>
             <LangTabs id="transcribe" tabs={{
               curl: `curl -X POST ${DOMAIN}/api/services/transcribe \\
-  -H "Authorization: Bearer aiops_sk_xxxxxxxxxxxxxxxx" \\
+  -H "Authorization: Bearer tuen_sk_xxxxxxxxxxxxxxxx" \\
   -H "Content-Type: application/json" \\
   -d '{
     "audio_url": "https://example.com/podcast-episode.mp3",
@@ -377,7 +377,7 @@ console.log(audio_url);`,
 
 res = requests.post(
     "${DOMAIN}/api/services/transcribe",
-    headers={"Authorization": "Bearer aiops_sk_xxxxxxxxxxxxxxxx"},
+    headers={"Authorization": "Bearer tuen_sk_xxxxxxxxxxxxxxxx"},
     json={
         "audio_url": "https://example.com/podcast-episode.mp3",
         "language": "en"
@@ -389,7 +389,7 @@ print(data["text"])  # "Welcome to the podcast..."`,
               javascript: `const res = await fetch("${DOMAIN}/api/services/transcribe", {
   method: "POST",
   headers: {
-    "Authorization": "Bearer aiops_sk_xxxxxxxxxxxxxxxx",
+    "Authorization": "Bearer tuen_sk_xxxxxxxxxxxxxxxx",
     "Content-Type": "application/json"
   },
   body: JSON.stringify({
@@ -425,7 +425,7 @@ console.log(text);`,
               <h2 className="font-display text-[22px] font-bold tracking-tight text-text-primary">n8n Integration Guide</h2>
             </div>
             <p className="text-[13px] text-text-tertiary">
-              Connect aiops to your n8n workflows to automate image generation, voice synthesis, and transcription.
+              Connect tuen to your n8n workflows to automate image generation, voice synthesis, and transcription.
             </p>
 
             <div className="space-y-6">
@@ -446,7 +446,7 @@ console.log(text);`,
                       { field: "URL", value: `${DOMAIN}/api/services/image_gen` },
                       { field: "Authentication", value: "Generic Credential Type → Header Auth" },
                       { field: "Name", value: "Authorization" },
-                      { field: "Value", value: "Bearer aiops_sk_xxxxxxxxxxxxxxxx" },
+                      { field: "Value", value: "Bearer tuen_sk_xxxxxxxxxxxxxxxx" },
                     ].map((r, i) => (
                       <div key={r.field} className={`grid grid-cols-[140px_1fr] gap-x-4 px-5 py-2.5 ${i < 4 ? "border-b border-border-subtle" : ""}`}>
                         <span className="text-text-secondary font-medium">{r.field}</span>
@@ -473,7 +473,7 @@ console.log(text);`,
 
             <div className="rounded-xl border border-accent/15 bg-accent/5 px-5 py-4">
               <p className="text-[12px] text-text-secondary">
-                <strong>Pro tip:</strong> Create a <strong>Credential</strong> in n8n with your aiops API key so you can reuse it across multiple workflows without copying the key each time.
+                <strong>Pro tip:</strong> Create a <strong>Credential</strong> in n8n with your tuen API key so you can reuse it across multiple workflows without copying the key each time.
               </p>
             </div>
           </section>

@@ -4,7 +4,7 @@ export async function getAuthUser(req: Request) {
   const authHeader = req.headers.get("authorization");
 
   // ── API Key auth (for external services like n8n) ──
-  if (authHeader?.startsWith("Bearer aiops_sk_")) {
+  if (authHeader?.startsWith("Bearer tuen_sk_")) {
     const key = authHeader.replace("Bearer ", "").trim();
     const supabase = await createClient();
 

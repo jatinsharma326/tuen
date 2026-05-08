@@ -49,7 +49,7 @@ export default function ApiKeysPage() {
     const supabase = createClient();
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
-    const key = "aiops_sk_" + Array.from(crypto.getRandomValues(new Uint8Array(20)))
+    const key = "tuen_sk_" + Array.from(crypto.getRandomValues(new Uint8Array(20)))
       .map((b) => b.toString(16).padStart(2, "0")).join("");
     await supabase.from("api_keys").insert({ user_id: user.id, key, name: newName || "Untitled" });
     setNewName("");
@@ -78,7 +78,7 @@ export default function ApiKeysPage() {
   };
 
   const exampleCode = `curl -X POST ${origin}/api/services/image_gen \\
-  -H "Authorization: Bearer ${keys[0]?.key || "aiops_sk_xxx"}" \\
+  -H "Authorization: Bearer ${keys[0]?.key || "tuen_sk_xxx"}" \\
   -H "Content-Type: application/json" \\
   -d '{"prompt": "a cat astronaut"}'`;
 

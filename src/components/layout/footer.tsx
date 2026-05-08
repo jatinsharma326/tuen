@@ -28,7 +28,7 @@ export function Footer() {
               <div className="flex h-5 w-5 items-center justify-center rounded bg-accent">
                 <span className="text-[9px] font-bold text-surface-0">A</span>
               </div>
-              <span className="font-display text-sm font-semibold">aiops</span>
+              <span className="font-display text-sm font-semibold">tuen</span>
             </div>
             <p className="mt-3 text-xs leading-relaxed text-text-muted">
               AI inference API.<br />Pay per request.
@@ -66,7 +66,7 @@ export function Footer() {
           </div>
         </div>
         <div className="mt-10 flex items-center justify-between border-t border-border-subtle pt-6">
-          <span className="text-[12px] text-text-muted">&copy; {new Date().getFullYear()} aiops. All rights reserved.</span>
+          <span className="text-[12px] text-text-muted">&copy; {new Date().getFullYear()} tuen. All rights reserved.</span>
           <div className="flex gap-4">
             <Link href="/" className="text-[12px] text-text-muted hover:text-text-tertiary">Privacy</Link>
             <Link href="/" className="text-[12px] text-text-muted hover:text-text-tertiary">Terms</Link>

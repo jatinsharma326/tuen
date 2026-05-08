@@ -19,7 +19,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     setMounted(true);
-    const stored = localStorage.getItem("aiops-theme") as Theme | null;
+    const stored = localStorage.getItem("tuen-theme") as Theme | null;
     const initial = stored || "system";
     setThemeState(initial);
     applyTheme(initial);
@@ -41,7 +41,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   const setTheme = (t: Theme) => {
     setThemeState(t);
-    localStorage.setItem("aiops-theme", t);
+    localStorage.setItem("tuen-theme", t);
     applyTheme(t);
   };
 

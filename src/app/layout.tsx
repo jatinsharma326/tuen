@@ -16,7 +16,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "aiops - AI Inference Platform",
+  title: "tuen.fun - AI Inference Platform",
   description:
     "Run the best open-source and proprietary AI models with a single API call. Pay per use.",
 };

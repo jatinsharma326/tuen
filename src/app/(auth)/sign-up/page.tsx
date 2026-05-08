@@ -7,7 +7,7 @@ import { createClient } from "@/lib/supabase/client";
 import { Input } from "@/components/ui/input";
 
 function generateKey() {
-  return "aiops_sk_" + Array.from(crypto.getRandomValues(new Uint8Array(20)))
+  return "tuen_sk_" + Array.from(crypto.getRandomValues(new Uint8Array(20)))
     .map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 

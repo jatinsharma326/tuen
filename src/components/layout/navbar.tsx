@@ -31,7 +31,7 @@ export function Navbar() {
           <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-accent to-accent-yellow shadow-lg shadow-accent/25">
             <span className="text-[12px] font-bold text-surface-0">A</span>
           </div>
-          <span className="font-display text-[16px] font-semibold tracking-tight">aiops</span>
+          <span className="font-display text-[16px] font-semibold tracking-tight">tuen.fun</span>
         </Link>
 
         <div className="hidden items-center gap-1 md:flex">

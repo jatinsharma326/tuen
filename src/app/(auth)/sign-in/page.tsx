@@ -7,7 +7,7 @@ import { createClient } from "@/lib/supabase/client";
 import { Input } from "@/components/ui/input";
 
 function generateKey() {
-  return "aiops_sk_" + Array.from(crypto.getRandomValues(new Uint8Array(20)))
+  return "tuen_sk_" + Array.from(crypto.getRandomValues(new Uint8Array(20)))
     .map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
@@ -67,7 +67,7 @@ export default function SignInPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-lg font-medium text-text-primary">Sign in</h1>
-        <p className="mt-1 text-[13px] text-text-muted">Welcome back to aiops</p>
+        <p className="mt-1 text-[13px] text-text-muted">Welcome back to tuen</p>
       </div>
       <div className="grid grid-cols-2 gap-2">
         <button onClick={() => handleOAuth("google")} className="rounded-md border border-border-default py-2 text-[13px] text-text-secondary hover:border-border-strong hover:text-text-primary transition-colors">

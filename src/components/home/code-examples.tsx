@@ -10,7 +10,7 @@ const TABS = ["curl", "python", "javascript"] as const;
 const CODE: Record<string, React.ReactNode> = {
   curl: (
     <>
-      <span className="text-accent">curl</span> <span className="text-text-tertiary">-X POST</span> <span className="text-text-secondary">https://aiops.dev/api/v1/generate</span> \{"\n"}
+      <span className="text-accent">curl</span> <span className="text-text-tertiary">-X POST</span> <span className="text-text-secondary">https://tuen.fun/api/v1/generate</span> \{"\n"}
       {"  "}<span className="text-text-tertiary">-H</span> <span className="text-emerald-500">"Authorization: Bearer sk_live_..."</span> \{"\n"}
       {"  "}<span className="text-text-tertiary">-H</span> <span className="text-emerald-500">"Content-Type: application/json"</span> \{"\n"}
       {"  "}<span className="text-text-tertiary">-d</span> <span className="text-accent-cyan">'{`{"model": "black-forest-labs/FLUX.1-schnell", "prompt": "a photo of a cat astronaut"}`}'</span>
@@ -20,7 +20,7 @@ const CODE: Record<string, React.ReactNode> = {
     <>
       <span className="text-accent">import</span> requests{"\n\n"}
       res = requests.<span className="text-accent-blue">post</span>({"\n"}
-      {"    "}<span className="text-emerald-500">"https://aiops.dev/api/v1/generate"</span>,{"\n"}
+      {"    "}<span className="text-emerald-500">"https://tuen.fun/api/v1/generate"</span>,{"\n"}
       {"    "}headers=<span className="text-accent">{`{"Authorization"`}</span>: <span className="text-emerald-500">"Bearer sk_live_..."</span>{`}`},{"\n"}
       {"    "}json=<span className="text-accent">{`{"model"`}</span>: <span className="text-emerald-500">"black-forest-labs/FLUX.1-schnell"</span>, <span className="text-accent">"prompt"</span>: <span className="text-emerald-500">"a photo of a cat astronaut"</span>{`}`}{"\n"}
       ){"\n\n"}
@@ -29,8 +29,8 @@ const CODE: Record<string, React.ReactNode> = {
   ),
   javascript: (
     <>
-      <span className="text-accent">import</span> {`{ aiops }`} <span className="text-accent">from</span> <span className="text-emerald-500">"@aiops/client"</span>;{"\n\n"}
-      <span className="text-accent">const</span> res = <span className="text-accent">await</span> aiops.<span className="text-accent-blue">generate</span>({"\n"}
+      <span className="text-accent">import</span> {`{ tuen }`} <span className="text-accent">from</span> <span className="text-emerald-500">"@tuen/client"</span>;{"\n\n"}
+      <span className="text-accent">const</span> res = <span className="text-accent">await</span> tuen.<span className="text-accent-blue">generate</span>({"\n"}
       {"  "}model: <span className="text-emerald-500">"black-forest-labs/FLUX.1-schnell"</span>,{"\n"}
       {"  "}prompt: <span className="text-emerald-500">"a photo of a cat astronaut"</span>,{"\n"}
       {`});`}{"\n\n"}
@@ -40,9 +40,9 @@ const CODE: Record<string, React.ReactNode> = {
 };
 
 const RAW_CODE: Record<string, string> = {
-  curl: `curl -X POST https://aiops.dev/api/v1/generate \\n  -H "Authorization: Bearer sk_live_..." \\n  -H "Content-Type: application/json" \\n  -d '{"model": "black-forest-labs/FLUX.1-schnell", "prompt": "a photo of a cat astronaut"}'`,
-  python: `import requests\n\nres = requests.post(\n    "https://aiops.dev/api/v1/generate",\n    headers={"Authorization": "Bearer sk_live_..."},\n    json={"model": "black-forest-labs/FLUX.1-schnell", "prompt": "a photo of a cat astronaut"}\n)\n\nprint(res.json()["url"])`,
-  javascript: `import { aiops } from "@aiops/client";\n\nconst res = await aiops.generate({\n  model: "black-forest-labs/FLUX.1-schnell",\n  prompt: "a photo of a cat astronaut",\n});\n\nconsole.log(res.url);`,
+  curl: `curl -X POST https://tuen.fun/api/v1/generate \\n  -H "Authorization: Bearer sk_live_..." \\n  -H "Content-Type: application/json" \\n  -d '{"model": "black-forest-labs/FLUX.1-schnell", "prompt": "a photo of a cat astronaut"}'`,
+  python: `import requests\n\nres = requests.post(\n    "https://tuen.fun/api/v1/generate",\n    headers={"Authorization": "Bearer sk_live_..."},\n    json={"model": "black-forest-labs/FLUX.1-schnell", "prompt": "a photo of a cat astronaut"}\n)\n\nprint(res.json()["url"])`,
+  javascript: `import { tuen } from "@tuen/client";\n\nconst res = await tuen.generate({\n  model: "black-forest-labs/FLUX.1-schnell",\n  prompt: "a photo of a cat astronaut",\n});\n\nconsole.log(res.url);`,
 };
 
 export function CodeExamples() {

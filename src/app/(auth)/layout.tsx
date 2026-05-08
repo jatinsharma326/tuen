@@ -9,7 +9,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
         <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-accent to-accent-light shadow-lg shadow-accent/20">
           <span className="text-[13px] font-bold text-surface-0">A</span>
         </div>
-        <span className="font-display text-lg font-semibold tracking-tight text-text-primary">aiops</span>
+        <span className="font-display text-lg font-semibold tracking-tight text-text-primary">tuen</span>
       </Link>
       <div className="relative w-full max-w-[380px] rounded-xl border border-border-subtle bg-surface-0 p-7 shadow-xl shadow-black/5">
         {children}

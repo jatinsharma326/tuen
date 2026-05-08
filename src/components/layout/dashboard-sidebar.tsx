@@ -105,7 +105,7 @@ export function DashboardSidebar() {
             <span className="text-[11px] font-bold text-surface-0">A</span>
           </div>
           <Link href="/" className="font-display text-[15px] font-semibold tracking-tight text-text-primary">
-            aiops
+            tuen.fun
           </Link>
           <span className="badge-premium ml-auto bg-accent/10 text-accent border-accent/20">
             <Sparkles size={9} /> Pro

@@ -22,7 +22,7 @@ export function FeaturesSection() {
             viewport={{ once: true }}
             className="text-[12px] font-bold uppercase tracking-[0.2em] text-accent"
           >
-            Why aiops
+            Why tuen
           </motion.p>
           <motion.h2 
             initial={{ opacity: 0, y: 10 }}

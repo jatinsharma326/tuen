@@ -85,7 +85,7 @@ export function HeroSection() {
               <span className="text-[11px] text-text-tertiary font-mono uppercase tracking-widest">bash</span>
             </div>
             <div className="p-6 font-mono text-[14px] leading-[1.8] bg-[#050505]/90">
-              <div><span className="text-text-muted">$</span> <span className="text-accent font-semibold">curl</span> <span className="text-text-tertiary">-X POST</span> <span className="text-text-secondary">https://aiops.dev/api/v1/generate</span> \</div>
+              <div><span className="text-text-muted">$</span> <span className="text-accent font-semibold">curl</span> <span className="text-text-tertiary">-X POST</span> <span className="text-text-secondary">https://tuen.fun/api/v1/generate</span> \</div>
               <div className="pl-4"><span className="text-text-tertiary">-H</span> <span className="text-emerald-400">&quot;Authorization: Bearer sk_live_...&quot;</span> \</div>
               <div className="pl-4"><span className="text-text-tertiary">-d</span> <span className="text-accent-cyan">{`'{"model": "fal-ai/flux", "prompt": "cyberpunk city"}'`}</span></div>
               <div className="mt-4 border-t border-white/5 pt-4 flex items-center justify-between">
@@ -95,7 +95,7 @@ export function HeroSection() {
                 </div>
                 <span className="text-[11px] text-accent/60 bg-accent/10 px-2 py-0.5 rounded uppercase font-sans tracking-wide">Output</span>
               </div>
-              <div className="mt-2"><span className="text-text-muted">{`{`}</span> <span className="text-accent-light">&quot;url&quot;</span><span className="text-text-muted">:</span> <span className="text-emerald-400">&quot;https://cdn.aiops.dev/out/cyber.webp&quot;</span> <span className="text-text-muted">{`}`}</span></div>
+              <div className="mt-2"><span className="text-text-muted">{`{`}</span> <span className="text-accent-light">&quot;url&quot;</span><span className="text-text-muted">:</span> <span className="text-emerald-400">&quot;https://cdn.tuen.fun/out/cyber.webp&quot;</span> <span className="text-text-muted">{`}`}</span></div>
             </div>
           </div>
         </motion.div>

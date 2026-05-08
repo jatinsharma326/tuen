@@ -31,7 +31,7 @@ export function CtaSection() {
           </span>
         </h2>
         <p className="mx-auto mt-6 max-w-lg text-[18px] text-text-secondary font-light">
-          Join thousands of developers building next-generation applications with aiops. 50 free credits on sign up.
+          Join thousands of developers building next-generation applications with tuen. 50 free credits on sign up.
         </p>
         <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
           <Link href="/sign-up" className="btn-primary rounded-full px-8 py-3.5 text-[15px] shadow-[0_0_30px_rgba(124,58,237,0.2)]">
