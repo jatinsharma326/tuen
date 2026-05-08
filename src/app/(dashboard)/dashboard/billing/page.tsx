@@ -46,6 +46,21 @@ function BillingContent() {
     }
   };
 
+  const handleCrypto = async (targetPlanId: string) => {
+    setLoading(true);
+    const res = await fetch("/api/payments/crypto-create", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ planId: targetPlanId }),
+    });
+    const data = await res.json();
+    if (data.url) {
+      window.location.href = data.url;
+    } else {
+      setLoading(false);
+    }
+  };
+
   const pct = current.monthlyTotalLimit > 0 ? Math.min(100, (monthly / current.monthlyTotalLimit) * 100) : 0;
   const justPaid = searchParams?.get("success") === "true";
 
@@ -140,20 +155,28 @@ function BillingContent() {
                     </li>
                   ))}
                 </ul>
-                <div className="mt-6 pt-4 border-t border-border-subtle">
+                <div className="mt-6 pt-4 border-t border-border-subtle space-y-2">
                   {isCurrent ? (
                     <span className="flex w-full items-center justify-center gap-1 rounded-xl border border-border-default py-2.5 text-[13px] text-text-muted">
                       Current plan
                     </span>
                   ) : (
-                    <button
-                      onClick={() => handleUpgrade(plan.id)}
-                      disabled={loading}
-                      className="btn-white flex w-full items-center justify-center gap-1 rounded-xl py-2.5 text-[13px] disabled:opacity-60">
-                      {loading ? <Loader2 size={13} className="animate-spin" /> : null}
-                      {plan.priceCents > current.priceCents ? "Upgrade" : "Switch"}
-                      <ArrowUpRight size={12} />
-                    </button>
+                    <>
+                      <button
+                        onClick={() => handleUpgrade(plan.id)}
+                        disabled={loading}
+                        className="btn-white flex w-full items-center justify-center gap-1 rounded-xl py-2.5 text-[13px] disabled:opacity-60">
+                        {loading ? <Loader2 size={13} className="animate-spin" /> : null}
+                        {plan.priceCents > current.priceCents ? "Upgrade" : "Switch"} with Card
+                        <ArrowUpRight size={12} />
+                      </button>
+                      <button
+                        onClick={() => handleCrypto(plan.id)}
+                        disabled={loading}
+                        className="flex w-full items-center justify-center gap-1 rounded-xl border border-border-default py-2.5 text-[13px] text-text-muted hover:text-text-secondary hover:border-border-strong transition-colors disabled:opacity-60">
+                        {plan.priceCents > current.priceCents ? "Pay with Crypto" : "Switch with Crypto"}
+                      </button>
+                    </>
                   )}
                 </div>
               </motion.div>
