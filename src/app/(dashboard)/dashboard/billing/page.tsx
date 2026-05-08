@@ -29,6 +29,20 @@ function BillingContent() {
 
   useEffect(() => { refresh(); }, []);
 
+  useEffect(() => {
+    const isSuccess = searchParams?.get("success") === "true";
+    const targetPlan = searchParams?.get("plan") || "pro";
+    if (isSuccess && planId === "trial") {
+      const supabase = createClient();
+      supabase.auth.getUser().then(({ data }) => {
+        if (!data.user) return;
+        supabase.from("profiles").update({ plan: targetPlan, updated_at: new Date().toISOString() })
+          .eq("id", data.user.id)
+          .then(() => refresh());
+      });
+    }
+  }, [searchParams]);
+
   const current = getPlan(planId);
 
   const handleUpgrade = async (targetPlanId: string) => {

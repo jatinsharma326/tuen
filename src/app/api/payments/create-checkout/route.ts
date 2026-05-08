@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
         quantity: 1,
       }],
       metadata: { userId: user.id, planId: plan.id },
-      success_url: `${origin}/dashboard/billing?success=true`,
+      success_url: `${origin}/dashboard/billing?success=true&plan=${plan.id}`,
       cancel_url: `${origin}/dashboard/billing?canceled=true`,
     });
 

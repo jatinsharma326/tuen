@@ -15,7 +15,7 @@ export async function createCryptoInvoice(amountCents: number, planId: string, u
       price_currency: "usd",
       order_id: `${userId}:${planId}:${Date.now()}`,
       order_description: `tuen.fun ${planId === "pro" ? "Pro" : ""} Plan`,
-      success_url: `${origin}/dashboard/billing?success=true`,
+      success_url: `${origin}/dashboard/billing?success=true&plan=${planId}`,
       cancel_url: `${origin}/dashboard/billing?canceled=true`,
     }),
   });
