@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server";
+import { createClient, createServiceClient } from "@/lib/supabase/server";
 
 export async function getAuthUser(req: Request) {
   const authHeader = req.headers.get("authorization");
@@ -6,7 +6,7 @@ export async function getAuthUser(req: Request) {
   // ── API Key auth (for external services like n8n) ──
   if (authHeader?.startsWith("Bearer tuen_sk_")) {
     const key = authHeader.replace("Bearer ", "").trim();
-    const supabase = await createClient();
+    const supabase = await createServiceClient();
 
     const { data } = await supabase
       .from("api_keys")
@@ -16,7 +16,6 @@ export async function getAuthUser(req: Request) {
 
     if (!data) return null;
 
-    // Update last_used_at in the background (don't await — fire and forget)
     supabase
       .from("api_keys")
       .update({ last_used_at: new Date().toISOString() })

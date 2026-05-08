@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server";
+import { createServiceClient } from "@/lib/supabase/server";
 import { getPlan, type Plan } from "@/lib/constants/plans";
 
 export type LimitKey = "image" | "tts" | "transcribe" | "llm";
@@ -23,7 +23,7 @@ function getWindowStart(period: "day" | "week" | "month"): string {
 }
 
 async function fetchUserPlan(userId: string): Promise<Plan> {
-  const supabase = await createClient();
+  const supabase = await createServiceClient();
   const { data } = await supabase
     .from("profiles")
     .select("plan")
@@ -33,7 +33,7 @@ async function fetchUserPlan(userId: string): Promise<Plan> {
 }
 
 export async function getUsageCounts(userId: string) {
-  const supabase = await createClient();
+  const supabase = await createServiceClient();
   const dayStart = getWindowStart("day");
   const weekStart = getWindowStart("week");
   const monthStart = getWindowStart("month");
@@ -62,7 +62,7 @@ export async function getUsageCounts(userId: string) {
 
 export async function checkServiceLimit(userId: string, limitKey: LimitKey): Promise<{ ok: boolean; error: string }> {
   const plan = await fetchUserPlan(userId);
-  const supabase = await createClient();
+  const supabase = await createServiceClient();
   const now = new Date();
   const dayStart = getWindowStart("day");
   const weekStart = getWindowStart("week");
@@ -110,7 +110,7 @@ export async function checkServiceLimit(userId: string, limitKey: LimitKey): Pro
 
 export async function checkRateLimit(userId: string, limitPerMin: number): Promise<boolean> {
   if (limitPerMin >= 9999) return true;
-  const supabase = await createClient();
+  const supabase = await createServiceClient();
   const oneMinAgo = new Date(Date.now() - 60000).toISOString();
   const { count } = await supabase
     .from("usage_logs")
@@ -121,7 +121,7 @@ export async function checkRateLimit(userId: string, limitPerMin: number): Promi
 }
 
 export async function logUsage(userId: string, service: string) {
-  const supabase = await createClient();
+  const supabase = await createServiceClient();
   await supabase.from("usage_logs").insert({
     user_id: userId,
     service,
@@ -130,7 +130,7 @@ export async function logUsage(userId: string, service: string) {
 }
 
 export async function getUserPlan(userId: string) {
-  const supabase = await createClient();
+  const supabase = await createServiceClient();
   const { data } = await supabase
     .from("profiles")
     .select("plan")
