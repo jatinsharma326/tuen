@@ -40,16 +40,16 @@ export default function PricingPage() {
               ))}
             </ul>
             <div className="mt-auto pt-6">
-              <Link
-                href="/sign-up"
-                className={`block w-full rounded-md py-2 text-center text-sm font-medium transition-colors ${
-                    plan.id === "pro"
-                    ? "btn-primary"
-                    : "border border-border-default text-text-secondary hover:text-text-primary hover:border-border-strong"
-                }`}
-              >
-                {plan.priceCents === 0 ? "Start Free Trial" : `Get ${plan.name}`}
-              </Link>
+            <Link
+              href={plan.priceCents === 0 ? "/sign-up" : "/dashboard/billing"}
+              className={`block w-full rounded-md py-2 text-center text-sm font-medium transition-colors ${
+                  plan.id === "pro"
+                  ? "btn-primary"
+                  : "border border-border-default text-text-secondary hover:text-text-primary hover:border-border-strong"
+              }`}
+            >
+              {plan.priceCents === 0 ? "Start Free Trial" : `Get ${plan.name}`}
+            </Link>
             </div>
           </div>
         ))}
