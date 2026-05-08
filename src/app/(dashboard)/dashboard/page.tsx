@@ -172,7 +172,8 @@ export default function DashboardPage() {
       sub: plan.priceCents === 0 ? "Free trial" : "$19/month",
       icon: TrendingUp,
       color: "#3b82f6",
-      link: "/dashboard/billing",
+      link: plan.priceCents === 0 ? "/dashboard/billing" : undefined,
+      badge: plan.priceCents === 0 ? "Upgrade" : undefined,
     },
     {
       label: "API Keys",
@@ -277,6 +278,11 @@ export default function DashboardPage() {
                         s.sub
                       )}
                     </p>
+                    {s.badge && (
+                      <Link href="/dashboard/billing" className="mt-2 inline-flex items-center gap-1 rounded-lg bg-accent/10 px-2.5 py-1 text-[10px] font-semibold text-accent hover:bg-accent/20 transition-colors">
+                        {s.badge} <ArrowUpRight size={9} />
+                      </Link>
+                    )}
                   </div>
                 </div>
 
