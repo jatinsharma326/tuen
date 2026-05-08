@@ -4,7 +4,7 @@
 -- 1. Create profiles table
 CREATE TABLE IF NOT EXISTS public.profiles (
   id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
-  plan TEXT NOT NULL DEFAULT 'pro',
+  plan TEXT NOT NULL DEFAULT 'trial',
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
@@ -72,7 +72,7 @@ CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER AS $$
 BEGIN
   INSERT INTO public.profiles (id, plan)
-  VALUES (NEW.id, 'pro')
+  VALUES (NEW.id, 'trial')
   ON CONFLICT (id) DO NOTHING;
   RETURN NEW;
 END;

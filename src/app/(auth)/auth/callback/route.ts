@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
 
       if (user) {
         await supabase.from("profiles").upsert(
-          { id: user.id, plan: "pro" },
+          { id: user.id, plan: "trial" },
           { onConflict: "id", ignoreDuplicates: true }
         );
       }

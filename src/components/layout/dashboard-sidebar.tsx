@@ -41,7 +41,7 @@ const MANAGE = [
 export function DashboardSidebar() {
   const pathname = usePathname();
   const router = useRouter();
-  const [plan, setPlan] = useState("pro");
+  const [plan, setPlan] = useState("trial");
   const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
@@ -49,7 +49,7 @@ export function DashboardSidebar() {
     supabase.auth.getUser().then(({ data }) => {
       if (!data.user) return;
       supabase.from("profiles").select("plan").eq("id", data.user.id).single()
-        .then(({ data: p }) => { setPlan(p?.plan ?? "pro"); });
+        .then(({ data: p }) => { setPlan(p?.plan ?? "trial"); });
     });
   }, [pathname]);
 

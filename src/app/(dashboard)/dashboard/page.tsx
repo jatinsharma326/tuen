@@ -85,7 +85,7 @@ const stagger = {
 
 export default function DashboardPage() {
   const [name, setName] = useState("");
-  const [planId, setPlanId] = useState("pro");
+  const [planId, setPlanId] = useState("trial");
   const [apiKeyCount, setApiKeyCount] = useState(0);
   const [recentLogs, setRecentLogs] = useState<LogEntry[]>([]);
   const [totalUsedToday, setTotalUsedToday] = useState(0);
@@ -108,7 +108,7 @@ export default function DashboardPage() {
         .eq("id", data.user.id)
         .single()
         .then(({ data: p }) => {
-          setPlanId(p?.plan ?? "pro");
+          setPlanId(p?.plan ?? "trial");
         });
 
       supabase
@@ -161,7 +161,7 @@ export default function DashboardPage() {
     {
       label: "Requests Today",
       value: loaded ? dailyCounts.daily.toLocaleString() : "—",
-      sub: "of 10,000 monthly limit",
+      sub: `of ${plan.monthlyTotalLimit.toLocaleString()} monthly limit`,
       icon: Zap,
       color: "#7c3aed",
       progress: monthlyPct,
@@ -169,7 +169,7 @@ export default function DashboardPage() {
     {
       label: "Plan",
       value: plan.name,
-      sub: "$19/month",
+      sub: plan.priceCents === 0 ? "Free trial" : "$19/month",
       icon: TrendingUp,
       color: "#3b82f6",
       link: "/dashboard/billing",

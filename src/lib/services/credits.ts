@@ -1,5 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
-import { DEFAULT_PLAN } from "@/lib/constants/plans";
+import { getPlan, type Plan } from "@/lib/constants/plans";
 
 export type LimitKey = "image" | "tts" | "transcribe" | "llm";
 
@@ -17,10 +17,19 @@ function getWindowStart(period: "day" | "week" | "month"): string {
     d.setHours(0, 0, 0, 0);
     return d.toISOString();
   }
-  // month
   d.setDate(1);
   d.setHours(0, 0, 0, 0);
   return d.toISOString();
+}
+
+async function fetchUserPlan(userId: string): Promise<Plan> {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("profiles")
+    .select("plan")
+    .eq("id", userId)
+    .single();
+  return getPlan(data?.plan || "trial");
 }
 
 export async function getUsageCounts(userId: string) {
@@ -52,20 +61,20 @@ export async function getUsageCounts(userId: string) {
 }
 
 export async function checkServiceLimit(userId: string, limitKey: LimitKey): Promise<{ ok: boolean; error: string }> {
+  const plan = await fetchUserPlan(userId);
   const supabase = await createClient();
   const now = new Date();
   const dayStart = getWindowStart("day");
   const weekStart = getWindowStart("week");
   const monthStart = getWindowStart("month");
 
-  const dayEnd = new Date(now);
-  dayEnd.setHours(23, 59, 59, 999);
+  const serviceLogName = getServiceLogName(limitKey);
 
   const [{ count: dayCount }, { count: weekTotal }, { count: monthTotal }] = await Promise.all([
     supabase.from("usage_logs")
       .select("*", { count: "exact", head: true })
       .eq("user_id", userId)
-      .eq("service", getServiceLogName(limitKey))
+      .eq("service", serviceLogName)
       .gte("created_at", dayStart),
     supabase.from("usage_logs")
       .select("*", { count: "exact", head: true })
@@ -81,19 +90,19 @@ export async function checkServiceLimit(userId: string, limitKey: LimitKey): Pro
   const w = weekTotal ?? 0;
   const m = monthTotal ?? 0;
 
-  const dailyLimit = getDailyLimit(limitKey);
+  const dailyLimit = getPlanDailyLimit(plan, limitKey);
   if (d >= dailyLimit) {
     const resetTime = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0);
     const hoursLeft = Math.max(1, Math.round((resetTime.getTime() - now.getTime()) / 3600000));
     return { ok: false, error: `Daily limit reached (${d}/${dailyLimit}). Resets in ~${hoursLeft}h.` };
   }
 
-  if (w >= DEFAULT_PLAN.weeklyTotalLimit) {
-    return { ok: false, error: `Weekly limit reached (${w}/${DEFAULT_PLAN.weeklyTotalLimit}).` };
+  if (w >= plan.weeklyTotalLimit) {
+    return { ok: false, error: `Weekly limit reached (${w}/${plan.weeklyTotalLimit}).` };
   }
 
-  if (m >= DEFAULT_PLAN.monthlyTotalLimit) {
-    return { ok: false, error: `Monthly limit reached (${m}/${DEFAULT_PLAN.monthlyTotalLimit}).` };
+  if (m >= plan.monthlyTotalLimit) {
+    return { ok: false, error: `Monthly limit reached (${m}/${plan.monthlyTotalLimit}).` };
   }
 
   return { ok: true, error: "" };
@@ -130,12 +139,12 @@ export async function getUserPlan(userId: string) {
   return data;
 }
 
-function getDailyLimit(limitKey: LimitKey): number {
+function getPlanDailyLimit(plan: Plan, limitKey: LimitKey): number {
   switch (limitKey) {
-    case "image": return DEFAULT_PLAN.dailyImageLimit;
-    case "tts": return DEFAULT_PLAN.dailyTtsLimit;
-    case "transcribe": return DEFAULT_PLAN.dailyTranscribeLimit;
-    case "llm": return DEFAULT_PLAN.dailyLlmLimit;
+    case "image": return plan.dailyImageLimit;
+    case "tts": return plan.dailyTtsLimit;
+    case "transcribe": return plan.dailyTranscribeLimit;
+    case "llm": return plan.dailyLlmLimit;
   }
 }
 

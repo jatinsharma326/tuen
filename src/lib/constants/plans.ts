@@ -13,44 +13,72 @@ export interface Plan {
   features: string[];
 }
 
-export const DEFAULT_PLAN: Plan = {
-  id: "pro",
-  name: "Pro",
-  priceCents: 1900,
-  dailyImageLimit: 200,
-  dailyTtsLimit: 100,
-  dailyTranscribeLimit: 200,
-  dailyLlmLimit: 50,
-  weeklyTotalLimit: 3000,
-  monthlyTotalLimit: 10000,
-  maxApiKeys: 10,
-  rateLimitPerMin: 60,
-  features: [
-    "200 images/day",
-    "100 TTS requests/day",
-    "200 transcriptions/day",
-    "50 LLM chats/day",
-    "3,000 requests/week total",
-    "10,000 requests/month total",
-    "10 API keys",
-    "60 requests/min",
-    "Priority support",
-    "Usage analytics",
-  ],
-};
+export const PLANS: Plan[] = [
+  {
+    id: "trial",
+    name: "Trial",
+    priceCents: 0,
+    dailyImageLimit: 10,
+    dailyTtsLimit: 5,
+    dailyTranscribeLimit: 5,
+    dailyLlmLimit: 5,
+    weeklyTotalLimit: 100,
+    monthlyTotalLimit: 500,
+    maxApiKeys: 1,
+    rateLimitPerMin: 5,
+    features: [
+      "10 images/day",
+      "5 TTS requests/day",
+      "5 transcriptions/day",
+      "5 LLM chats/day",
+      "100 requests/week total",
+      "500 requests/month total",
+      "1 API key",
+      "5 requests/min",
+      "Community support",
+    ],
+  },
+  {
+    id: "pro",
+    name: "Pro",
+    priceCents: 1900,
+    dailyImageLimit: 200,
+    dailyTtsLimit: 100,
+    dailyTranscribeLimit: 200,
+    dailyLlmLimit: 50,
+    weeklyTotalLimit: 3000,
+    monthlyTotalLimit: 10000,
+    maxApiKeys: 10,
+    rateLimitPerMin: 60,
+    features: [
+      "200 images/day",
+      "100 TTS requests/day",
+      "200 transcriptions/day",
+      "50 LLM chats/day",
+      "3,000 requests/week total",
+      "10,000 requests/month total",
+      "10 API keys",
+      "60 requests/min",
+      "Priority support",
+      "Usage analytics",
+    ],
+  },
+];
 
-export function getPlan(_id?: string): Plan {
-  return DEFAULT_PLAN;
+export const DEFAULT_PLAN = PLANS[0];
+
+export function getPlan(id?: string): Plan {
+  return PLANS.find((p) => p.id === id) || DEFAULT_PLAN;
 }
 
 export function formatPrice(cents: number): string {
-  if (cents === 0) return "$0";
+  if (cents === 0) return "Free";
   return `$${(cents / 100).toFixed(0)}`;
 }
 
 export const SERVICE_LIMITS = {
-  image: { daily: 200, label: "Image Generation" },
-  tts: { daily: 100, label: "Text to Speech" },
-  transcribe: { daily: 200, label: "Transcription" },
-  llm: { daily: 50, label: "LLM Chat" },
+  image: { daily: DEFAULT_PLAN.dailyImageLimit, label: "Image Generation" },
+  tts: { daily: DEFAULT_PLAN.dailyTtsLimit, label: "Text to Speech" },
+  transcribe: { daily: DEFAULT_PLAN.dailyTranscribeLimit, label: "Transcription" },
+  llm: { daily: DEFAULT_PLAN.dailyLlmLimit, label: "LLM Chat" },
 } as const;
