@@ -64,9 +64,11 @@ function GenerateForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt, aspect_ratio: ratio, style, model }),
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Failed");
-      setResult(data?.image_url || null);
+      const text = await res.text();
+      let data: Record<string, unknown> = {};
+      try { data = JSON.parse(text); } catch { throw new Error(`Server error: ${res.status} - ${text.slice(0, 200)}`); }
+      if (!res.ok) throw new Error(String(data.error || `HTTP ${res.status}`));
+      setResult((data.image_url as string) || null);
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : "Something went wrong");
     } finally {

@@ -62,9 +62,11 @@ function TtsForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text, voice, model }),
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Failed");
-      setAudioUrl(data?.audio_url || data?.audio?.url || null);
+      const textRes = await res.text();
+      let data: Record<string, unknown> = {};
+      try { data = JSON.parse(textRes); } catch { throw new Error(`Server error: ${res.status} - ${textRes.slice(0, 200)}`); }
+      if (!res.ok) throw new Error(String(data.error || `HTTP ${res.status}`));
+      setAudioUrl((data.audio_url as string) || (data.audio as Record<string, string>)?.url || null);
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : "Something went wrong");
     } finally {

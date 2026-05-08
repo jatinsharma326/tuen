@@ -47,9 +47,11 @@ function TranscribeForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ audio_url: audioUrl, model }),
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Failed");
-      setTranscript(data?.text || "No transcript returned");
+      const textRes = await res.text();
+      let data: Record<string, unknown> = {};
+      try { data = JSON.parse(textRes); } catch { throw new Error(`Server error: ${res.status} - ${textRes.slice(0, 200)}`); }
+      if (!res.ok) throw new Error(String(data.error || `HTTP ${res.status}`));
+      setTranscript((data.text as string) || "No transcript returned");
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : "Something went wrong");
     } finally {
