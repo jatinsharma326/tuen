@@ -1,16 +1,15 @@
 "use client";
 
 import { useState, useRef, useEffect, Suspense } from "react";
-import { Loader2, Send, Bot, User, Sparkles, Brain, Lock } from "lucide-react";
+import { Loader2, Send, Bot, User, Sparkles, Brain } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
-import { createClient } from "@/lib/supabase/client";
 
 const MODELS = [
-  { label: "GLM-5.1", value: "zai-org/GLM-5.1", desc: "Zhipu AI latest LLM", minCredits: 2 },
-  { label: "DeepSeek-V4 Pro", value: "deepseek-ai/DeepSeek-V4-Pro", desc: "Latest DeepSeek reasoning model", minCredits: 5 },
-  { label: "DeepSeek-V3", value: "deepseek-ai/DeepSeek-V3", desc: "Large-scale MoE model", minCredits: 5 },
-  { label: "Qwen3-30B-A3B", value: "Qwen/Qwen3-30B-A3B", desc: "Fast, efficient reasoning", minCredits: 2 },
+  { label: "GLM-5.1", value: "zai-org/GLM-5.1", desc: "Zhipu AI latest LLM" },
+  { label: "DeepSeek-V4 Pro", value: "deepseek-ai/DeepSeek-V4-Pro", desc: "Latest DeepSeek reasoning model" },
+  { label: "DeepSeek-V3", value: "deepseek-ai/DeepSeek-V3", desc: "Large-scale MoE model" },
+  { label: "Qwen3-30B-A3B", value: "Qwen/Qwen3-30B-A3B", desc: "Fast, efficient reasoning" },
 ];
 
 interface Message {
@@ -28,22 +27,7 @@ function ChatForm() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [credits, setCredits] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const qModel = searchParams.get("model");
-    if (qModel) setModel(qModel);
-  }, [searchParams]);
-
-  useEffect(() => {
-    const supabase = createClient();
-    supabase.auth.getUser().then(({ data }) => {
-      if (!data.user) return;
-      supabase.from("profiles").select("credits").eq("id", data.user.id).single()
-        .then(({ data: p }) => { if (p) setCredits(p.credits); });
-    });
-  }, []);
 
   useEffect(() => {
     const qModel = searchParams.get("model");
@@ -54,11 +38,8 @@ function ChatForm() {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages]);
 
-  const isLocked = (minCredits: number) => credits < minCredits;
-
   const send = async () => {
-    const selected = MODELS.find((m) => m.value === model);
-    if (!input.trim() || loading || (selected && isLocked(selected.minCredits))) return;
+    if (!input.trim() || loading) return;
     const userMsg: Message = { role: "user", content: input, reasoning: "" };
     const newMessages = [...messages, userMsg];
     setMessages(newMessages);
@@ -130,7 +111,6 @@ function ChatForm() {
               });
             }
           } catch {
-            // skip unparseable chunks
           }
         }
       }
@@ -162,41 +142,30 @@ function ChatForm() {
               <p className="text-[13px] text-text-muted">Chat with large language models via ModelScope</p>
             </div>
           </div>
-          <span className="badge-premium bg-emerald-500/10 text-emerald-500 border-emerald-500/20">2 credits per run</span>
+          <span className="badge-premium bg-emerald-500/10 text-emerald-500 border-emerald-500/20">50 chats/day</span>
         </div>
       </motion.div>
 
       <div className="grid gap-8 lg:grid-cols-[1fr_340px]">
-        {/* Chat area */}
         <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="flex flex-col">
-          {/* Model selector */}
           <div className="mb-4">
-            <div className="flex gap-2">
-              {MODELS.map((m) => {
-                const locked = isLocked(m.minCredits);
-                return (
-                  <button
-                    key={m.value}
-                    onClick={() => !locked && setModel(m.value)}
-                    disabled={locked}
-                    title={locked ? `Requires ${m.minCredits} credits (you have ${credits})` : undefined}
-                    className={`rounded-lg px-3 py-1.5 text-[11px] font-medium transition-all flex items-center gap-1.5 ${
-                      locked
-                        ? "border border-border-subtle bg-surface-1 text-text-muted/50 cursor-not-allowed opacity-50"
-                        : model === m.value
-                          ? "bg-text-primary text-surface-0 shadow-lg shadow-black/5"
-                          : "border border-border-subtle bg-surface-1 text-text-muted hover:text-text-secondary hover:border-border-default"
-                    }`}
-                  >
-                    {locked && <Lock size={10} />}
-                    {m.label}
-                  </button>
-                );
-              })}
+            <div className="flex flex-wrap gap-2">
+              {MODELS.map((m) => (
+                <button
+                  key={m.value}
+                  onClick={() => setModel(m.value)}
+                  className={`rounded-lg px-3 py-1.5 text-[11px] font-medium transition-all ${
+                    model === m.value
+                      ? "bg-text-primary text-surface-0 shadow-lg shadow-black/5"
+                      : "border border-border-subtle bg-surface-1 text-text-muted hover:text-text-secondary hover:border-border-default"
+                  }`}
+                >
+                  {m.label}
+                </button>
+              ))}
             </div>
           </div>
 
-          {/* Messages */}
           <div ref={scrollRef} className="flex-1 min-h-[400px] max-h-[500px] overflow-y-auto rounded-2xl border border-border-subtle bg-surface-1/30 p-4 space-y-4 mb-4">
             {messages.length === 0 ? (
               <div className="flex h-full min-h-[350px] flex-col items-center justify-center gap-3">
@@ -248,7 +217,6 @@ function ChatForm() {
             )}
           </div>
 
-          {/* Input */}
           <div className="flex gap-2">
             <textarea
               value={input}
@@ -275,7 +243,6 @@ function ChatForm() {
           )}
         </motion.div>
 
-        {/* Model info sidebar */}
         <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
           <div className="space-y-3">
             <span className="text-[11px] font-semibold uppercase tracking-[0.1em] text-text-muted">About</span>
@@ -283,17 +250,10 @@ function ChatForm() {
               <div>
                 <p className="text-[13px] font-semibold text-text-primary">{MODELS.find((m) => m.value === model)?.label || model}</p>
                 <p className="mt-1 text-[12px] text-text-muted">{MODELS.find((m) => m.value === model)?.desc}</p>
-                {(() => {
-                  const m = MODELS.find((x) => x.value === model);
-                  if (m && isLocked(m.minCredits)) {
-                    return <p className="mt-2 text-[11px] text-warning">Requires {m.minCredits} credits. You have {credits}.</p>;
-                  }
-                  return null;
-                })()}
               </div>
               <div className="border-t border-border-subtle pt-4">
                 <p className="text-[11px] text-text-muted">
-                  Powered by <span className="text-text-secondary">ModelScope Inference API</span>. Streaming responses with reasoning support.
+                  Powered by <span className="text-text-secondary">ModelScope Inference API</span>. Streaming responses with reasoning support. 50 chats/day.
                 </p>
               </div>
             </div>

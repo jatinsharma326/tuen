@@ -86,7 +86,7 @@ export default function DashboardDocsPage() {
       id: "image",
       icon: Image,
       color: "#7c3aed",
-      method: "POST", path: "/api/services/image_gen", name: "Image Generation", credits: 5,
+      method: "POST", path: "/api/services/image_gen", name: "Image Generation", limit: "200/day",
       desc: "Generate stunning images from text prompts using FLUX and Stable Diffusion models.",
       params: [
         { name: "prompt", type: "string", req: true, desc: "What to generate. Be descriptive for best results." },
@@ -128,7 +128,7 @@ const { image_url } = await res.json();`,
       id: "tts",
       icon: Mic,
       color: "#0891b2",
-      method: "POST", path: "/api/services/tts", name: "Text to Speech", credits: 2,
+      method: "POST", path: "/api/services/tts", name: "Text to Speech", limit: "100/day",
       desc: "Convert any text into natural-sounding speech with multiple voice options.",
       params: [
         { name: "text", type: "string", req: true, desc: "Text to convert to speech. Max 500 characters." },
@@ -167,7 +167,7 @@ const { audio_url } = await res.json();`,
       id: "transcribe",
       icon: FileAudio,
       color: "#d97706",
-      method: "POST", path: "/api/services/transcribe", name: "Transcription", credits: 3,
+      method: "POST", path: "/api/services/transcribe", name: "Transcription", limit: "200/day",
       desc: "Convert audio files to text using Whisper-class models. Supports mp3, wav, and m4a.",
       params: [
         { name: "audio_url", type: "string", req: true, desc: "Direct public URL to the audio file (mp3, wav, m4a)." },
@@ -283,7 +283,7 @@ const { text } = await res.json();`,
                 <div className="flex flex-wrap items-center gap-3">
                   <span className="rounded-md bg-success/10 px-2 py-1 font-mono text-[11px] font-medium text-success">{ep.method}</span>
                   <code className="font-mono text-[13px] text-text-primary">{ep.path}</code>
-                  <span className="badge-premium bg-surface-2 text-text-muted border-border-default">{ep.credits} credits</span>
+                  <span className="badge-premium bg-surface-2 text-text-muted border-border-default">{ep.limit}</span>
                 </div>
               </div>
               <p className="text-[13px] text-text-tertiary">{ep.desc}</p>
@@ -371,9 +371,9 @@ const { text } = await res.json();`,
         <div className="overflow-hidden rounded-xl border border-border-subtle text-[13px]">
           {[
             { c: "401", d: "Missing or invalid API key" },
-            { c: "402", d: "Insufficient credits" },
-            { c: "429", d: "Rate limit exceeded" },
-            { c: "500", d: "Generation failed — credits auto-refunded" },
+            { c: "402", d: "Limit reached — wait for reset" },
+            { c: "429", d: "Rate limit or daily limit exceeded" },
+            { c: "500", d: "Generation failed — not counted against limits" },
           ].map((e) => (
             <div key={e.c} className="flex gap-4 border-b border-border-subtle px-5 py-3 last:border-0">
               <code className="text-text-primary w-[40px]">{e.c}</code>

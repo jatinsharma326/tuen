@@ -2,13 +2,15 @@
 
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { Image, Mic, FileAudio, Clock, History } from "lucide-react";
+import { Image, Mic, FileAudio, Clock, History, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 
 const SERVICE_META: Record<string, { label: string; icon: typeof Image; color: string }> = {
   image_gen: { label: "Image Generation", icon: Image, color: "#7c3aed" },
+  nucleus_image: { label: "Nucleus Image", icon: Image, color: "#7c3aed" },
   tts: { label: "Text to Speech", icon: Mic, color: "#0891b2" },
   transcribe: { label: "Transcription", icon: FileAudio, color: "#d97706" },
+  llm: { label: "LLM Chat", icon: Sparkles, color: "#059669" },
 };
 
 interface LogEntry {
@@ -58,7 +60,7 @@ export default function GenerationsPage() {
           </div>
           <div>
             <h1 className="font-display text-[22px] font-bold tracking-tight">Usage History</h1>
-            <p className="text-[13px] text-text-muted">Your recent API usage and credit consumption</p>
+            <p className="text-[13px] text-text-muted">Your recent API requests</p>
           </div>
         </div>
       </motion.div>
@@ -86,7 +88,7 @@ export default function GenerationsPage() {
                     Service
                   </th>
                   <th className="px-5 py-3 text-left text-[11px] font-bold uppercase tracking-[0.1em] text-text-muted">
-                    Credits
+                    Requests
                   </th>
                   <th className="px-5 py-3 text-right text-[11px] font-bold uppercase tracking-[0.1em] text-text-muted">
                     Date
@@ -124,7 +126,7 @@ export default function GenerationsPage() {
                           className="rounded-full px-2.5 py-1 text-[11px] font-semibold tabular-nums"
                           style={{ color: meta.color, background: `${meta.color}10` }}
                         >
-                          −{log.credits_used}
+                          1 req
                         </span>
                       </td>
                       <td className="px-5 py-4 text-right">

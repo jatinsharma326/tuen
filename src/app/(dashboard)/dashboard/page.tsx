@@ -19,43 +19,41 @@ import {
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { createClient } from "@/lib/supabase/client";
-import { getPlan } from "@/lib/constants/plans";
+import { getPlan, SERVICE_LIMITS } from "@/lib/constants/plans";
 
-/* ───────── Service definitions ───────── */
-const SERVICES = [
+const SERVICES_LIST = [
   {
     href: "/dashboard/generate",
     label: "Image Generation",
     desc: "Transform text into stunning visuals with FLUX & Stable Diffusion models.",
     icon: Image,
-    cost: 5,
+    limitKey: "image" as const,
     color: "#7c3aed",
     colorAlt: "#3b82f6",
-    tag: "Most popular",
+    tag: "200/day",
   },
   {
     href: "/dashboard/tts",
     label: "Text to Speech",
     desc: "Natural-sounding voice synthesis with multiple speaker options.",
     icon: Mic,
-    cost: 2,
+    limitKey: "tts" as const,
     color: "#0891b2",
     colorAlt: "#0d9488",
-    tag: "Low cost",
+    tag: "100/day",
   },
   {
     href: "/dashboard/transcribe",
     label: "Transcribe",
     desc: "Accurate speech recognition powered by Whisper-class models.",
     icon: FileAudio,
-    cost: 3,
+    limitKey: "transcribe" as const,
     color: "#d97706",
     colorAlt: "#b45309",
-    tag: "Multi-language",
+    tag: "200/day",
   },
 ];
 
-/* ───────── Types ───────── */
 interface LogEntry {
   id: string;
   service: string;
@@ -67,9 +65,10 @@ const SERVICE_LABELS: Record<string, { label: string; icon: typeof Image; color:
   image_gen: { label: "Image Generation", icon: Image, color: "#7c3aed" },
   tts: { label: "Text to Speech", icon: Mic, color: "#0891b2" },
   transcribe: { label: "Transcription", icon: FileAudio, color: "#d97706" },
+  llm: { label: "LLM Chat", icon: Sparkles, color: "#059669" },
+  nucleus_image: { label: "Nucleus Image", icon: Image, color: "#7c3aed" },
 };
 
-/* ───────── Animations ───────── */
 const fadeUp = {
   hidden: { opacity: 0, y: 16 },
   show: (i: number) => ({
@@ -84,14 +83,13 @@ const stagger = {
   show: { transition: { staggerChildren: 0.06 } },
 };
 
-/* ───────── Component ───────── */
 export default function DashboardPage() {
   const [name, setName] = useState("");
-  const [credits, setCredits] = useState(0);
-  const [planId, setPlanId] = useState("free");
+  const [planId, setPlanId] = useState("pro");
   const [apiKeyCount, setApiKeyCount] = useState(0);
   const [recentLogs, setRecentLogs] = useState<LogEntry[]>([]);
-  const [totalUsed, setTotalUsed] = useState(0);
+  const [totalUsedToday, setTotalUsedToday] = useState(0);
+  const [dailyCounts, setDailyCounts] = useState({ daily: 0, weekly: 0, monthly: 0 });
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
@@ -106,12 +104,11 @@ export default function DashboardPage() {
 
       supabase
         .from("profiles")
-        .select("credits, plan")
+        .select("plan")
         .eq("id", data.user.id)
         .single()
         .then(({ data: p }) => {
-          setCredits(p?.credits ?? 0);
-          setPlanId(p?.plan ?? "free");
+          setPlanId(p?.plan ?? "pro");
         });
 
       supabase
@@ -129,15 +126,19 @@ export default function DashboardPage() {
         .then(({ data: rows }) => {
           const logs = (rows as LogEntry[]) || [];
           setRecentLogs(logs);
-          setTotalUsed(logs.reduce((s, l) => s + l.credits_used, 0));
+          setTotalUsedToday(logs.reduce((s, l) => s + l.credits_used, 0));
         });
+
+      fetch("/api/usage/counts").then(r => r.json()).then(setDailyCounts).catch(() => {});
 
       setLoaded(true);
     });
   }, []);
 
   const plan = getPlan(planId);
-  const pct = plan.monthlyCredits > 0 ? Math.min(100, (credits / plan.monthlyCredits) * 100) : 0;
+  const monthlyPct = plan.monthlyTotalLimit > 0
+    ? Math.min(100, (dailyCounts.monthly / plan.monthlyTotalLimit) * 100)
+    : 0;
 
   const greeting = () => {
     const h = new Date().getHours();
@@ -156,23 +157,22 @@ export default function DashboardPage() {
     return `${Math.floor(hrs / 24)}d ago`;
   };
 
-  /* ─── Stat cards data ─── */
   const stats = [
     {
-      label: "Credits",
-      value: loaded ? credits.toLocaleString() : "—",
-      sub: `of ${plan.monthlyCredits.toLocaleString()} / mo`,
+      label: "Requests Today",
+      value: loaded ? dailyCounts.daily.toLocaleString() : "—",
+      sub: "of 10,000 monthly limit",
       icon: Zap,
       color: "#7c3aed",
-      progress: pct,
+      progress: monthlyPct,
     },
     {
       label: "Plan",
       value: plan.name,
-      sub: planId !== "enterprise" ? "Upgrade available" : "Enterprise tier",
+      sub: "$19/month",
       icon: TrendingUp,
       color: "#3b82f6",
-      link: planId !== "enterprise" ? "/dashboard/billing" : undefined,
+      link: "/dashboard/billing",
     },
     {
       label: "API Keys",
@@ -183,8 +183,8 @@ export default function DashboardPage() {
     },
     {
       label: "Recent Usage",
-      value: loaded ? String(totalUsed) : "—",
-      sub: "credits in last 5 runs",
+      value: loaded ? String(totalUsedToday) : "—",
+      sub: "requests in last 5 runs",
       icon: Activity,
       color: "#d97706",
     },
@@ -192,13 +192,11 @@ export default function DashboardPage() {
 
   return (
     <div className="relative">
-      {/* ─── Background ambient glow ─── */}
       <div className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 h-[400px] w-[600px] rounded-full opacity-[0.08]"
         style={{ background: "radial-gradient(ellipse, #a855f7, transparent 70%)" }}
       />
 
       <div className="relative space-y-10">
-        {/* ═══════ GREETING ═══════ */}
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
           <div className="flex items-end gap-3">
             <h1 className="font-display text-[26px] font-extrabold tracking-tight md:text-[32px]">
@@ -223,7 +221,6 @@ export default function DashboardPage() {
           </p>
         </motion.div>
 
-        {/* ═══════ STATS ═══════ */}
         <motion.div
           variants={stagger}
           initial="hidden"
@@ -304,7 +301,6 @@ export default function DashboardPage() {
           })}
         </motion.div>
 
-        {/* ═══════ SERVICES ═══════ */}
         <div>
           <motion.div
             initial={{ opacity: 0, y: 10 }}
@@ -317,7 +313,7 @@ export default function DashboardPage() {
               <p className="mt-0.5 text-[12px] text-text-muted">Choose a model and start building</p>
             </div>
             <span className="badge-premium bg-surface-2 text-text-muted border-border-default">
-              {SERVICES.length} available
+              {SERVICES_LIST.length} available
             </span>
           </motion.div>
 
@@ -327,8 +323,9 @@ export default function DashboardPage() {
             animate="show"
             className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
           >
-            {SERVICES.map((s, i) => {
+            {SERVICES_LIST.map((s, i) => {
               const Icon = s.icon;
+              const limit = SERVICE_LIMITS[s.limitKey];
               return (
                 <motion.div key={s.href} variants={fadeUp} custom={i + 4}>
                   <Link
@@ -387,7 +384,7 @@ export default function DashboardPage() {
 
                       <div className="mt-6 flex items-center justify-between border-t border-border-subtle pt-4">
                         <span className="text-[11px] tabular-nums text-text-muted">
-                          <span className="font-semibold text-text-secondary">{s.cost}</span> credits per run
+                          <span className="font-semibold text-text-secondary">{limit.daily}</span> {limit.label} per day
                         </span>
                         <span className="flex items-center gap-1 text-[11px] font-medium text-text-muted transition-all duration-300 group-hover:text-text-primary group-hover:gap-2">
                           Launch <ArrowRight size={11} className="transition-transform duration-300 group-hover:translate-x-0.5" />
@@ -401,7 +398,6 @@ export default function DashboardPage() {
           </motion.div>
         </div>
 
-        {/* ═══════ RECENT ACTIVITY ═══════ */}
         <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}>
           <div className="mb-4 flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -462,7 +458,7 @@ export default function DashboardPage() {
                         background: `${meta.color}08`,
                       }}
                     >
-                      −{log.credits_used}
+                      1 req
                     </span>
                   </div>
                 );
@@ -471,7 +467,6 @@ export default function DashboardPage() {
           )}
         </motion.div>
 
-        {/* ═══════ QUICK LINKS ═══════ */}
         <motion.div
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
@@ -481,7 +476,7 @@ export default function DashboardPage() {
           {[
             { href: "/dashboard/api-keys", label: "API Keys", sub: "Manage & rotate keys", icon: Key, color: "#0891b2" },
             { href: "/dashboard/docs", label: "API Docs", sub: "Integration guides", icon: BookOpen, color: "#3b82f6" },
-            { href: "/dashboard/billing", label: "Billing", sub: "Plans & invoices", icon: CreditCard, color: "#7c3aed" },
+            { href: "/dashboard/billing", label: "Billing", sub: "Plans & usage", icon: CreditCard, color: "#7c3aed" },
           ].map((q) => {
             const QIcon = q.icon;
             return (

@@ -11,14 +11,13 @@ export async function GET(request: NextRequest) {
     const { error } = await supabase.auth.exchangeCodeForSession(code);
 
     if (!error) {
-      // Ensure profile row exists for OAuth users
       const {
         data: { user },
       } = await supabase.auth.getUser();
 
       if (user) {
         await supabase.from("profiles").upsert(
-          { id: user.id, credits: 50, plan: "free" },
+          { id: user.id, plan: "pro" },
           { onConflict: "id", ignoreDuplicates: true }
         );
       }

@@ -67,7 +67,7 @@ function TranscribeForm() {
               <p className="text-[13px] text-text-muted">Convert audio to text with Whisper-class models</p>
             </div>
           </div>
-          <span className="badge-premium bg-warning/10 text-warning border-warning/20">3 credits per run</span>
+          <span className="badge-premium bg-warning/10 text-warning border-warning/20">200 requests/day</span>
         </div>
       </motion.div>
 

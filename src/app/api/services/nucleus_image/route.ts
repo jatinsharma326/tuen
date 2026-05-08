@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAuthUser } from "@/lib/services/auth";
-import { getCredits, deductCredits, logUsage, checkRateLimit, getUserPlan, refundCredits } from "@/lib/services/credits";
+import { checkServiceLimit, logUsage, checkRateLimit, getUserPlan } from "@/lib/services/credits";
 import { getPlan } from "@/lib/constants/plans";
 import { SERVICES } from "@/lib/services/config";
 import { callGradio } from "@/lib/services/gradio";
@@ -24,23 +24,20 @@ export async function POST(req: NextRequest) {
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const userPlan = await getUserPlan(user.id);
-  const plan = getPlan(userPlan?.plan || "free");
+  const plan = getPlan(userPlan?.plan || "pro");
   const withinLimit = await checkRateLimit(user.id, plan.rateLimitPerMin);
   if (!withinLimit) {
-    return NextResponse.json({ error: "Rate limit exceeded. Upgrade your plan for higher limits." }, { status: 429 });
+    return NextResponse.json({ error: "Rate limit exceeded. Slow down or upgrade for higher limits." }, { status: 429 });
   }
 
-  const credits = await getCredits(user.id);
-  if (credits < SERVICE.creditsCost) {
-    return NextResponse.json({ error: "Insufficient credits", credits, cost: SERVICE.creditsCost }, { status: 402 });
+  const limitCheck = await checkServiceLimit(user.id, SERVICE.limitKey);
+  if (!limitCheck.ok) {
+    return NextResponse.json({ error: limitCheck.error }, { status: 429 });
   }
-
-  await deductCredits(user.id, SERVICE.creditsCost);
 
   try {
     const { prompt, aspect_ratio } = await req.json();
     if (!prompt?.trim()) {
-      await refundCredits(user.id, SERVICE.creditsCost);
       return NextResponse.json({ error: "Prompt is required" }, { status: 400 });
     }
 
@@ -51,15 +48,13 @@ export async function POST(req: NextRequest) {
     ]);
 
     if (!result.fileUrl) {
-      await refundCredits(user.id, SERVICE.creditsCost);
-      return NextResponse.json({ error: "Generation failed. Credits refunded." }, { status: 500 });
+      return NextResponse.json({ error: "Generation failed. No credits consumed." }, { status: 500 });
     }
 
-    await logUsage(user.id, "nucleus_image", SERVICE.creditsCost);
+    await logUsage(user.id, "nucleus_image");
     return NextResponse.json({ image_url: result.fileUrl, success: true });
   } catch (e: unknown) {
-    await refundCredits(user.id, SERVICE.creditsCost);
     const msg = e instanceof Error ? e.message : "Service error";
-    return NextResponse.json({ error: `${msg}. Credits refunded.` }, { status: 500 });
+    return NextResponse.json({ error: `${msg}. No credits consumed.` }, { status: 500 });
   }
 }

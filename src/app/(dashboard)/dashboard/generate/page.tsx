@@ -79,7 +79,7 @@ function GenerateForm() {
               <p className="text-[13px] text-text-muted">Generate images from text prompts</p>
             </div>
           </div>
-          <span className="badge-premium bg-accent/10 text-accent border-accent/20">5 credits per run</span>
+          <span className="badge-premium bg-accent/10 text-accent border-accent/20">200 images/day</span>
         </div>
       </motion.div>
 

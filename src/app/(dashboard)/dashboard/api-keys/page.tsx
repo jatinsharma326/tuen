@@ -16,7 +16,7 @@ interface ApiKey {
 
 export default function ApiKeysPage() {
   const [keys, setKeys] = useState<ApiKey[]>([]);
-  const [planId, setPlanId] = useState("free");
+  const [planId, setPlanId] = useState("pro");
   const [copiedId, setCopiedId] = useState("");
   const [revealedId, setRevealedId] = useState("");
   const [loading, setLoading] = useState(true);
@@ -30,7 +30,7 @@ export default function ApiKeysPage() {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
     const { data: profile } = await supabase.from("profiles").select("plan").eq("id", user.id).single();
-    setPlanId(profile?.plan || "free");
+    setPlanId(profile?.plan || "pro");
     const { data } = await supabase.from("api_keys").select("*").eq("user_id", user.id).order("created_at", { ascending: false });
     setKeys((data as ApiKey[]) || []);
     setLoading(false);

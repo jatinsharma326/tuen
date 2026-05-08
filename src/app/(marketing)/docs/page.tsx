@@ -156,7 +156,7 @@ export default function DocsPage() {
                 <div className="flex items-center gap-3">
                   <Badge>POST</Badge>
                   <code className="font-mono text-[13px] text-text-primary">/api/services/image_gen</code>
-                  <span className="badge-premium bg-surface-2 text-text-muted border-border-default">5 credits</span>
+                  <span className="badge-premium bg-surface-2 text-text-muted border-border-default">1 request</span>
                 </div>
               </div>
             </div>
@@ -249,7 +249,7 @@ console.log(image_url);`,
                 <div className="flex items-center gap-3">
                   <Badge>POST</Badge>
                   <code className="font-mono text-[13px] text-text-primary">/api/services/tts</code>
-                  <span className="badge-premium bg-surface-2 text-text-muted border-border-default">2 credits</span>
+                  <span className="badge-premium bg-surface-2 text-text-muted border-border-default">1 request</span>
                 </div>
               </div>
             </div>
@@ -337,7 +337,7 @@ console.log(audio_url);`,
                 <div className="flex items-center gap-3">
                   <Badge>POST</Badge>
                   <code className="font-mono text-[13px] text-text-primary">/api/services/transcribe</code>
-                  <span className="badge-premium bg-surface-2 text-text-muted border-border-default">3 credits</span>
+                  <span className="badge-premium bg-surface-2 text-text-muted border-border-default">1 request</span>
                 </div>
               </div>
             </div>
@@ -483,7 +483,7 @@ console.log(text);`,
             <h2 className="font-display text-[22px] font-bold tracking-tight text-text-primary">Errors & Rate Limits</h2>
             <p className="text-[13px] text-text-tertiary">
               All errors return a JSON body with an <code className="text-text-secondary">error</code> field.
-              Failed generations are automatically refunded — you never pay for errors.
+              Failed requests are not counted against your limits — you never pay for errors.
             </p>
 
             <h3 className="text-[13px] font-bold uppercase tracking-[0.1em] text-text-muted">Error codes</h3>
@@ -493,9 +493,9 @@ console.log(text);`,
               </div>
               {[
                 { code: "401", desc: "Unauthorized — missing or invalid API key" },
-                { code: "402", desc: "Insufficient credits — buy more or upgrade your plan" },
+                { code: "402", desc: "Limit reached — wait for reset or upgrade your plan" },
                 { code: "429", desc: "Rate limit exceeded — slow down or upgrade for higher limits" },
-                { code: "500", desc: "Generation failed — credits are automatically refunded" },
+                { code: "500", desc: "Generation failed — not counted against your limits" },
               ].map((e) => (
                 <div key={e.code} className="grid grid-cols-[80px_1fr] gap-x-4 border-b border-border-subtle px-5 py-3 last:border-0">
                   <code className="text-text-primary">{e.code}</code>
@@ -504,30 +504,29 @@ console.log(text);`,
               ))}
             </div>
 
-            <h3 className="text-[13px] font-bold uppercase tracking-[0.1em] text-text-muted">Rate limits by plan</h3>
+            <h3 className="text-[13px] font-bold uppercase tracking-[0.1em] text-text-muted">Usage limits</h3>
             <div className="overflow-hidden rounded-xl border border-border-subtle text-[13px]">
               <div className="grid grid-cols-4 gap-x-4 border-b border-border-subtle bg-surface-1/60 px-5 py-2.5 text-[11px] font-bold uppercase tracking-[0.1em] text-text-muted">
-                <span>Plan</span><span>Credits/mo</span><span>Rate limit</span><span>API keys</span>
+                <span>Service</span><span>Daily</span><span>Weekly</span><span>Monthly</span>
               </div>
               {[
-                { plan: "Free", credits: "50", rate: "5/min", keys: "1" },
-                { plan: "Starter", credits: "1,000", rate: "20/min", keys: "3" },
-                { plan: "Pro", credits: "5,000", rate: "100/min", keys: "10" },
-                { plan: "Enterprise", credits: "15,000", rate: "Unlimited", keys: "Unlimited" },
+                { service: "Image Gen", daily: "200", weekly: "shared", monthly: "shared" },
+                { service: "TTS", daily: "100", weekly: "shared", monthly: "shared" },
+                { service: "Transcribe", daily: "200", weekly: "shared", monthly: "shared" },
+                { service: "LLM Chat", daily: "50", weekly: "shared", monthly: "shared" },
               ].map((p) => (
-                <div key={p.plan} className="grid grid-cols-4 gap-x-4 border-b border-border-subtle px-5 py-3 last:border-0">
-                  <span className="font-medium text-text-primary">{p.plan}</span>
-                  <span className="text-text-muted">{p.credits}</span>
-                  <span className="text-text-muted">{p.rate}</span>
-                  <span className="text-text-muted">{p.keys}</span>
+                <div key={p.service} className="grid grid-cols-4 gap-x-4 border-b border-border-subtle px-5 py-3 last:border-0">
+                  <span className="font-medium text-text-primary">{p.service}</span>
+                  <span className="text-text-muted">{p.daily}</span>
+                  <span className="text-text-muted">3,000 total</span>
+                  <span className="text-text-muted">10,000 total</span>
                 </div>
               ))}
             </div>
 
             <CodeBlock lang="Error response" code={`{
-  "error": "Insufficient credits",
-  "credits": 2,
-  "cost": 5
+  "error": "Daily limit reached (200/200). Resets in ~3h.",
+  "code": 429
 }`} />
           </section>
 

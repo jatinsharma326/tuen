@@ -41,16 +41,15 @@ const MANAGE = [
 export function DashboardSidebar() {
   const pathname = usePathname();
   const router = useRouter();
-  const [credits, setCredits] = useState<number | null>(null);
-  const [plan, setPlan] = useState("free");
+  const [plan, setPlan] = useState("pro");
   const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
     const supabase = createClient();
     supabase.auth.getUser().then(({ data }) => {
       if (!data.user) return;
-      supabase.from("profiles").select("credits, plan").eq("id", data.user.id).single()
-        .then(({ data: p }) => { setCredits(p?.credits ?? 0); setPlan(p?.plan ?? "free"); });
+      supabase.from("profiles").select("plan").eq("id", data.user.id).single()
+        .then(({ data: p }) => { setPlan(p?.plan ?? "pro"); });
     });
   }, [pathname]);
 
@@ -132,7 +131,7 @@ export function DashboardSidebar() {
                 <Sparkles size={13} className="text-accent" />
               </div>
               <div>
-                <p className="text-[11px] font-semibold tabular-nums text-text-primary">{credits ?? "—"} <span className="text-text-muted font-normal">credits</span></p>
+                <p className="text-[11px] font-semibold tabular-nums text-text-primary">10K <span className="text-text-muted font-normal">req/mo</span></p>
                 <p className="text-[10px] text-text-muted capitalize">{plan} plan</p>
               </div>
             </div>

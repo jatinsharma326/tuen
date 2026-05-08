@@ -76,7 +76,7 @@ function TtsForm() {
               <p className="text-[13px] text-text-muted">Convert text into natural speech</p>
             </div>
           </div>
-          <span className="badge-premium bg-accent-cyan/10 text-accent-cyan border-accent-cyan/20">2 credits per run</span>
+          <span className="badge-premium bg-accent-cyan/10 text-accent-cyan border-accent-cyan/20">100 requests/day</span>
         </div>
       </motion.div>
 
