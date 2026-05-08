@@ -14,6 +14,7 @@ function BillingContent() {
   const [weekly, setWeekly] = useState(0);
   const [monthly, setMonthly] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const refresh = () => {
     const supabase = createClient();
@@ -62,6 +63,7 @@ function BillingContent() {
 
   const handlePolar = async (targetPlanId: string) => {
     setLoading(true);
+    setErrorMsg(null);
     const res = await fetch("/api/payments/polar-create", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -71,6 +73,7 @@ function BillingContent() {
     if (data.url) {
       window.location.href = data.url;
     } else {
+      setErrorMsg(data.error || "Failed to create checkout. Please try again.");
       setLoading(false);
     }
   };
@@ -84,6 +87,13 @@ function BillingContent() {
         <h1 className="font-display text-[22px] font-bold tracking-tight">Billing</h1>
         <p className="mt-1 text-[13px] text-text-muted">Manage your subscription and usage limits</p>
       </motion.div>
+
+      {errorMsg && (
+        <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}
+          className="rounded-2xl border border-red-500/20 bg-red-500/5 px-5 py-4">
+          <p className="text-[13px] font-semibold text-red-400">{errorMsg}</p>
+        </motion.div>
+      )}
 
       {justPaid && (
         <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}

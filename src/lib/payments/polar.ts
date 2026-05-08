@@ -2,7 +2,9 @@ const POLAR_API = "https://api.polar.sh/v1";
 
 export async function createPolarCheckout(priceCents: number, planId: string, userId: string, origin: string) {
   const token = process.env.POLAR_ACCESS_TOKEN;
+  const productId = process.env.POLAR_PRODUCT_ID || process.env.POLAR_PRICE_ID;
   if (!token) throw new Error("Missing POLAR_ACCESS_TOKEN");
+  if (!productId) throw new Error("Missing POLAR_PRODUCT_ID");
 
   const res = await fetch(`${POLAR_API}/checkouts/`, {
     method: "POST",
@@ -11,11 +13,9 @@ export async function createPolarCheckout(priceCents: number, planId: string, us
       Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({
-      product_price_id: process.env.POLAR_PRICE_ID,
+      products: [productId],
       success_url: `${origin}/dashboard/billing?success=true&plan=${planId}`,
       metadata: { userId, planId },
-      amount: (priceCents * 100) || undefined,
-      currency: "usd",
     }),
   });
 
