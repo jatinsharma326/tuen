@@ -54,8 +54,9 @@ export async function POST(req: NextRequest) {
       },
     });
   } catch (e: unknown) {
-    const msg = e instanceof Error ? e.message : "Service error";
-    return NextResponse.json({ error: `${msg}. No credits consumed.` }, { status: 500 });
+    const msg = e instanceof Error ? e.message || "Unknown error" : "Service error";
+    console.error("llm error:", msg);
+    return NextResponse.json({ error: msg }, { status: 500 });
   }
 }
 

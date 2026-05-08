@@ -109,7 +109,8 @@ export async function POST(req: NextRequest) {
     await logUsage(user.id, "transcribe");
     return NextResponse.json({ text: transcription, success: true });
   } catch (e: unknown) {
-    const msg = e instanceof Error ? e.message : "Service error";
-    return NextResponse.json({ error: `${msg}. No credits consumed.` }, { status: 500 });
+    const msg = e instanceof Error ? e.message || "Unknown error" : "Service error";
+    console.error("transcribe error:", msg);
+    return NextResponse.json({ error: msg }, { status: 500 });
   }
 }
