@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, Suspense } from "react";
-import { Download, Loader2, Wand2 } from "lucide-react";
+import { Download, Loader2, Wand2, Copy, Check } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 
@@ -23,6 +23,15 @@ const STYLES = [
   { label: "Default", value: "none" },
   { label: "Anime", value: "anime" },
 ];
+
+function CopyBtn({ text }: { text: string }) {
+  const [ok, setOk] = useState(false);
+  return (
+    <button onClick={() => { navigator.clipboard.writeText(text); setOk(true); setTimeout(() => setOk(false), 1500); }} className="rounded-md p-1 text-text-muted hover:text-text-secondary hover:bg-surface-2 transition-colors">
+      {ok ? <Check size={10} className="text-success" /> : <Copy size={10} />}
+    </button>
+  );
+}
 
 function GenerateForm() {
   const searchParams = useSearchParams();
@@ -186,8 +195,24 @@ function GenerateForm() {
           )}
         </motion.div>
 
-        {/* Right: Output */}
-        <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
+        {/* Right: API Usage + Output */}
+        <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="space-y-6">
+          <div className="rounded-2xl border border-border-subtle bg-surface-1/30 overflow-hidden">
+            <div className="border-b border-border-subtle bg-surface-1/60 px-4 py-2 flex items-center justify-between">
+              <span className="text-[10px] font-bold uppercase tracking-[0.12em] text-text-muted">cURL</span>
+              <CopyBtn text={`curl -X POST ${typeof window !== "undefined" ? window.location.origin : ""}/api/services/${model === "nucleus-image" ? "nucleus_image" : "image_gen"} \\
+  -H "Authorization: Bearer tuen_sk_YOUR_KEY" \\
+  -H "Content-Type: application/json" \\
+  -d '{"prompt": "${prompt || "a cat astronaut"}", "aspect_ratio": "${ratio}", "style": "${style}"}'`} />
+            </div>
+            <pre className="p-4 font-mono text-[11px] leading-relaxed text-text-tertiary overflow-x-auto">
+{`curl -X POST ${typeof window !== "undefined" ? window.location.origin : ""}/api/services/${model === "nucleus-image" ? "nucleus_image" : "image_gen"} \\
+  -H "Authorization: Bearer tuen_sk_YOUR_KEY" \\
+  -H "Content-Type: application/json" \\
+  -d '{"prompt": "${prompt || "a cat astronaut"}", "aspect_ratio": "${ratio}", "style": "${style}"}'`}
+            </pre>
+          </div>
+
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <span className="text-[11px] font-semibold uppercase tracking-[0.1em] text-text-muted">Output</span>
