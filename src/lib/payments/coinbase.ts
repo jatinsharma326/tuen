@@ -1,49 +1,40 @@
-const COINBASE_API = "https://api.commerce.coinbase.com";
+const NP_API = "https://api.nowpayments.io/v1";
 
-export async function createCoinbaseCharge(amountCents: number, planId: string, userId: string) {
-  const key = process.env.COINBASE_COMMERCE_KEY;
-  if (!key) throw new Error("Missing COINBASE_COMMERCE_KEY");
+export async function createCryptoInvoice(amountCents: number, planId: string, userId: string, origin: string) {
+  const key = process.env.NOWPAYMENTS_API_KEY;
+  if (!key) throw new Error("Missing NOWPAYMENTS_API_KEY");
 
-  const res = await fetch(`${COINBASE_API}/charges`, {
+  const res = await fetch(`${NP_API}/invoice`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "X-CC-Api-Key": key,
-      "X-CC-Version": "2018-03-22",
+      "x-api-key": key,
     },
     body: JSON.stringify({
-      name: `tuen.fun ${planId === "pro" ? "Pro" : ""} Plan`,
-      description: "Monthly subscription to tuen.fun",
-      pricing_type: "fixed_price",
-      local_price: {
-        amount: (amountCents / 100).toFixed(2),
-        currency: "USD",
-      },
-      metadata: { userId, planId },
-      redirect_url: `${process.env.NEXT_PUBLIC_SITE_URL}/dashboard/billing?success=true`,
+      price_amount: (amountCents / 100).toFixed(2),
+      price_currency: "usd",
+      order_id: `${userId}:${planId}:${Date.now()}`,
+      order_description: `tuen.fun ${planId === "pro" ? "Pro" : ""} Plan`,
+      success_url: `${origin}/dashboard/billing?success=true`,
+      cancel_url: `${origin}/dashboard/billing?canceled=true`,
     }),
   });
 
   if (!res.ok) {
     const err = await res.text();
-    throw new Error(`Coinbase error: ${res.status} ${err}`);
+    throw new Error(`NOWPayments error: ${res.status} ${err}`);
   }
 
   const data = await res.json();
-  return data.data as {
-    id: string;
-    hosted_url: string;
-    addresses: Record<string, string>;
-  };
+  return { url: data.invoice_url as string, id: data.id as string };
 }
 
-export function verifyCoinbaseSig(body: string, sig: string) {
-  const secret = process.env.COINBASE_WEBHOOK_SECRET;
-  if (!secret) throw new Error("Missing COINBASE_WEBHOOK_SECRET");
+export function verifyIpn(body: string, sig: string): boolean {
+  const secret = process.env.NOWPAYMENTS_IPN_SECRET;
+  if (!secret) return false;
 
   const crypto = require("crypto") as typeof import("crypto");
-  const hmac = crypto.createHmac("sha256", secret);
+  const hmac = crypto.createHmac("sha512", secret);
   hmac.update(body);
-  const digest = hmac.digest("hex");
-  return sig === digest;
+  return hmac.digest("hex") === sig;
 }

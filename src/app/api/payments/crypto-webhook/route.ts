@@ -1,20 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { verifyCoinbaseSig } from "@/lib/payments/coinbase";
+import { verifyIpn } from "@/lib/payments/coinbase";
 
 export async function POST(req: NextRequest) {
-  const sig = req.headers.get("x-cc-webhook-signature");
+  const sig = req.headers.get("x-nowpayments-sig");
   const body = await req.text();
 
-  if (!sig || !verifyCoinbaseSig(body, sig)) {
+  if (!sig || !verifyIpn(body, sig)) {
     return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
   }
 
   try {
     const event = JSON.parse(body);
-    if (event?.event?.type === "charge:confirmed") {
-      const userId = event.event.data?.metadata?.userId;
-      const planId = event.event.data?.metadata?.planId;
+
+    if (event?.payment_status === "finished") {
+      const orderId = event?.order_id as string;
+      const [userId, planId] = orderId?.split(":") ?? [];
 
       if (userId && planId) {
         const supabase = await createClient();
