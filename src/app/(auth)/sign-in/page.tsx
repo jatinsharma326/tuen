@@ -66,33 +66,33 @@ export default function SignInPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-lg font-medium text-text-primary">Sign in</h1>
-        <p className="mt-1 text-[13px] text-text-muted">Welcome back to tuen</p>
+        <h1 className="text-lg font-medium text-white">Sign in</h1>
+        <p className="mt-1 text-[13px] text-white/30">Welcome back to tuen</p>
       </div>
       <div className="grid grid-cols-2 gap-2">
-        <button onClick={() => handleOAuth("google")} className="rounded-md border border-border-default py-2 text-[13px] text-text-secondary hover:border-border-strong hover:text-text-primary transition-colors">
+        <button onClick={() => handleOAuth("google")} className="rounded-md border border-white/[0.08] py-2 text-[13px] text-white/70 hover:border-white/[0.15] hover:text-white transition-colors">
           Google
         </button>
-        <button onClick={() => handleOAuth("github")} className="rounded-md border border-border-default py-2 text-[13px] text-text-secondary hover:border-border-strong hover:text-text-primary transition-colors">
+        <button onClick={() => handleOAuth("github")} className="rounded-md border border-white/[0.08] py-2 text-[13px] text-white/70 hover:border-white/[0.15] hover:text-white transition-colors">
           GitHub
         </button>
       </div>
       <div className="flex items-center gap-3">
-        <div className="h-px flex-1 bg-border-subtle" />
-        <span className="text-xs text-text-muted">or</span>
-        <div className="h-px flex-1 bg-border-subtle" />
+        <div className="h-px flex-1 bg-white/[0.05]" />
+        <span className="text-xs text-white/30">or</span>
+        <div className="h-px flex-1 bg-white/[0.05]" />
       </div>
       <form className="space-y-3" onSubmit={handleSubmit}>
         <Input id="email" label="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" />
         <Input id="password" label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" />
-        {error && <p className="text-xs text-error">{error}</p>}
-        <button disabled={loading} className="btn-white w-full rounded-md py-2 text-sm disabled:opacity-40 transition-colors">
+        {error && <p className="text-xs text-[#ef4444]">{error}</p>}
+        <button disabled={loading} className="w-full rounded-md bg-white py-2 text-sm font-medium text-black hover:bg-white/90 disabled:opacity-40 transition-colors">
           {loading ? "Signing in..." : "Continue"}
         </button>
       </form>
-      <p className="text-center text-[13px] text-text-muted">
+      <p className="text-center text-[13px] text-white/30">
         No account?{" "}
-        <Link href="/sign-up" className="text-text-secondary hover:text-text-primary">Sign up</Link>
+        <Link href="/sign-up" className="text-white/70 hover:text-white">Sign up</Link>
       </p>
     </div>
   );

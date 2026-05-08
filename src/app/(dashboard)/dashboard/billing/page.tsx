@@ -85,7 +85,7 @@ function BillingContent() {
     <div className="space-y-10">
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="font-display text-[22px] font-bold tracking-tight">Billing</h1>
-        <p className="mt-1 text-[13px] text-text-muted">Manage your subscription and usage limits</p>
+        <p className="mt-1 text-[13px] text-white/30">Manage your subscription and usage limits</p>
       </motion.div>
 
       {errorMsg && (
@@ -103,24 +103,24 @@ function BillingContent() {
       )}
 
       <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-        className="glass-panel-elevated rounded-2xl p-6">
+        className="rounded-2xl border border-white/[0.05] bg-[#12121a] rounded-2xl p-6">
         <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div>
-            <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-text-muted">Current plan</p>
+            <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-white/30">Current plan</p>
             <div className="mt-2 flex items-baseline gap-3">
               <span className="font-display text-[28px] font-extrabold tracking-tight">{current.name}</span>
-              <span className="text-[13px] text-text-muted">{formatPrice(current.priceCents)}{current.priceCents > 0 ? "/mo" : ""}</span>
+              <span className="text-[13px] text-white/30">{formatPrice(current.priceCents)}{current.priceCents > 0 ? "/mo" : ""}</span>
             </div>
-            <p className="mt-1 text-[12px] text-text-muted">
+            <p className="mt-1 text-[12px] text-white/30">
               {monthly.toLocaleString()} of {current.monthlyTotalLimit.toLocaleString()} requests used this month
             </p>
           </div>
           <div className="w-full md:w-72">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-[11px] text-text-muted">Monthly usage</span>
-              <span className="text-[11px] font-semibold text-text-secondary">{Math.round(pct)}%</span>
+              <span className="text-[11px] text-white/30">Monthly usage</span>
+              <span className="text-[11px] font-semibold text-white/70">{Math.round(pct)}%</span>
             </div>
-            <div className="h-2 w-full overflow-hidden rounded-full bg-surface-2">
+            <div className="h-2 w-full overflow-hidden rounded-full bg-white/[0.03]">
               <motion.div initial={{ width: 0 }} animate={{ width: `${pct}%` }}
                 transition={{ duration: 1, ease: "easeOut" }}
                 className="h-full rounded-full bg-gradient-to-r from-accent to-accent-blue" />
@@ -137,12 +137,12 @@ function BillingContent() {
             { label: "Weekly", value: weekly, max: current.weeklyTotalLimit },
             { label: "Monthly", value: monthly, max: current.monthlyTotalLimit },
           ].map((s) => (
-            <div key={s.label} className="glass-panel-elevated rounded-2xl p-5">
-              <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-text-muted">{s.label}</p>
+            <div key={s.label} className="rounded-2xl border border-white/[0.05] bg-[#12121a] rounded-2xl p-5">
+              <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-white/30">{s.label}</p>
               <p className="mt-2 font-display text-[22px] font-extrabold tracking-tight">
                 {s.value.toLocaleString()}
-                {s.max && <span className="text-[13px] font-normal text-text-muted ml-1">/ {s.max.toLocaleString()}</span>}
-                {!s.max && <span className="text-[13px] font-normal text-text-muted ml-1">requests</span>}
+                {s.max && <span className="text-[13px] font-normal text-white/30 ml-1">/ {s.max.toLocaleString()}</span>}
+                {!s.max && <span className="text-[13px] font-normal text-white/30 ml-1">requests</span>}
               </p>
             </div>
           ))}
@@ -159,7 +159,7 @@ function BillingContent() {
                 initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.35 + i * 0.06 }}
                 className={`relative flex flex-col rounded-2xl p-6 transition-all duration-300 ${
-                  isCurrent ? "glass-panel-elevated border-accent/25" : "glass-panel-subtle hover:border-border-default"
+                  isCurrent ? "rounded-2xl border border-white/[0.05] bg-[#12121a] border-accent/25" : "rounded-xl border border-white/[0.03] bg-white/[0.02] hover:border-white/[0.08]"
                 }`}
                 style={isCurrent ? { boxShadow: "inset 0 1px 0 rgba(255,255,255,0.5), 0 0 40px -12px rgba(124,58,237,0.1)" } : {}}>
                 {isCurrent && <div className="absolute -top-px left-6 right-6 h-[1px] bg-gradient-to-r from-transparent via-accent/40 to-transparent" />}
@@ -169,19 +169,19 @@ function BillingContent() {
                 </div>
                 <p className="font-display text-[28px] font-extrabold tracking-tight">
                   {formatPrice(plan.priceCents)}
-                  {plan.priceCents > 0 && <span className="text-[13px] font-normal text-text-muted ml-1">/mo</span>}
+                  {plan.priceCents > 0 && <span className="text-[13px] font-normal text-white/30 ml-1">/mo</span>}
                 </p>
-                <p className="mt-1 text-[12px] text-text-muted">{plan.monthlyTotalLimit.toLocaleString()} requests/month</p>
+                <p className="mt-1 text-[12px] text-white/30">{plan.monthlyTotalLimit.toLocaleString()} requests/month</p>
                 <ul className="mt-5 space-y-2 flex-1">
                   {plan.features.map((f) => (
-                    <li key={f} className="flex items-start gap-2 text-[12px] text-text-tertiary">
+                    <li key={f} className="flex items-start gap-2 text-[12px] text-white/40">
                       <Check size={12} className="mt-0.5 shrink-0 text-accent" />{f}
                     </li>
                   ))}
                 </ul>
-                <div className="mt-6 pt-4 border-t border-border-subtle space-y-2">
+                <div className="mt-6 pt-4 border-t border-white/[0.05] space-y-2">
                   {isCurrent ? (
-                    <span className="flex w-full items-center justify-center gap-1 rounded-xl border border-border-default py-2.5 text-[13px] text-text-muted">
+                    <span className="flex w-full items-center justify-center gap-1 rounded-xl border border-white/[0.08] py-2.5 text-[13px] text-white/30">
                       Current plan
                     </span>
                   ) : (
@@ -197,7 +197,7 @@ function BillingContent() {
                       <button
                         onClick={() => handleCrypto(plan.id)}
                         disabled={loading}
-                        className="flex w-full items-center justify-center gap-1 rounded-xl border border-border-default py-2 text-[11px] text-text-muted hover:text-text-secondary hover:border-border-strong transition-colors disabled:opacity-60">
+                        className="flex w-full items-center justify-center gap-1 rounded-xl border border-white/[0.08] py-2 text-[11px] text-white/30 hover:text-white/70 hover:border-white/[0.12] transition-colors disabled:opacity-60">
                         Pay with Crypto
                       </button>
                     </>
@@ -216,7 +216,7 @@ export default function BillingPage() {
   return (
     <Suspense fallback={
       <div className="flex h-96 items-center justify-center">
-        <Loader2 className="animate-spin text-text-muted" size={28} />
+        <Loader2 className="animate-spin text-white/30" size={28} />
       </div>
     }>
       <BillingContent />

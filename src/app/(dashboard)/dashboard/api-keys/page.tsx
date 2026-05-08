@@ -92,7 +92,7 @@ export default function ApiKeysPage() {
             </div>
             <div>
               <h1 className="font-display text-[22px] font-bold tracking-tight">API Keys</h1>
-              <p className="text-[13px] text-text-muted">
+              <p className="text-[13px] text-white/30">
                 {plan.name} plan — {keys.length}/{plan.maxApiKeys === 999 ? "∞" : plan.maxApiKeys} keys
               </p>
             </div>
@@ -103,13 +103,13 @@ export default function ApiKeysPage() {
       {/* Keys list */}
       <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="space-y-3">
         {loading ? (
-          [1, 2].map((i) => <div key={i} className="h-16 animate-pulse rounded-xl bg-surface-2" />)
+          [1, 2].map((i) => <div key={i} className="h-16 animate-pulse rounded-xl bg-white/[0.03]" />)
         ) : keys.length === 0 ? (
-          <div className="flex h-36 flex-col items-center justify-center gap-3 rounded-2xl glass-panel-elevated">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-surface-2">
-              <Key size={18} className="text-text-muted" />
+          <div className="flex h-36 flex-col items-center justify-center gap-3 rounded-2xl rounded-2xl border border-white/[0.05] bg-[#12121a]">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/[0.03]">
+              <Key size={18} className="text-white/30" />
             </div>
-            <p className="text-[12px] text-text-muted">No API keys yet. Create one below.</p>
+            <p className="text-[12px] text-white/30">No API keys yet. Create one below.</p>
           </div>
         ) : (
           keys.map((k) => {
@@ -118,31 +118,31 @@ export default function ApiKeysPage() {
             return (
               <div
                 key={k.id}
-                className="group flex items-center gap-4 rounded-xl glass-panel-elevated px-5 py-4 transition-all hover:border-border-subtle"
+                className="group flex items-center gap-4 rounded-xl rounded-2xl border border-white/[0.05] bg-[#12121a] px-5 py-4 transition-all hover:border-white/[0.05]"
               >
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-surface-2">
-                  <Shield size={15} className="text-text-muted" />
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/[0.03]">
+                  <Shield size={15} className="text-white/30" />
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
-                    <p className="text-[13px] font-medium text-text-secondary">{k.name}</p>
-                    <span className="text-[10px] text-text-muted">{timeAgo(k.last_used_at)}</span>
+                    <p className="text-[13px] font-medium text-white/70">{k.name}</p>
+                    <span className="text-[10px] text-white/30">{timeAgo(k.last_used_at)}</span>
                   </div>
-                  <code className="block truncate font-mono text-[11px] text-text-muted">
+                  <code className="block truncate font-mono text-[11px] text-white/30">
                     {isRevealed ? k.key : k.key.slice(0, 12) + "••••••••••••••••••••"}
                   </code>
                 </div>
                 <div className="flex items-center gap-1">
                   <button
                     onClick={() => setRevealedId(isRevealed ? "" : k.id)}
-                    className="rounded-lg p-2 text-text-muted hover:text-text-primary hover:bg-surface-2 transition-colors"
+                    className="rounded-lg p-2 text-white/30 hover:text-white hover:bg-white/[0.03] transition-colors"
                     title={isRevealed ? "Hide key" : "Reveal key"}
                   >
                     {isRevealed ? <EyeOff size={14} /> : <Eye size={14} />}
                   </button>
                   <button
                     onClick={() => copyKey(k.id, k.key)}
-                    className="rounded-lg p-2 text-text-muted hover:text-text-primary hover:bg-surface-2 transition-colors"
+                    className="rounded-lg p-2 text-white/30 hover:text-white hover:bg-white/[0.03] transition-colors"
                     title="Copy key"
                   >
                     {isCopied ? <Check size={14} className="text-success" /> : <Copy size={14} />}
@@ -150,7 +150,7 @@ export default function ApiKeysPage() {
                   {keys.length > 1 && (
                     <button
                       onClick={() => deleteKey(k.id)}
-                      className="rounded-lg p-2 text-text-muted hover:text-error hover:bg-error/5 transition-colors"
+                      className="rounded-lg p-2 text-white/30 hover:text-error hover:bg-error/5 transition-colors"
                       title="Delete key"
                     >
                       <Trash2 size={14} />
@@ -183,9 +183,9 @@ export default function ApiKeysPage() {
             </button>
           </div>
         ) : (
-          <div className="rounded-xl border border-border-subtle bg-surface-1/50 px-5 py-4">
-            <p className="text-[13px] text-text-muted">
-              You have reached the key limit for your plan. <span className="text-text-secondary">Upgrade</span> for more.
+          <div className="rounded-xl border border-white/[0.05] bg-[#12121a]/50 px-5 py-4">
+            <p className="text-[13px] text-white/30">
+              You have reached the key limit for your plan. <span className="text-white/70">Upgrade</span> for more.
             </p>
           </div>
         )}
@@ -196,25 +196,25 @@ export default function ApiKeysPage() {
         initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
-        className="overflow-hidden rounded-2xl border border-border-subtle"
+        className="overflow-hidden rounded-2xl border border-white/[0.05]"
       >
-        <div className="flex items-center justify-between border-b border-border-subtle bg-surface-1/60 px-5 py-3">
+        <div className="flex items-center justify-between border-b border-white/[0.05] bg-[#12121a]/60 px-5 py-3">
           <div className="flex items-center gap-2">
-            <span className="text-[11px] font-semibold uppercase tracking-[0.1em] text-text-muted">Usage example</span>
-            <span className="badge-premium bg-surface-2 text-text-muted border-border-default">curl</span>
+            <span className="text-[11px] font-semibold uppercase tracking-[0.1em] text-white/30">Usage example</span>
+            <span className="badge-premium bg-white/[0.03] text-white/30 border-white/[0.08]">curl</span>
           </div>
           <button
             onClick={() => navigator.clipboard.writeText(exampleCode)}
-            className="text-text-muted hover:text-text-secondary transition-colors"
+            className="text-white/30 hover:text-white/70 transition-colors"
             title="Copy example"
           >
             <Copy size={12} />
           </button>
         </div>
-        <pre className="overflow-x-auto bg-surface-1/30 p-5 font-mono text-[12px] leading-relaxed text-text-tertiary">{exampleCode}</pre>
-        <div className="border-t border-border-subtle bg-surface-1/30 px-5 py-3">
-          <p className="text-[11px] text-text-muted">
-            Use this key in the <span className="font-mono text-text-secondary">Authorization</span> header for any service endpoint.
+        <pre className="overflow-x-auto bg-[#12121a]/30 p-5 font-mono text-[12px] leading-relaxed text-white/40">{exampleCode}</pre>
+        <div className="border-t border-white/[0.05] bg-[#12121a]/30 px-5 py-3">
+          <p className="text-[11px] text-white/30">
+            Use this key in the <span className="font-mono text-white/70">Authorization</span> header for any service endpoint.
           </p>
         </div>
       </motion.div>
@@ -233,21 +233,21 @@ export default function ApiKeysPage() {
         ].map((ep) => (
           <div
             key={ep.path}
-            className="flex items-center gap-3 rounded-xl glass-panel-subtle px-4 py-3"
+            className="flex items-center gap-3 rounded-xl rounded-xl border border-white/[0.03] bg-white/[0.02] px-4 py-3"
           >
             <div
               className="h-2 w-2 rounded-full"
               style={{ background: ep.color }}
             />
             <div className="flex-1 min-w-0">
-              <p className="text-[12px] font-medium text-text-secondary">{ep.label}</p>
-              <p className="text-[10px] font-mono text-text-muted truncate">{ep.path}</p>
+              <p className="text-[12px] font-medium text-white/70">{ep.label}</p>
+              <p className="text-[10px] font-mono text-white/30 truncate">{ep.path}</p>
             </div>
             <a
               href={`${origin}${ep.path}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-text-muted hover:text-text-secondary transition-colors"
+              className="text-white/30 hover:text-white/70 transition-colors"
             >
               <ExternalLink size={12} />
             </a>

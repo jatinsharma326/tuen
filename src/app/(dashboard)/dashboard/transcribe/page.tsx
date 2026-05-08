@@ -14,7 +14,7 @@ const MODELS = [
 function CopyBtn({ text }: { text: string }) {
   const [ok, setOk] = useState(false);
   return (
-    <button onClick={() => { navigator.clipboard.writeText(text); setOk(true); setTimeout(() => setOk(false), 1500); }} className="rounded-md p-1 text-text-muted hover:text-text-secondary hover:bg-surface-2 transition-colors">
+    <button onClick={() => { navigator.clipboard.writeText(text); setOk(true); setTimeout(() => setOk(false), 1500); }} className="rounded-md p-1 text-white/30 hover:text-white/70 hover:bg-white/[0.03] transition-colors">
       {ok ? <Check size={10} className="text-success" /> : <Copy size={10} />}
     </button>
   );
@@ -75,7 +75,7 @@ function TranscribeForm() {
             </div>
             <div>
               <h1 className="font-display text-[22px] font-bold tracking-tight">Transcribe</h1>
-              <p className="text-[13px] text-text-muted">Convert audio to text with Whisper-class models</p>
+              <p className="text-[13px] text-white/30">Convert audio to text with Whisper-class models</p>
             </div>
           </div>
           <span className="badge-premium bg-warning/10 text-warning border-warning/20">200 requests/day</span>
@@ -86,7 +86,7 @@ function TranscribeForm() {
         <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="space-y-6">
           {/* Model */}
           <div className="space-y-3">
-            <label className="text-[13px] font-medium text-text-secondary">Model</label>
+            <label className="text-[13px] font-medium text-white/70">Model</label>
             <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-3">
               {MODELS.map((m) => (
                 <button
@@ -94,10 +94,10 @@ function TranscribeForm() {
                   onClick={() => setModel(m.value)}
                   className={`model-card text-left p-4 ${model === m.value ? "model-card-active" : ""}`}
                 >
-                  <span className={`text-[13px] font-semibold ${model === m.value ? "text-text-primary" : "text-text-secondary"}`}>
+                  <span className={`text-[13px] font-semibold ${model === m.value ? "text-white" : "text-white/70"}`}>
                     {m.label}
                   </span>
-                  <p className="mt-1 text-[11px] text-text-muted">{m.desc}</p>
+                  <p className="mt-1 text-[11px] text-white/30">{m.desc}</p>
                 </button>
               ))}
             </div>
@@ -105,7 +105,7 @@ function TranscribeForm() {
 
           {/* Audio URL */}
           <div className="space-y-2">
-            <label className="text-[13px] font-medium text-text-secondary">Audio URL</label>
+            <label className="text-[13px] font-medium text-white/70">Audio URL</label>
             <input
               type="text"
               value={audioUrl}
@@ -113,7 +113,7 @@ function TranscribeForm() {
               placeholder="https://example.com/audio.mp3"
               className="input-premium w-full"
             />
-            <p className="text-[11px] text-text-muted">Direct link to mp3, wav, m4a, etc.</p>
+            <p className="text-[11px] text-white/30">Direct link to mp3, wav, m4a, etc.</p>
           </div>
 
           {/* Generate */}
@@ -142,15 +142,15 @@ function TranscribeForm() {
 
         {/* Output */}
         <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="space-y-6">
-          <div className="rounded-2xl border border-border-subtle bg-surface-1/30 overflow-hidden">
-            <div className="border-b border-border-subtle bg-surface-1/60 px-4 py-2 flex items-center justify-between">
-              <span className="text-[10px] font-bold uppercase tracking-[0.12em] text-text-muted">cURL</span>
+          <div className="rounded-2xl border border-white/[0.05] bg-[#12121a]/30 overflow-hidden">
+            <div className="border-b border-white/[0.05] bg-[#12121a]/60 px-4 py-2 flex items-center justify-between">
+              <span className="text-[10px] font-bold uppercase tracking-[0.12em] text-white/30">cURL</span>
               <CopyBtn text={`curl -X POST ${typeof window !== "undefined" ? window.location.origin : ""}/api/services/transcribe \\
   -H "Authorization: Bearer tuen_sk_YOUR_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{"audio_url": "${audioUrl || "https://example.com/audio.mp3"}", "language": "en"}'`} />
             </div>
-            <pre className="p-4 font-mono text-[11px] leading-relaxed text-text-tertiary overflow-x-auto">
+            <pre className="p-4 font-mono text-[11px] leading-relaxed text-white/40 overflow-x-auto">
 {`curl -X POST ${typeof window !== "undefined" ? window.location.origin : ""}/api/services/transcribe \\
   -H "Authorization: Bearer tuen_sk_YOUR_KEY" \\
   -H "Content-Type: application/json" \\
@@ -160,11 +160,11 @@ function TranscribeForm() {
 
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <span className="text-[11px] font-semibold uppercase tracking-[0.1em] text-text-muted">Transcript</span>
+              <span className="text-[11px] font-semibold uppercase tracking-[0.1em] text-white/30">Transcript</span>
               {transcript && (
                 <button
                   onClick={copyText}
-                  className="inline-flex items-center gap-1.5 rounded-lg bg-surface-2 px-2.5 py-1.5 text-[11px] font-medium text-text-secondary ring-1 ring-border-default hover:text-text-primary hover:ring-border-strong transition-all"
+                  className="inline-flex items-center gap-1.5 rounded-lg bg-white/[0.03] px-2.5 py-1.5 text-[11px] font-medium text-white/70 ring-1 ring-border-default hover:text-white hover:ring-border-strong transition-all"
                 >
                   {copied ? <Check size={12} className="text-success" /> : <Copy size={12} />}
                   {copied ? "Copied" : "Copy"}
@@ -173,22 +173,22 @@ function TranscribeForm() {
             </div>
 
             {transcript ? (
-              <div className="overflow-hidden rounded-2xl border border-border-subtle bg-surface-1/50">
+              <div className="overflow-hidden rounded-2xl border border-white/[0.05] bg-[#12121a]/50">
                 <div className="max-h-[480px] overflow-y-auto p-5">
-                  <p className="text-[13px] leading-[1.7] text-text-primary whitespace-pre-wrap">{transcript}</p>
+                  <p className="text-[13px] leading-[1.7] text-white whitespace-pre-wrap">{transcript}</p>
                 </div>
               </div>
             ) : !loading ? (
-              <div className="flex h-64 flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-border-default bg-surface-1/30">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-surface-2">
-                  <FileAudio size={22} className="text-text-muted" />
+              <div className="flex h-64 flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-white/[0.08] bg-[#12121a]/30">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/[0.03]">
+                  <FileAudio size={22} className="text-white/30" />
                 </div>
-                <p className="text-[12px] text-text-muted">Transcript will appear here</p>
+                <p className="text-[12px] text-white/30">Transcript will appear here</p>
               </div>
             ) : (
-              <div className="flex h-64 flex-col items-center justify-center gap-3 rounded-2xl border border-border-subtle bg-surface-1/30">
+              <div className="flex h-64 flex-col items-center justify-center gap-3 rounded-2xl border border-white/[0.05] bg-[#12121a]/30">
                 <Loader2 size={28} className="animate-spin text-warning" />
-                <p className="text-[12px] text-text-muted">Processing audio...</p>
+                <p className="text-[12px] text-white/30">Processing audio...</p>
               </div>
             )}
           </div>
@@ -202,7 +202,7 @@ export default function TranscribePage() {
   return (
     <Suspense fallback={
       <div className="flex h-96 items-center justify-center">
-        <Loader2 className="animate-spin text-text-muted" size={28} />
+        <Loader2 className="animate-spin text-white/30" size={28} />
       </div>
     }>
       <TranscribeForm />

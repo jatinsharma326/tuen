@@ -55,12 +55,12 @@ export default function GenerationsPage() {
     <div className="space-y-8">
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-surface-2">
-            <History size={18} className="text-text-secondary" />
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/[0.03]">
+            <History size={18} className="text-white/70" />
           </div>
           <div>
             <h1 className="font-display text-[22px] font-bold tracking-tight">Usage History</h1>
-            <p className="text-[13px] text-text-muted">Your recent API requests</p>
+            <p className="text-[13px] text-white/30">Your recent API requests</p>
           </div>
         </div>
       </motion.div>
@@ -69,28 +69,28 @@ export default function GenerationsPage() {
         {loading ? (
           <div className="space-y-3">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="h-16 animate-pulse rounded-xl bg-surface-2" />
+              <div key={i} className="h-16 animate-pulse rounded-xl bg-white/[0.03]" />
             ))}
           </div>
         ) : logs.length === 0 ? (
-          <div className="flex h-48 flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-border-default bg-surface-1/30">
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-surface-2">
-              <Clock size={22} className="text-text-muted" />
+          <div className="flex h-48 flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-white/[0.08] bg-[#12121a]/30">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/[0.03]">
+              <Clock size={22} className="text-white/30" />
             </div>
-            <p className="text-[12px] text-text-muted">No usage yet. Try generating something.</p>
+            <p className="text-[12px] text-white/30">No usage yet. Try generating something.</p>
           </div>
         ) : (
-          <div className="overflow-hidden rounded-2xl border border-border-subtle">
+          <div className="overflow-hidden rounded-2xl border border-white/[0.05]">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-border-subtle bg-surface-1/60">
-                  <th className="px-5 py-3 text-left text-[11px] font-bold uppercase tracking-[0.1em] text-text-muted">
+                <tr className="border-b border-white/[0.05] bg-[#12121a]/60">
+                  <th className="px-5 py-3 text-left text-[11px] font-bold uppercase tracking-[0.1em] text-white/30">
                     Service
                   </th>
-                  <th className="px-5 py-3 text-left text-[11px] font-bold uppercase tracking-[0.1em] text-text-muted">
+                  <th className="px-5 py-3 text-left text-[11px] font-bold uppercase tracking-[0.1em] text-white/30">
                     Requests
                   </th>
-                  <th className="px-5 py-3 text-right text-[11px] font-bold uppercase tracking-[0.1em] text-text-muted">
+                  <th className="px-5 py-3 text-right text-[11px] font-bold uppercase tracking-[0.1em] text-white/30">
                     Date
                   </th>
                 </tr>
@@ -106,7 +106,7 @@ export default function GenerationsPage() {
                   return (
                     <tr
                       key={log.id}
-                      className="border-b border-border-subtle last:border-0 transition-colors hover:bg-surface-1"
+                      className="border-b border-white/[0.05] last:border-0 transition-colors hover:bg-[#12121a]"
                     >
                       <td className="px-5 py-4">
                         <div className="flex items-center gap-3">
@@ -116,7 +116,7 @@ export default function GenerationsPage() {
                           >
                             <Icon size={14} style={{ color: meta.color }} />
                           </div>
-                          <span className="text-[13px] font-medium text-text-secondary">
+                          <span className="text-[13px] font-medium text-white/70">
                             {meta.label}
                           </span>
                         </div>
@@ -130,7 +130,7 @@ export default function GenerationsPage() {
                         </span>
                       </td>
                       <td className="px-5 py-4 text-right">
-                        <span className="text-[12px] text-text-muted">
+                        <span className="text-[12px] text-white/30">
                           {formatDate(log.created_at)}
                         </span>
                       </td>

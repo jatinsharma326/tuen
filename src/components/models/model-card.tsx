@@ -8,17 +8,17 @@ export function ModelCard({ model }: { model: ModelDefinition }) {
   return (
     <Link
       href={`/models/${slug}`}
-      className="group flex items-center justify-between rounded-lg border border-border-subtle px-4 py-3.5 transition-colors hover:border-border-default hover:bg-surface-1"
+      className="group flex items-center justify-between rounded-lg border border-white/[0.05] bg-[#12121a] px-4 py-3.5 transition-all hover:border-[#c084fc]/20 hover:bg-[#12121a]"
     >
       <div className="min-w-0">
-        <p className="text-sm font-medium text-text-primary">{model.name}</p>
-        <p className="mt-0.5 truncate text-xs text-text-muted">
+        <p className="text-sm font-medium text-white">{model.name}</p>
+        <p className="mt-0.5 truncate text-xs text-white/30">
           {model.description}
         </p>
       </div>
       <ArrowRight
         size={14}
-        className="ml-4 shrink-0 text-text-muted opacity-0 transition-all group-hover:opacity-100 group-hover:translate-x-0.5"
+        className="ml-4 shrink-0 text-white/30 opacity-0 transition-all group-hover:opacity-100 group-hover:translate-x-0.5"
       />
     </Link>
   );

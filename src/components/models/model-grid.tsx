@@ -29,10 +29,10 @@ export function ModelGrid() {
           <button
             onClick={() => setCategory("all")}
             className={cn(
-              "rounded-md px-2.5 py-1 text-[13px] transition-colors",
+              "rounded-lg px-3 py-1.5 text-[13px] transition-colors",
               category === "all"
-                ? "bg-surface-2 text-text-primary"
-                : "text-text-muted hover:text-text-secondary",
+                ? "bg-[#c084fc]/10 text-[#c084fc] border border-[#c084fc]/20"
+                : "text-white/30 hover:text-white/60 hover:bg-white/[0.03]",
             )}
           >
             All
@@ -42,10 +42,10 @@ export function ModelGrid() {
               key={c.id}
               onClick={() => setCategory(c.id)}
               className={cn(
-                "rounded-md px-2.5 py-1 text-[13px] transition-colors",
+                "rounded-lg px-3 py-1.5 text-[13px] transition-colors",
                 category === c.id
-                  ? "bg-surface-2 text-text-primary"
-                  : "text-text-muted hover:text-text-secondary",
+                  ? "bg-[#c084fc]/10 text-[#c084fc] border border-[#c084fc]/20"
+                  : "text-white/30 hover:text-white/60 hover:bg-white/[0.03]",
               )}
             >
               {c.label}
@@ -53,12 +53,13 @@ export function ModelGrid() {
           ))}
         </div>
         <div className="relative">
-          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted" />
+          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30" />
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search..."
-            className="h-8 w-full rounded-md border border-border-default bg-transparent pl-8 pr-3 text-[13px] text-text-primary placeholder:text-text-muted outline-none focus:border-border-strong sm:w-48"
+            className="h-9 w-full rounded-xl border border-white/[0.08] bg-white/[0.03] pl-9 pr-3 text-[13px] text-white placeholder:text-white/25 outline-none focus:border-[#c084fc]/30 focus:bg-white/[0.05] sm:w-48"
+            style={{ fontFamily: "var(--font-jetbrains-mono)" }}
           />
         </div>
       </div>
@@ -68,7 +69,7 @@ export function ModelGrid() {
         ))}
       </div>
       {filtered.length === 0 && (
-        <p className="mt-12 text-center text-sm text-text-muted">
+        <p className="mt-12 text-center text-sm text-white/30">
           No models found.
         </p>
       )}

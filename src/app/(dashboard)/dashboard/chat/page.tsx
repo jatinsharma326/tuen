@@ -21,7 +21,7 @@ interface Message {
 function CopyBtn({ text }: { text: string }) {
   const [ok, setOk] = useState(false);
   return (
-    <button onClick={() => { navigator.clipboard.writeText(text); setOk(true); setTimeout(() => setOk(false), 1500); }} className="rounded-md p-1 text-text-muted hover:text-text-secondary hover:bg-surface-2 transition-colors">
+    <button onClick={() => { navigator.clipboard.writeText(text); setOk(true); setTimeout(() => setOk(false), 1500); }} className="rounded-md p-1 text-white/30 hover:text-white/70 hover:bg-white/[0.03] transition-colors">
       {ok ? <Check size={10} className="text-success" /> : <Copy size={10} />}
     </button>
   );
@@ -148,7 +148,7 @@ function ChatForm() {
             </div>
             <div>
               <h1 className="font-display text-[22px] font-bold tracking-tight">LLM Chat</h1>
-              <p className="text-[13px] text-text-muted">Chat with large language models via ModelScope</p>
+              <p className="text-[13px] text-white/30">Chat with large language models via ModelScope</p>
             </div>
           </div>
           <span className="badge-premium bg-emerald-500/10 text-emerald-500 border-emerald-500/20">50 chats/day</span>
@@ -166,7 +166,7 @@ function ChatForm() {
                   className={`rounded-lg px-3 py-1.5 text-[11px] font-medium transition-all ${
                     model === m.value
                       ? "bg-text-primary text-surface-0 shadow-lg shadow-black/5"
-                      : "border border-border-subtle bg-surface-1 text-text-muted hover:text-text-secondary hover:border-border-default"
+                      : "border border-white/[0.05] bg-[#12121a] text-white/30 hover:text-white/70 hover:border-white/[0.08]"
                   }`}
                 >
                   {m.label}
@@ -175,13 +175,13 @@ function ChatForm() {
             </div>
           </div>
 
-          <div ref={scrollRef} className="flex-1 min-h-[400px] max-h-[500px] overflow-y-auto rounded-2xl border border-border-subtle bg-surface-1/30 p-4 space-y-4 mb-4">
+          <div ref={scrollRef} className="flex-1 min-h-[400px] max-h-[500px] overflow-y-auto rounded-2xl border border-white/[0.05] bg-[#12121a]/30 p-4 space-y-4 mb-4">
             {messages.length === 0 ? (
               <div className="flex h-full min-h-[350px] flex-col items-center justify-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-surface-2">
-                  <Bot size={22} className="text-text-muted" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/[0.03]">
+                  <Bot size={22} className="text-white/30" />
                 </div>
-                <p className="text-[12px] text-text-muted">Start a conversation</p>
+                <p className="text-[12px] text-white/30">Start a conversation</p>
               </div>
             ) : (
               messages.map((m, i) => (
@@ -195,21 +195,21 @@ function ChatForm() {
                     className={`max-w-[80%] rounded-2xl px-4 py-2.5 text-[13px] leading-relaxed ${
                       m.role === "user"
                         ? "bg-text-primary text-surface-0"
-                        : "border border-border-subtle bg-surface-1 text-text-primary"
+                        : "border border-white/[0.05] bg-[#12121a] text-white"
                     }`}
                   >
                     {m.reasoning ? (
                       <details className="mb-2" open>
-                        <summary className="flex cursor-pointer items-center gap-1.5 text-[11px] text-text-muted hover:text-text-secondary select-none">
+                        <summary className="flex cursor-pointer items-center gap-1.5 text-[11px] text-white/30 hover:text-white/70 select-none">
                           <Brain size={12} /> Thinking...
                         </summary>
-                        <div className="mt-2 whitespace-pre-wrap text-[12px] text-text-muted leading-relaxed border-l-2 border-border-subtle pl-3">
+                        <div className="mt-2 whitespace-pre-wrap text-[12px] text-white/30 leading-relaxed border-l-2 border-white/[0.05] pl-3">
                           {m.reasoning}
                         </div>
                       </details>
                     ) : null}
                     {m.content ? (
-                      <div className={`whitespace-pre-wrap ${m.reasoning ? "border-t border-border-subtle pt-2 mt-2" : ""}`}>
+                      <div className={`whitespace-pre-wrap ${m.reasoning ? "border-t border-white/[0.05] pt-2 mt-2" : ""}`}>
                         {m.content}
                       </div>
                     ) : (!m.reasoning && loading && i === messages.length - 1) ? (
@@ -253,15 +253,15 @@ function ChatForm() {
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="space-y-6">
-          <div className="rounded-2xl border border-border-subtle bg-surface-1/30 overflow-hidden">
-            <div className="border-b border-border-subtle bg-surface-1/60 px-4 py-2 flex items-center justify-between">
-              <span className="text-[10px] font-bold uppercase tracking-[0.12em] text-text-muted">cURL</span>
+          <div className="rounded-2xl border border-white/[0.05] bg-[#12121a]/30 overflow-hidden">
+            <div className="border-b border-white/[0.05] bg-[#12121a]/60 px-4 py-2 flex items-center justify-between">
+              <span className="text-[10px] font-bold uppercase tracking-[0.12em] text-white/30">cURL</span>
               <CopyBtn text={`curl -X POST ${typeof window !== "undefined" ? window.location.origin : ""}/api/services/llm \\
   -H "Authorization: Bearer tuen_sk_YOUR_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{"messages": [{"role": "user", "content": "Hello!"}], "model": "${model}"}'`} />
             </div>
-            <pre className="p-4 font-mono text-[11px] leading-relaxed text-text-tertiary overflow-x-auto">
+            <pre className="p-4 font-mono text-[11px] leading-relaxed text-white/40 overflow-x-auto">
 {`curl -X POST ${typeof window !== "undefined" ? window.location.origin : ""}/api/services/llm \\
   -H "Authorization: Bearer tuen_sk_YOUR_KEY" \\
   -H "Content-Type: application/json" \\
@@ -270,15 +270,15 @@ function ChatForm() {
           </div>
 
           <div className="space-y-3">
-            <span className="text-[11px] font-semibold uppercase tracking-[0.1em] text-text-muted">About</span>
-            <div className="rounded-2xl border border-border-subtle bg-surface-1/50 p-5 space-y-4">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.1em] text-white/30">About</span>
+            <div className="rounded-2xl border border-white/[0.05] bg-[#12121a]/50 p-5 space-y-4">
               <div>
-                <p className="text-[13px] font-semibold text-text-primary">{MODELS.find((m) => m.value === model)?.label || model}</p>
-                <p className="mt-1 text-[12px] text-text-muted">{MODELS.find((m) => m.value === model)?.desc}</p>
+                <p className="text-[13px] font-semibold text-white">{MODELS.find((m) => m.value === model)?.label || model}</p>
+                <p className="mt-1 text-[12px] text-white/30">{MODELS.find((m) => m.value === model)?.desc}</p>
               </div>
-              <div className="border-t border-border-subtle pt-4">
-                <p className="text-[11px] text-text-muted">
-                  Powered by <span className="text-text-secondary">ModelScope Inference API</span>. Streaming responses with reasoning support. 50 chats/day.
+              <div className="border-t border-white/[0.05] pt-4">
+                <p className="text-[11px] text-white/30">
+                  Powered by <span className="text-white/70">ModelScope Inference API</span>. Streaming responses with reasoning support. 50 chats/day.
                 </p>
               </div>
             </div>
@@ -293,7 +293,7 @@ export default function ChatPage() {
   return (
     <Suspense fallback={
       <div className="flex h-96 items-center justify-center">
-        <Loader2 className="animate-spin text-text-muted" size={28} />
+        <Loader2 className="animate-spin text-white/30" size={28} />
       </div>
     }>
       <ChatForm />

@@ -27,7 +27,7 @@ const STYLES = [
 function CopyBtn({ text }: { text: string }) {
   const [ok, setOk] = useState(false);
   return (
-    <button onClick={() => { navigator.clipboard.writeText(text); setOk(true); setTimeout(() => setOk(false), 1500); }} className="rounded-md p-1 text-text-muted hover:text-text-secondary hover:bg-surface-2 transition-colors">
+    <button onClick={() => { navigator.clipboard.writeText(text); setOk(true); setTimeout(() => setOk(false), 1500); }} className="rounded-md p-1 text-white/30 hover:text-white/70 hover:bg-white/[0.03] transition-colors">
       {ok ? <Check size={10} className="text-success" /> : <Copy size={10} />}
     </button>
   );
@@ -87,7 +87,7 @@ function GenerateForm() {
             </div>
             <div>
               <h1 className="font-display text-[22px] font-bold tracking-tight">Image Generation</h1>
-              <p className="text-[13px] text-text-muted">Generate images from text prompts</p>
+              <p className="text-[13px] text-white/30">Generate images from text prompts</p>
             </div>
           </div>
           <span className="badge-premium bg-accent/10 text-accent border-accent/20">200 images/day</span>
@@ -99,7 +99,7 @@ function GenerateForm() {
         <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="space-y-6">
           {/* Model */}
           <div className="space-y-3">
-            <label className="text-[13px] font-medium text-text-secondary">Model</label>
+            <label className="text-[13px] font-medium text-white/70">Model</label>
             <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-3">
               {MODELS.map((m) => (
                 <button
@@ -107,15 +107,15 @@ function GenerateForm() {
                   onClick={() => setModel(m.value)}
                   className={`model-card text-left p-4 ${model === m.value ? "model-card-active" : ""}`}
                 >
-                  <span className={`text-[13px] font-semibold ${model === m.value ? "text-text-primary" : "text-text-secondary"}`}>
+                  <span className={`text-[13px] font-semibold ${model === m.value ? "text-white" : "text-white/70"}`}>
                     {m.label}
                   </span>
-                  <p className="mt-1 text-[11px] text-text-muted">{m.desc}</p>
+                  <p className="mt-1 text-[11px] text-white/30">{m.desc}</p>
                 </button>
               ))}
               {!MODELS.find((m) => m.value === model) && (
                 <button onClick={() => setModel(model)} className="model-card model-card-active text-left p-4">
-                  <span className="text-[13px] font-semibold text-text-primary">{model}</span>
+                  <span className="text-[13px] font-semibold text-white">{model}</span>
                 </button>
               )}
             </div>
@@ -123,7 +123,7 @@ function GenerateForm() {
 
           {/* Prompt */}
           <div className="space-y-2">
-            <label className="text-[13px] font-medium text-text-secondary">Prompt</label>
+            <label className="text-[13px] font-medium text-white/70">Prompt</label>
             <textarea
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
@@ -136,7 +136,7 @@ function GenerateForm() {
           {/* Options */}
           <div className="grid gap-6 sm:grid-cols-2">
             <div className="space-y-2">
-              <label className="text-[13px] font-medium text-text-secondary">Aspect Ratio</label>
+              <label className="text-[13px] font-medium text-white/70">Aspect Ratio</label>
               <div className="flex flex-wrap gap-2">
                 {RATIOS.map((r) => (
                   <button
@@ -145,7 +145,7 @@ function GenerateForm() {
                     className={`rounded-lg px-3.5 py-2 text-[12px] font-medium transition-all ${
                       ratio === r.value
                         ? "bg-text-primary text-surface-0 shadow-lg shadow-black/5"
-                        : "border border-border-subtle bg-surface-1 text-text-muted hover:text-text-secondary hover:border-border-default"
+                        : "border border-white/[0.05] bg-[#12121a] text-white/30 hover:text-white/70 hover:border-white/[0.08]"
                     }`}
                   >
                     {r.label}
@@ -154,7 +154,7 @@ function GenerateForm() {
               </div>
             </div>
             <div className="space-y-2">
-              <label className="text-[13px] font-medium text-text-secondary">Style</label>
+              <label className="text-[13px] font-medium text-white/70">Style</label>
               <div className="flex flex-wrap gap-2">
                 {STYLES.map((s) => (
                   <button
@@ -163,7 +163,7 @@ function GenerateForm() {
                     className={`rounded-lg px-3.5 py-2 text-[12px] font-medium transition-all ${
                       style === s.value
                         ? "bg-text-primary text-surface-0 shadow-lg shadow-black/5"
-                        : "border border-border-subtle bg-surface-1 text-text-muted hover:text-text-secondary hover:border-border-default"
+                        : "border border-white/[0.05] bg-[#12121a] text-white/30 hover:text-white/70 hover:border-white/[0.08]"
                     }`}
                   >
                     {s.label}
@@ -199,15 +199,15 @@ function GenerateForm() {
 
         {/* Right: API Usage + Output */}
         <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="space-y-6">
-          <div className="rounded-2xl border border-border-subtle bg-surface-1/30 overflow-hidden">
-            <div className="border-b border-border-subtle bg-surface-1/60 px-4 py-2 flex items-center justify-between">
-              <span className="text-[10px] font-bold uppercase tracking-[0.12em] text-text-muted">cURL</span>
+          <div className="rounded-2xl border border-white/[0.05] bg-[#12121a]/30 overflow-hidden">
+            <div className="border-b border-white/[0.05] bg-[#12121a]/60 px-4 py-2 flex items-center justify-between">
+              <span className="text-[10px] font-bold uppercase tracking-[0.12em] text-white/30">cURL</span>
               <CopyBtn text={`curl -X POST ${typeof window !== "undefined" ? window.location.origin : ""}/api/services/${model === "nucleus-image" ? "nucleus_image" : "image_gen"} \\
   -H "Authorization: Bearer tuen_sk_YOUR_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{"prompt": "${prompt || "a cat astronaut"}", "aspect_ratio": "${ratio}", "style": "${style}"}'`} />
             </div>
-            <pre className="p-4 font-mono text-[11px] leading-relaxed text-text-tertiary overflow-x-auto">
+            <pre className="p-4 font-mono text-[11px] leading-relaxed text-white/40 overflow-x-auto">
 {`curl -X POST ${typeof window !== "undefined" ? window.location.origin : ""}/api/services/${model === "nucleus-image" ? "nucleus_image" : "image_gen"} \\
   -H "Authorization: Bearer tuen_sk_YOUR_KEY" \\
   -H "Content-Type: application/json" \\
@@ -217,13 +217,13 @@ function GenerateForm() {
 
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <span className="text-[11px] font-semibold uppercase tracking-[0.1em] text-text-muted">Output</span>
+              <span className="text-[11px] font-semibold uppercase tracking-[0.1em] text-white/30">Output</span>
               {result && (
                 <a
                   href={result}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 rounded-lg bg-surface-2 px-2.5 py-1.5 text-[11px] font-medium text-text-secondary ring-1 ring-border-default hover:text-text-primary hover:ring-border-strong transition-all"
+                  className="inline-flex items-center gap-1.5 rounded-lg bg-white/[0.03] px-2.5 py-1.5 text-[11px] font-medium text-white/70 ring-1 ring-border-default hover:text-white hover:ring-border-strong transition-all"
                 >
                   <Download size={12} /> Download
                 </a>
@@ -231,20 +231,20 @@ function GenerateForm() {
             </div>
 
             {result ? (
-              <div className="overflow-hidden rounded-2xl border border-border-subtle bg-surface-1/50">
+              <div className="overflow-hidden rounded-2xl border border-white/[0.05] bg-[#12121a]/50">
                 <img src={result} alt="Generated" className="w-full object-cover" />
               </div>
             ) : !loading ? (
-              <div className="flex h-80 flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-border-default bg-surface-1/30">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-surface-2">
-                  <Wand2 size={22} className="text-text-muted" />
+              <div className="flex h-80 flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-white/[0.08] bg-[#12121a]/30">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/[0.03]">
+                  <Wand2 size={22} className="text-white/30" />
                 </div>
-                <p className="text-[12px] text-text-muted">Your generated image will appear here</p>
+                <p className="text-[12px] text-white/30">Your generated image will appear here</p>
               </div>
             ) : (
-              <div className="flex h-80 flex-col items-center justify-center gap-3 rounded-2xl border border-border-subtle bg-surface-1/30">
+              <div className="flex h-80 flex-col items-center justify-center gap-3 rounded-2xl border border-white/[0.05] bg-[#12121a]/30">
                 <Loader2 size={28} className="animate-spin text-accent" />
-                <p className="text-[12px] text-text-muted">Creating your masterpiece...</p>
+                <p className="text-[12px] text-white/30">Creating your masterpiece...</p>
               </div>
             )}
           </div>
@@ -258,7 +258,7 @@ export default function GeneratePage() {
   return (
     <Suspense fallback={
       <div className="flex h-96 items-center justify-center">
-        <Loader2 className="animate-spin text-text-muted" size={28} />
+        <Loader2 className="animate-spin text-white/30" size={28} />
       </div>
     }>
       <GenerateForm />

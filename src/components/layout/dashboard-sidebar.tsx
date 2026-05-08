@@ -24,9 +24,9 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 const SERVICES = [
-  { href: "/dashboard/generate", label: "Image Generation", icon: Image, color: "#7c3aed" },
-  { href: "/dashboard/tts", label: "Text to Speech", icon: Mic, color: "#0891b2" },
-  { href: "/dashboard/transcribe", label: "Transcribe", icon: FileAudio, color: "#d97706" },
+  { href: "/dashboard/generate", label: "Image Generation", icon: Image, color: "#c084fc" },
+  { href: "/dashboard/tts", label: "Text to Speech", icon: Mic, color: "#06b6d4" },
+  { href: "/dashboard/transcribe", label: "Transcribe", icon: FileAudio, color: "#f59e0b" },
 ];
 
 const MANAGE = [
@@ -67,11 +67,13 @@ export function DashboardSidebar() {
         href={href}
         onClick={() => setMobileOpen(false)}
         className={cn(
-          "sidebar-item group",
-          isActive ? "sidebar-item-active" : "text-text-tertiary"
+          "group flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] transition-all",
+          isActive
+            ? "bg-[#c084fc]/10 text-[#c084fc] font-medium"
+            : "text-white/40 hover:text-white/70 hover:bg-white/[0.03]"
         )}
       >
-        <Icon size={15} style={isActive ? { color: color || "#6d28d9" } : {}} className={cn("transition-colors", isActive ? "" : "text-text-muted group-hover:text-text-secondary")} />
+        <Icon size={15} style={isActive ? { color: color || "#c084fc" } : {}} className={cn("transition-colors", isActive ? "" : "text-white/30 group-hover:text-white/60")} />
         <span>{label}</span>
         {isActive && <ChevronRight size={12} className="ml-auto opacity-40" />}
       </Link>
@@ -82,63 +84,63 @@ export function DashboardSidebar() {
     <>
       {/* Mobile overlay */}
       {mobileOpen && (
-        <div className="fixed inset-0 z-40 bg-black/30 backdrop-blur-sm lg:hidden" onClick={() => setMobileOpen(false)} />
+        <div className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm lg:hidden" onClick={() => setMobileOpen(false)} />
       )}
 
       {/* Mobile toggle */}
       <button
         onClick={() => setMobileOpen(!mobileOpen)}
-        className="fixed top-4 left-4 z-50 flex h-9 w-9 items-center justify-center rounded-xl border border-border-subtle bg-surface-0 text-text-secondary lg:hidden"
+        className="fixed top-4 left-4 z-50 flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-[#12121a] text-white/60 lg:hidden"
       >
         {mobileOpen ? <X size={16} /> : <Menu size={16} />}
       </button>
 
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-40 w-[260px] border-r border-border-subtle bg-surface-0 transition-transform duration-300 lg:static lg:translate-x-0",
+          "fixed inset-y-0 left-0 z-40 w-[260px] border-r border-white/[0.05] bg-[#0c0c12] transition-transform duration-300 lg:static lg:translate-x-0",
           mobileOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
         {/* Logo */}
         <div className="flex h-16 items-center gap-2.5 px-5">
-          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-accent to-accent-yellow shadow-lg shadow-accent/20">
-            <span className="text-[11px] font-bold text-surface-0">A</span>
+          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-[#c084fc] to-[#7c3aed] shadow-lg shadow-[#c084fc]/20">
+            <span className="text-[11px] font-bold text-white">T</span>
           </div>
-          <Link href="/" className="font-display text-[15px] font-semibold tracking-tight text-text-primary">
+          <Link href="/" className="font-display text-[15px] font-semibold tracking-tight text-white">
             tuen.fun
           </Link>
-          <span className="badge-premium ml-auto bg-accent/10 text-accent border-accent/20">
-            <Sparkles size={9} /> Pro
+          <span className="ml-auto rounded-full border border-[#c084fc]/20 bg-[#c084fc]/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#c084fc]">
+            Pro
           </span>
         </div>
 
         <nav className="flex-1 space-y-6 px-3 pt-2 overflow-y-auto" style={{ maxHeight: "calc(100vh - 180px)" }}>
           <div>
-            <p className="mb-2 px-3 text-[10px] font-bold uppercase tracking-[0.12em] text-text-muted">Services</p>
+            <p className="mb-2 px-3 text-[10px] font-bold uppercase tracking-[0.15em] text-white/25" style={{ fontFamily: "var(--font-jetbrains-mono)" }}>Services</p>
             <div className="space-y-0.5">{SERVICES.map((l) => <NavLink key={l.href} {...l} />)}</div>
           </div>
           <div>
-            <p className="mb-2 px-3 text-[10px] font-bold uppercase tracking-[0.12em] text-text-muted">Manage</p>
+            <p className="mb-2 px-3 text-[10px] font-bold uppercase tracking-[0.15em] text-white/25" style={{ fontFamily: "var(--font-jetbrains-mono)" }}>Manage</p>
             <div className="space-y-0.5">{MANAGE.map((l) => <NavLink key={l.href} {...l} />)}</div>
           </div>
         </nav>
 
         {/* Bottom panel */}
-        <div className="absolute bottom-0 left-0 right-0 border-t border-border-subtle bg-surface-1 px-3 py-3 space-y-2">
-          <div className="glass-panel-subtle flex items-center justify-between rounded-xl px-3.5 py-2.5">
+        <div className="absolute bottom-0 left-0 right-0 border-t border-white/[0.05] bg-[#12121a] px-3 py-3 space-y-2">
+          <div className="flex items-center justify-between rounded-xl border border-white/[0.04] bg-white/[0.02] px-3.5 py-2.5">
             <div className="flex items-center gap-2.5">
-              <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-accent/10">
-                <Sparkles size={13} className="text-accent" />
+              <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#c084fc]/10">
+                <Sparkles size={13} className="text-[#c084fc]" />
               </div>
               <div>
-                <p className="text-[11px] font-semibold tabular-nums text-text-primary">10K <span className="text-text-muted font-normal">req/mo</span></p>
-                <p className="text-[10px] text-text-muted capitalize">{plan} plan</p>
+                <p className="text-[11px] font-semibold tabular-nums text-white">10K <span className="text-white/30 font-normal">req/mo</span></p>
+                <p className="text-[10px] text-white/30 capitalize">{plan} plan</p>
               </div>
             </div>
           </div>
           <button
             onClick={handleSignOut}
-            className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-[13px] text-text-muted transition-colors hover:text-error hover:bg-error/5"
+            className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-[13px] text-white/30 transition-colors hover:text-[#ef4444] hover:bg-[#ef4444]/5"
           >
             <LogOut size={14} /> Sign out
           </button>

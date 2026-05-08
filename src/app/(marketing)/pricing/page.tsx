@@ -4,37 +4,51 @@ import { PLANS, formatPrice, SERVICE_LIMITS } from "@/lib/constants/plans";
 
 export default function PricingPage() {
   return (
-    <div className="mx-auto max-w-6xl px-5 py-24">
-      <p className="text-[13px] uppercase tracking-wide text-accent">Pricing</p>
-      <h1 className="mt-3 font-display text-3xl font-medium tracking-tight">
+    <div className="mx-auto max-w-6xl px-5 py-24 bg-[#0c0c12] min-h-screen">
+      <div className="mb-3 flex items-center gap-3">
+        <div className="h-[1px] w-6 bg-[#c084fc]" />
+        <span
+          className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#c084fc]/70"
+          style={{ fontFamily: "var(--font-jetbrains-mono)" }}
+        >
+          Pricing
+        </span>
+      </div>
+      <h1
+        className="text-4xl font-bold tracking-tight text-white md:text-5xl"
+        style={{ fontFamily: "var(--font-space-grotesk)" }}
+      >
         Try free, upgrade when you need more
       </h1>
-      <p className="mt-3 text-sm text-text-tertiary">
+      <p
+        className="mt-3 max-w-lg text-sm text-white/40"
+        style={{ fontFamily: "var(--font-jetbrains-mono)" }}
+      >
         Start with a free trial. Upgrade to Pro for higher limits and priority support.
       </p>
 
       <div className="mt-14 grid gap-6 max-w-2xl mx-auto sm:grid-cols-2">
         {PLANS.map((plan) => (
-          <div key={plan.id} className="flex flex-col bg-surface-1 p-6 rounded-lg border border-border-subtle">
+          <div key={plan.id} className="flex flex-col rounded-2xl border border-white/[0.05] bg-[#12121a] p-6">
             {plan.id === "pro" && (
-              <span className="mb-3 w-fit rounded-full border border-accent/20 bg-accent/5 px-2.5 py-0.5 text-xs text-accent">
+              <span className="mb-3 w-fit rounded-full border border-[#c084fc]/20 bg-[#c084fc]/10 px-2.5 py-0.5 text-xs text-[#c084fc]" style={{ fontFamily: "var(--font-jetbrains-mono)" }}>
                 Popular
               </span>
             )}
-            <h2 className="text-sm font-medium">{plan.name}</h2>
-            <p className="mt-4 font-display text-3xl font-medium">
+            <h2 className="text-sm font-medium text-white">{plan.name}</h2>
+            <p className="mt-4 font-display text-3xl font-medium text-white">
               {formatPrice(plan.priceCents)}
               {plan.priceCents > 0 && (
-                <span className="text-sm font-normal text-text-muted">/mo</span>
+                <span className="text-sm font-normal text-white/30">/mo</span>
               )}
             </p>
-            <p className="mt-1 text-xs text-text-muted">
+            <p className="mt-1 text-xs text-white/30">
               {plan.monthlyTotalLimit.toLocaleString()} requests/month
             </p>
             <ul className="mt-6 space-y-2">
               {plan.features.map((f) => (
-                <li key={f} className="flex items-start gap-2 text-[13px] text-text-secondary">
-                  <Check size={12} className="mt-0.5 shrink-0 text-accent" />
+                <li key={f} className="flex items-start gap-2 text-[13px] text-white/70">
+                  <Check size={12} className="mt-0.5 shrink-0 text-[#c084fc]" />
                   {f}
                 </li>
               ))}
@@ -42,10 +56,10 @@ export default function PricingPage() {
             <div className="mt-auto pt-6">
             <Link
               href={plan.priceCents === 0 ? "/sign-up" : "/dashboard/billing"}
-              className={`block w-full rounded-md py-2 text-center text-sm font-medium transition-colors ${
+              className={`block w-full rounded-xl py-2.5 text-center text-sm font-medium transition-colors ${
                   plan.id === "pro"
-                  ? "btn-primary"
-                  : "border border-border-default text-text-secondary hover:text-text-primary hover:border-border-strong"
+                  ? "bg-[#c084fc] text-white hover:bg-[#a855f7]"
+                  : "border border-white/[0.08] text-white/60 hover:text-white hover:border-white/[0.15]"
               }`}
             >
               {plan.priceCents === 0 ? "Start Free Trial" : `Get ${plan.name}`}
@@ -56,39 +70,39 @@ export default function PricingPage() {
       </div>
 
       <div className="mt-16">
-        <h2 className="font-display text-lg font-medium">Per-service daily limits</h2>
-        <p className="mt-2 text-sm text-text-muted">
+        <h2 className="font-display text-lg font-medium text-white">Per-service daily limits</h2>
+        <p className="mt-2 text-sm text-white/30">
           Trial limits shown below. Pro limits are 20x higher across all services.
         </p>
-        <div className="mt-6 overflow-hidden rounded-lg border border-border-subtle">
+        <div className="mt-6 overflow-hidden rounded-2xl border border-white/[0.05] bg-[#12121a]">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-border-subtle bg-surface-1">
-                <th className="px-4 py-2.5 text-left text-[11px] font-medium uppercase tracking-wider text-text-muted">Service</th>
-                <th className="px-4 py-2.5 text-left text-[11px] font-medium uppercase tracking-wider text-text-muted">Trial</th>
-                <th className="px-4 py-2.5 text-left text-[11px] font-medium uppercase tracking-wider text-text-muted">Pro</th>
+              <tr className="border-b border-white/[0.05] bg-white/[0.02]">
+                <th className="px-4 py-2.5 text-left text-[11px] font-medium uppercase tracking-wider text-white/30">Service</th>
+                <th className="px-4 py-2.5 text-left text-[11px] font-medium uppercase tracking-wider text-white/30">Trial</th>
+                <th className="px-4 py-2.5 text-left text-[11px] font-medium uppercase tracking-wider text-white/30">Pro</th>
               </tr>
             </thead>
             <tbody>
-              <tr className="border-b border-border-subtle">
-                <td className="px-4 py-3 text-sm text-text-secondary">Image Generation</td>
-                <td className="px-4 py-3 text-sm tabular-nums text-text-muted">10/day</td>
-                <td className="px-4 py-3 text-sm tabular-nums text-text-muted">200/day</td>
+              <tr className="border-b border-white/[0.05]">
+                <td className="px-4 py-3 text-sm text-white/70">Image Generation</td>
+                <td className="px-4 py-3 text-sm tabular-nums text-white/30">10/day</td>
+                <td className="px-4 py-3 text-sm tabular-nums text-white/30">200/day</td>
               </tr>
-              <tr className="border-b border-border-subtle">
-                <td className="px-4 py-3 text-sm text-text-secondary">Text to Speech</td>
-                <td className="px-4 py-3 text-sm tabular-nums text-text-muted">5/day</td>
-                <td className="px-4 py-3 text-sm tabular-nums text-text-muted">100/day</td>
+              <tr className="border-b border-white/[0.05]">
+                <td className="px-4 py-3 text-sm text-white/70">Text to Speech</td>
+                <td className="px-4 py-3 text-sm tabular-nums text-white/30">5/day</td>
+                <td className="px-4 py-3 text-sm tabular-nums text-white/30">100/day</td>
               </tr>
-              <tr className="border-b border-border-subtle">
-                <td className="px-4 py-3 text-sm text-text-secondary">Transcription</td>
-                <td className="px-4 py-3 text-sm tabular-nums text-text-muted">5/day</td>
-                <td className="px-4 py-3 text-sm tabular-nums text-text-muted">200/day</td>
+              <tr className="border-b border-white/[0.05]">
+                <td className="px-4 py-3 text-sm text-white/70">Transcription</td>
+                <td className="px-4 py-3 text-sm tabular-nums text-white/30">5/day</td>
+                <td className="px-4 py-3 text-sm tabular-nums text-white/30">200/day</td>
               </tr>
               <tr>
-                <td className="px-4 py-3 text-sm text-text-secondary">LLM Chat</td>
-                <td className="px-4 py-3 text-sm tabular-nums text-text-muted">5/day</td>
-                <td className="px-4 py-3 text-sm tabular-nums text-text-muted">50/day</td>
+                <td className="px-4 py-3 text-sm text-white/70">LLM Chat</td>
+                <td className="px-4 py-3 text-sm tabular-nums text-white/30">5/day</td>
+                <td className="px-4 py-3 text-sm tabular-nums text-white/30">50/day</td>
               </tr>
             </tbody>
           </table>

@@ -44,18 +44,18 @@ export function DashboardHeader() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-30 flex h-16 items-center justify-between gap-4 border-b border-border-subtle/60 bg-surface-0/80 px-6 backdrop-blur-xl">
+    <header className="sticky top-0 z-30 flex h-16 items-center justify-between gap-4 border-b border-white/[0.05] bg-[#0c0c12]/90 px-6 backdrop-blur-xl">
       {/* Breadcrumbs */}
       <nav className="hidden items-center gap-1.5 md:flex">
         {breadcrumbs.map((crumb, i) => (
           <div key={crumb.href} className="flex items-center gap-1.5">
-            {i > 0 && <ChevronRight size={12} className="text-text-muted" />}
+            {i > 0 && <ChevronRight size={12} className="text-white/20" />}
             <Link
               href={crumb.href}
               className={`text-[13px] transition-colors ${
                 i === breadcrumbs.length - 1
-                  ? "font-medium text-text-primary"
-                  : "text-text-muted hover:text-text-secondary"
+                  ? "font-medium text-white"
+                  : "text-white/30 hover:text-white/60"
               }`}
             >
               {crumb.label}
@@ -67,26 +67,27 @@ export function DashboardHeader() {
       {/* Right side */}
       <div className="flex items-center gap-3 ml-auto">
         <div className="relative hidden sm:block">
-          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted" />
+          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30" />
           <input
             type="text"
             placeholder="Search..."
-            className="h-9 w-56 rounded-xl border border-border-subtle bg-surface-1/60 pl-9 pr-3 text-[13px] text-text-primary placeholder:text-text-muted outline-none focus:border-border-default focus:bg-surface-1 transition-all"
+            className="h-9 w-56 rounded-xl border border-white/[0.08] bg-white/[0.03] pl-9 pr-3 text-[13px] text-white placeholder:text-white/25 outline-none focus:border-[#c084fc]/30 focus:bg-white/[0.05] transition-all"
+            style={{ fontFamily: "var(--font-jetbrains-mono)" }}
           />
         </div>
 
-        <button className="relative flex h-9 w-9 items-center justify-center rounded-xl border border-border-subtle bg-surface-1/60 text-text-muted transition-colors hover:text-text-secondary hover:bg-surface-1">
+        <button className="relative flex h-9 w-9 items-center justify-center rounded-xl border border-white/[0.08] bg-white/[0.03] text-white/30 transition-colors hover:text-white/60 hover:bg-white/[0.05]">
           <Bell size={15} />
-          <span className="absolute top-2 right-2 h-1.5 w-1.5 rounded-full bg-accent" />
+          <span className="absolute top-2 right-2 h-1.5 w-1.5 rounded-full bg-[#c084fc]" />
         </button>
 
-        <div className="flex items-center gap-2.5 pl-3 border-l border-border-subtle/60">
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-accent to-accent-blue text-[11px] font-bold text-surface-0 shadow-lg shadow-accent/20">
+        <div className="flex items-center gap-2.5 pl-3 border-l border-white/[0.05]">
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-[#c084fc] to-[#7c3aed] text-[11px] font-bold text-white shadow-lg shadow-[#c084fc]/20">
             {user?.name?.charAt(0)?.toUpperCase() || "U"}
           </div>
           <div className="hidden lg:block">
-            <p className="text-[12px] font-medium text-text-primary leading-none">{user?.name || "Loading..."}</p>
-            <p className="text-[11px] text-text-muted mt-0.5">{user?.email}</p>
+            <p className="text-[12px] font-medium text-white leading-none">{user?.name || "Loading..."}</p>
+            <p className="text-[11px] text-white/30 mt-0.5" style={{ fontFamily: "var(--font-jetbrains-mono)" }}>{user?.email}</p>
           </div>
           <button
             onClick={async () => {
@@ -95,7 +96,7 @@ export function DashboardHeader() {
               router.push("/");
               router.refresh();
             }}
-            className="flex h-8 w-8 items-center justify-center rounded-lg text-text-muted hover:text-error hover:bg-error/5 transition-colors"
+            className="flex h-8 w-8 items-center justify-center rounded-lg text-white/30 hover:text-[#ef4444] hover:bg-[#ef4444]/5 transition-colors"
             title="Sign out"
           >
             <LogOut size={14} />

@@ -28,7 +28,7 @@ const SERVICES_LIST = [
     desc: "Transform text into stunning visuals with FLUX & Stable Diffusion models.",
     icon: Image,
     limitKey: "image" as const,
-    color: "#7c3aed",
+    color: "#c084fc",
     colorAlt: "#3b82f6",
     tag: "200/day",
   },
@@ -38,7 +38,7 @@ const SERVICES_LIST = [
     desc: "Natural-sounding voice synthesis with multiple speaker options.",
     icon: Mic,
     limitKey: "tts" as const,
-    color: "#0891b2",
+    color: "#06b6d4",
     colorAlt: "#0d9488",
     tag: "100/day",
   },
@@ -48,7 +48,7 @@ const SERVICES_LIST = [
     desc: "Accurate speech recognition powered by Whisper-class models.",
     icon: FileAudio,
     limitKey: "transcribe" as const,
-    color: "#d97706",
+    color: "#f59e0b",
     colorAlt: "#b45309",
     tag: "200/day",
   },
@@ -62,11 +62,11 @@ interface LogEntry {
 }
 
 const SERVICE_LABELS: Record<string, { label: string; icon: typeof Image; color: string }> = {
-  image_gen: { label: "Image Generation", icon: Image, color: "#7c3aed" },
-  tts: { label: "Text to Speech", icon: Mic, color: "#0891b2" },
-  transcribe: { label: "Transcription", icon: FileAudio, color: "#d97706" },
-  llm: { label: "LLM Chat", icon: Sparkles, color: "#059669" },
-  nucleus_image: { label: "Nucleus Image", icon: Image, color: "#7c3aed" },
+  image_gen: { label: "Image Generation", icon: Image, color: "#c084fc" },
+  tts: { label: "Text to Speech", icon: Mic, color: "#06b6d4" },
+  transcribe: { label: "Transcription", icon: FileAudio, color: "#f59e0b" },
+  llm: { label: "LLM Chat", icon: Sparkles, color: "#10b981" },
+  nucleus_image: { label: "Nucleus Image", icon: Image, color: "#c084fc" },
 };
 
 const fadeUp = {
@@ -163,7 +163,7 @@ export default function DashboardPage() {
       value: loaded ? dailyCounts.daily.toLocaleString() : "—",
       sub: `of ${plan.monthlyTotalLimit.toLocaleString()} monthly limit`,
       icon: Zap,
-      color: "#7c3aed",
+      color: "#c084fc",
       progress: monthlyPct,
     },
     {
@@ -180,21 +180,21 @@ export default function DashboardPage() {
       value: loaded ? String(apiKeyCount) : "—",
       sub: plan.maxApiKeys === 999 ? "Unlimited" : `${plan.maxApiKeys} max`,
       icon: Key,
-      color: "#0891b2",
+      color: "#06b6d4",
     },
     {
       label: "Recent Usage",
       value: loaded ? String(totalUsedToday) : "—",
       sub: "requests in last 5 runs",
       icon: Activity,
-      color: "#d97706",
+      color: "#f59e0b",
     },
   ];
 
   return (
     <div className="relative">
       <div className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 h-[400px] w-[600px] rounded-full opacity-[0.08]"
-        style={{ background: "radial-gradient(ellipse, #a855f7, transparent 70%)" }}
+        style={{ background: "radial-gradient(ellipse, #c084fc, transparent 70%)" }}
       />
 
       <div className="relative space-y-10">
@@ -217,7 +217,7 @@ export default function DashboardPage() {
               <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-success" />
             </span>
           </div>
-          <p className="mt-2 text-[13px] text-text-muted">
+          <p className="mt-2 text-[13px] text-white/30">
             Overview of your usage, services, and recent activity.
           </p>
         </motion.div>
@@ -235,16 +235,16 @@ export default function DashboardPage() {
                 key={s.label}
                 variants={fadeUp}
                 custom={i}
-                className="group relative overflow-hidden rounded-2xl glass-panel-elevated p-5 transition-all duration-300 hover:border-border-default"
+                className="group relative overflow-hidden rounded-2xl rounded-2xl border border-white/[0.05] bg-[#12121a] p-5 transition-all duration-300 hover:border-white/[0.08]"
                 style={{
-                  boxShadow: "inset 0 1px 0 rgba(255,255,255,0.5), 0 4px 24px rgba(0,0,0,0.04)",
+                  boxShadow: "inset 0 1px 0 rgba(255,255,255,0.03), 0 4px 24px rgba(0,0,0,0.3)",
                 }}
                 onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLDivElement).style.boxShadow = `inset 0 1px 0 rgba(255,255,255,0.6), 0 0 48px -12px ${s.color}18`;
+                  (e.currentTarget as HTMLDivElement).style.boxShadow = `inset 0 1px 0 rgba(255,255,255,0.05), 0 0 48px -12px ${s.color}18`;
                   (e.currentTarget as HTMLDivElement).style.borderColor = `${s.color}30`;
                 }}
                 onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLDivElement).style.boxShadow = "inset 0 1px 0 rgba(255,255,255,0.5), 0 4px 24px rgba(0,0,0,0.04)";
+                  (e.currentTarget as HTMLDivElement).style.boxShadow = "inset 0 1px 0 rgba(255,255,255,0.03), 0 4px 24px rgba(0,0,0,0.3)";
                   (e.currentTarget as HTMLDivElement).style.borderColor = "";
                 }}
               >
@@ -262,14 +262,14 @@ export default function DashboardPage() {
                       >
                         <Icon size={14} style={{ color: s.color }} />
                       </div>
-                      <span className="text-[11px] font-semibold uppercase tracking-[0.1em] text-text-muted">
+                      <span className="text-[11px] font-semibold uppercase tracking-[0.1em] text-white/30">
                         {s.label}
                       </span>
                     </div>
                     <p className="mt-3 font-display text-[24px] font-extrabold tabular-nums leading-none tracking-tight">
                       {s.value}
                     </p>
-                    <p className="mt-1.5 text-[11px] text-text-muted">
+                    <p className="mt-1.5 text-[11px] text-white/30">
                       {s.link ? (
                         <Link href={s.link} className="hover:text-accent transition-colors inline-flex items-center gap-0.5">
                           {s.sub} <ArrowUpRight size={9} />
@@ -288,7 +288,7 @@ export default function DashboardPage() {
 
                 {s.progress !== undefined && (
                   <div className="relative z-10 mt-4">
-                    <div className="h-1.5 w-full overflow-hidden rounded-full bg-surface-2">
+                    <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/[0.03]">
                       <motion.div
                         initial={{ width: 0 }}
                         animate={{ width: `${s.progress}%` }}
@@ -316,9 +316,9 @@ export default function DashboardPage() {
           >
             <div>
               <h2 className="font-display text-[18px] font-bold tracking-tight">Services</h2>
-              <p className="mt-0.5 text-[12px] text-text-muted">Choose a model and start building</p>
+              <p className="mt-0.5 text-[12px] text-white/30">Choose a model and start building</p>
             </div>
-            <span className="badge-premium bg-surface-2 text-text-muted border-border-default">
+            <span className="badge-premium bg-white/[0.03] text-white/30 border-white/[0.08]">
               {SERVICES_LIST.length} available
             </span>
           </motion.div>
@@ -336,17 +336,17 @@ export default function DashboardPage() {
                 <motion.div key={s.href} variants={fadeUp} custom={i + 4}>
                   <Link
                     href={s.href}
-                    className="group relative flex flex-col overflow-hidden rounded-2xl glass-panel-elevated p-6 transition-all duration-300 hover:border-border-default"
+                    className="group relative flex flex-col overflow-hidden rounded-2xl rounded-2xl border border-white/[0.05] bg-[#12121a] p-6 transition-all duration-300 hover:border-white/[0.08]"
                     style={{
-                      boxShadow: "inset 0 1px 0 rgba(255,255,255,0.5), 0 4px 24px rgba(0,0,0,0.04)",
+                      boxShadow: "inset 0 1px 0 rgba(255,255,255,0.03), 0 4px 24px rgba(0,0,0,0.3)",
                     }}
                     onMouseEnter={(e) => {
-                      (e.currentTarget as HTMLAnchorElement).style.boxShadow = `inset 0 1px 0 rgba(255,255,255,0.6), 0 12px 48px -12px ${s.color}15`;
+                      (e.currentTarget as HTMLAnchorElement).style.boxShadow = `inset 0 1px 0 rgba(255,255,255,0.05), 0 12px 48px -12px ${s.color}15`;
                       (e.currentTarget as HTMLAnchorElement).style.borderColor = `${s.color}30`;
                       (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(-2px)";
                     }}
                     onMouseLeave={(e) => {
-                      (e.currentTarget as HTMLAnchorElement).style.boxShadow = "inset 0 1px 0 rgba(255,255,255,0.5), 0 4px 24px rgba(0,0,0,0.04)";
+                      (e.currentTarget as HTMLAnchorElement).style.boxShadow = "inset 0 1px 0 rgba(255,255,255,0.03), 0 4px 24px rgba(0,0,0,0.3)";
                       (e.currentTarget as HTMLAnchorElement).style.borderColor = "";
                       (e.currentTarget as HTMLAnchorElement).style.transform = "";
                     }}
@@ -381,18 +381,18 @@ export default function DashboardPage() {
                         </span>
                       </div>
 
-                      <h3 className="mt-5 font-display text-[16px] font-bold tracking-tight text-text-primary">
+                      <h3 className="mt-5 font-display text-[16px] font-bold tracking-tight text-white">
                         {s.label}
                       </h3>
-                      <p className="mt-1.5 text-[12px] leading-relaxed text-text-tertiary">
+                      <p className="mt-1.5 text-[12px] leading-relaxed text-white/40">
                         {s.desc}
                       </p>
 
-                      <div className="mt-6 flex items-center justify-between border-t border-border-subtle pt-4">
-                        <span className="text-[11px] tabular-nums text-text-muted">
-                          <span className="font-semibold text-text-secondary">{limit.daily}</span> {limit.label} per day
+                      <div className="mt-6 flex items-center justify-between border-t border-white/[0.05] pt-4">
+                        <span className="text-[11px] tabular-nums text-white/30">
+                          <span className="font-semibold text-white/70">{limit.daily}</span> {limit.label} per day
                         </span>
-                        <span className="flex items-center gap-1 text-[11px] font-medium text-text-muted transition-all duration-300 group-hover:text-text-primary group-hover:gap-2">
+                        <span className="flex items-center gap-1 text-[11px] font-medium text-white/30 transition-all duration-300 group-hover:text-white group-hover:gap-2">
                           Launch <ArrowRight size={11} className="transition-transform duration-300 group-hover:translate-x-0.5" />
                         </span>
                       </div>
@@ -407,28 +407,28 @@ export default function DashboardPage() {
         <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}>
           <div className="mb-4 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Clock size={15} className="text-text-muted" />
+              <Clock size={15} className="text-white/30" />
               <h2 className="font-display text-[18px] font-bold tracking-tight">Recent Activity</h2>
             </div>
             <Link
               href="/dashboard/generations"
-              className="flex items-center gap-1.5 rounded-xl bg-surface-2 px-3 py-1.5 text-[11px] font-medium text-text-muted ring-1 ring-border-default transition-all hover:text-text-secondary hover:ring-border-strong"
+              className="flex items-center gap-1.5 rounded-xl bg-white/[0.03] px-3 py-1.5 text-[11px] font-medium text-white/30 ring-1 ring-border-default transition-all hover:text-white/70 hover:ring-border-strong"
             >
               View all <ArrowUpRight size={10} />
             </Link>
           </div>
 
           {recentLogs.length === 0 ? (
-            <div className="flex h-36 flex-col items-center justify-center gap-3 rounded-2xl glass-panel-elevated">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-surface-2">
-                <Sparkles size={18} className="text-text-muted" />
+            <div className="flex h-36 flex-col items-center justify-center gap-3 rounded-2xl rounded-2xl border border-white/[0.05] bg-[#12121a]">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/[0.03]">
+                <Sparkles size={18} className="text-white/30" />
               </div>
-              <p className="text-[12px] text-text-muted">
+              <p className="text-[12px] text-white/30">
                 No activity yet — try a service above
               </p>
             </div>
           ) : (
-            <div className="overflow-hidden rounded-2xl glass-panel-elevated">
+            <div className="overflow-hidden rounded-2xl rounded-2xl border border-white/[0.05] bg-[#12121a]">
               {recentLogs.map((log, i) => {
                 const meta = SERVICE_LABELS[log.service] || {
                   label: log.service,
@@ -439,8 +439,8 @@ export default function DashboardPage() {
                 return (
                   <div
                     key={log.id}
-                    className={`flex items-center justify-between px-5 py-4 transition-colors hover:bg-surface-1 ${
-                      i < recentLogs.length - 1 ? "border-b border-border-subtle" : ""
+                    className={`flex items-center justify-between px-5 py-4 transition-colors hover:bg-[#12121a] ${
+                      i < recentLogs.length - 1 ? "border-b border-white/[0.05]" : ""
                     }`}
                   >
                     <div className="flex items-center gap-3.5">
@@ -451,10 +451,10 @@ export default function DashboardPage() {
                         <LogIcon size={15} style={{ color: meta.color }} />
                       </div>
                       <div>
-                        <span className="text-[13px] font-medium text-text-secondary">
+                        <span className="text-[13px] font-medium text-white/70">
                           {meta.label}
                         </span>
-                        <p className="text-[11px] text-text-muted">{timeAgo(log.created_at)}</p>
+                        <p className="text-[11px] text-white/30">{timeAgo(log.created_at)}</p>
                       </div>
                     </div>
                     <span
@@ -480,16 +480,16 @@ export default function DashboardPage() {
           className="grid gap-3 sm:grid-cols-3"
         >
           {[
-            { href: "/dashboard/api-keys", label: "API Keys", sub: "Manage & rotate keys", icon: Key, color: "#0891b2" },
+            { href: "/dashboard/api-keys", label: "API Keys", sub: "Manage & rotate keys", icon: Key, color: "#06b6d4" },
             { href: "/dashboard/docs", label: "API Docs", sub: "Integration guides", icon: BookOpen, color: "#3b82f6" },
-            { href: "/dashboard/billing", label: "Billing", sub: "Plans & usage", icon: CreditCard, color: "#7c3aed" },
+            { href: "/dashboard/billing", label: "Billing", sub: "Plans & usage", icon: CreditCard, color: "#c084fc" },
           ].map((q) => {
             const QIcon = q.icon;
             return (
               <Link
                 key={q.href}
                 href={q.href}
-                className="group flex items-center gap-4 rounded-2xl glass-panel-elevated px-5 py-4 transition-all duration-300 hover:bg-surface-1"
+                className="group flex items-center gap-4 rounded-2xl rounded-2xl border border-white/[0.05] bg-[#12121a] px-5 py-4 transition-all duration-300 hover:bg-[#12121a]"
                 onMouseEnter={(e) => {
                   (e.currentTarget as HTMLAnchorElement).style.borderColor = `${q.color}25`;
                 }}
@@ -504,12 +504,12 @@ export default function DashboardPage() {
                   <QIcon size={17} style={{ color: q.color }} />
                 </div>
                 <div className="flex-1">
-                  <p className="text-[13px] font-semibold text-text-secondary group-hover:text-text-primary transition-colors">
+                  <p className="text-[13px] font-semibold text-white/70 group-hover:text-white transition-colors">
                     {q.label}
                   </p>
-                  <p className="text-[11px] text-text-muted">{q.sub}</p>
+                  <p className="text-[11px] text-white/30">{q.sub}</p>
                 </div>
-                <ArrowRight size={14} className="text-text-muted opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0.5" />
+                <ArrowRight size={14} className="text-white/30 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0.5" />
               </Link>
             );
           })}
