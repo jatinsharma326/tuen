@@ -75,6 +75,21 @@ function BillingContent() {
     }
   };
 
+  const handlePolar = async (targetPlanId: string) => {
+    setLoading(true);
+    const res = await fetch("/api/payments/polar-create", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ planId: targetPlanId }),
+    });
+    const data = await res.json();
+    if (data.url) {
+      window.location.href = data.url;
+    } else {
+      setLoading(false);
+    }
+  };
+
   const pct = current.monthlyTotalLimit > 0 ? Math.min(100, (monthly / current.monthlyTotalLimit) * 100) : 0;
   const justPaid = searchParams?.get("success") === "true";
 
@@ -177,19 +192,27 @@ function BillingContent() {
                   ) : (
                     <>
                       <button
-                        onClick={() => handleUpgrade(plan.id)}
+                        onClick={() => handlePolar(plan.id)}
                         disabled={loading}
                         className="btn-white flex w-full items-center justify-center gap-1 rounded-xl py-2.5 text-[13px] disabled:opacity-60">
                         {loading ? <Loader2 size={13} className="animate-spin" /> : null}
-                        {plan.priceCents > current.priceCents ? "Upgrade" : "Switch"} with Card
+                        {plan.priceCents > current.priceCents ? "Upgrade" : "Switch"}
                         <ArrowUpRight size={12} />
                       </button>
-                      <button
-                        onClick={() => handleCrypto(plan.id)}
-                        disabled={loading}
-                        className="flex w-full items-center justify-center gap-1 rounded-xl border border-border-default py-2.5 text-[13px] text-text-muted hover:text-text-secondary hover:border-border-strong transition-colors disabled:opacity-60">
-                        {plan.priceCents > current.priceCents ? "Pay with Crypto" : "Switch with Crypto"}
-                      </button>
+                      <div className="grid grid-cols-2 gap-2">
+                        <button
+                          onClick={() => handleCrypto(plan.id)}
+                          disabled={loading}
+                          className="flex items-center justify-center gap-1 rounded-xl border border-border-default py-2 text-[11px] text-text-muted hover:text-text-secondary hover:border-border-strong transition-colors disabled:opacity-60">
+                          Crypto
+                        </button>
+                        <button
+                          onClick={() => handleUpgrade(plan.id)}
+                          disabled={loading}
+                          className="flex items-center justify-center gap-1 rounded-xl border border-border-default py-2 text-[11px] text-text-muted hover:text-text-secondary hover:border-border-strong transition-colors disabled:opacity-60">
+                          Card
+                        </button>
+                      </div>
                     </>
                   )}
                 </div>
