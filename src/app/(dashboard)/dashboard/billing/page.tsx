@@ -45,21 +45,6 @@ function BillingContent() {
 
   const current = getPlan(planId);
 
-  const handleUpgrade = async (targetPlanId: string) => {
-    setLoading(true);
-    const res = await fetch("/api/payments/create-checkout", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ planId: targetPlanId }),
-    });
-    const data = await res.json();
-    if (data.url) {
-      window.location.href = data.url;
-    } else {
-      setLoading(false);
-    }
-  };
-
   const handleCrypto = async (targetPlanId: string) => {
     setLoading(true);
     const res = await fetch("/api/payments/crypto-create", {
@@ -196,23 +181,15 @@ function BillingContent() {
                         disabled={loading}
                         className="btn-white flex w-full items-center justify-center gap-1 rounded-xl py-2.5 text-[13px] disabled:opacity-60">
                         {loading ? <Loader2 size={13} className="animate-spin" /> : null}
-                        {plan.priceCents > current.priceCents ? "Upgrade" : "Switch"}
+                        Upgrade with Card
                         <ArrowUpRight size={12} />
                       </button>
-                      <div className="grid grid-cols-2 gap-2">
-                        <button
-                          onClick={() => handleCrypto(plan.id)}
-                          disabled={loading}
-                          className="flex items-center justify-center gap-1 rounded-xl border border-border-default py-2 text-[11px] text-text-muted hover:text-text-secondary hover:border-border-strong transition-colors disabled:opacity-60">
-                          Crypto
-                        </button>
-                        <button
-                          onClick={() => handleUpgrade(plan.id)}
-                          disabled={loading}
-                          className="flex items-center justify-center gap-1 rounded-xl border border-border-default py-2 text-[11px] text-text-muted hover:text-text-secondary hover:border-border-strong transition-colors disabled:opacity-60">
-                          Card
-                        </button>
-                      </div>
+                      <button
+                        onClick={() => handleCrypto(plan.id)}
+                        disabled={loading}
+                        className="flex w-full items-center justify-center gap-1 rounded-xl border border-border-default py-2 text-[11px] text-text-muted hover:text-text-secondary hover:border-border-strong transition-colors disabled:opacity-60">
+                        Pay with Crypto
+                      </button>
                     </>
                   )}
                 </div>
