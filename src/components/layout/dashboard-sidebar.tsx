@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils/cn";
 import { createClient, getAuthUser } from "@/lib/supabase/client";
+import { getPlan } from "@/lib/constants/plans";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -67,12 +68,13 @@ export function DashboardSidebar() {
         href={href}
         onClick={() => setMobileOpen(false)}
         className={cn(
-          "group flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] transition-all",
+          "group relative flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] transition-all",
           isActive
             ? "bg-[#c084fc]/10 text-[#c084fc] font-medium"
             : "text-white/40 hover:text-white/70 hover:bg-white/[0.03]"
         )}
       >
+        {isActive && <span className="absolute left-0 top-1/2 h-5 w-0.5 -translate-y-1/2 rounded-full bg-[#c084fc]" />}
         <Icon size={15} style={isActive ? { color: color || "#c084fc" } : {}} className={cn("transition-colors", isActive ? "" : "text-white/30 group-hover:text-white/60")} />
         <span>{label}</span>
         {isActive && <ChevronRight size={12} className="ml-auto opacity-40" />}
@@ -127,17 +129,21 @@ export function DashboardSidebar() {
 
         {/* Bottom panel */}
         <div className="absolute bottom-0 left-0 right-0 border-t border-white/[0.05] bg-[#12121a] px-3 py-3 space-y-2">
-          <div className="flex items-center justify-between rounded-xl border border-white/[0.04] bg-white/[0.02] px-3.5 py-2.5">
+          <Link
+            href="/dashboard/billing"
+            className="flex items-center justify-between rounded-xl border border-white/[0.04] bg-white/[0.02] px-3.5 py-2.5 transition-colors hover:bg-white/[0.03]"
+          >
             <div className="flex items-center gap-2.5">
               <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#c084fc]/10">
                 <Sparkles size={13} className="text-[#c084fc]" />
               </div>
               <div>
-                <p className="text-[11px] font-semibold tabular-nums text-white">10K <span className="text-white/30 font-normal">req/mo</span></p>
+                <p className="text-[11px] font-semibold tabular-nums text-white">{getPlan(plan).monthlyTotalLimit.toLocaleString()} <span className="font-normal text-white/30">req/mo</span></p>
                 <p className="text-[10px] text-white/30 capitalize">{plan} plan</p>
               </div>
             </div>
-          </div>
+            <ChevronRight size={12} className="text-white/20" />
+          </Link>
           <button
             onClick={handleSignOut}
             className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-[13px] text-white/30 transition-colors hover:text-[#ef4444] hover:bg-[#ef4444]/5"
