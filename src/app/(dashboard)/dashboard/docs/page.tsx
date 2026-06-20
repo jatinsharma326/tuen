@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { Copy, Check, BookOpen, Image, Mic, FileAudio, Zap } from "lucide-react";
 import { cn } from "@/lib/utils/cn";
-import { createClient } from "@/lib/supabase/client";
+import { createClient, getAuthUser } from "@/lib/supabase/client";
 import { motion } from "framer-motion";
 
 function CopyBtn({ text }: { text: string }) {
@@ -72,9 +72,9 @@ export default function DashboardDocsPage() {
 
   useEffect(() => {
     const supabase = createClient();
-    supabase.auth.getUser().then(({ data }) => {
-      if (!data.user) return;
-      supabase.from("api_keys").select("key").eq("user_id", data.user.id).limit(1).single()
+    getAuthUser(supabase).then((authUser) => {
+      if (!authUser) return;
+      supabase.from("api_keys").select("key").eq("user_id", authUser.id).limit(1).single()
         .then(({ data: k }) => { if (k?.key) setApiKey(k.key); });
     });
   }, []);

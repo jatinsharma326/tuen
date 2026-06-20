@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils/cn";
 import { NAV_LINKS } from "@/lib/constants/navigation";
-import { createClient } from "@/lib/supabase/client";
+import { createClient, getAuthUser } from "@/lib/supabase/client";
 
 export function Navbar() {
   const pathname = usePathname();
@@ -24,11 +24,11 @@ export function Navbar() {
 
   useEffect(() => {
     const supabase = createClient();
-    supabase.auth.getUser().then(({ data }) => {
-      if (data.user) {
+    getAuthUser(supabase).then((authUser) => {
+      if (authUser) {
         setUser({
-          name: data.user.user_metadata?.full_name || data.user.email?.split("@")[0] || "User",
-          email: data.user.email || "",
+          name: authUser.user_metadata?.full_name || authUser.email?.split("@")[0] || "User",
+          email: authUser.email || "",
         });
       } else {
         setUser(null);

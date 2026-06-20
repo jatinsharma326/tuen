@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Search, Bell, ChevronRight, LogOut } from "lucide-react";
-import { createClient } from "@/lib/supabase/client";
+import { createClient, getAuthUser } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 
 function getBreadcrumbs(pathname: string) {
@@ -34,11 +34,11 @@ export function DashboardHeader() {
 
   useEffect(() => {
     const supabase = createClient();
-    supabase.auth.getUser().then(({ data }) => {
-      if (!data.user) return;
+    getAuthUser(supabase).then((authUser) => {
+      if (!authUser) return;
       setUser({
-        name: data.user.user_metadata?.full_name || data.user.email?.split("@")[0] || "User",
-        email: data.user.email || "",
+        name: authUser.user_metadata?.full_name || authUser.email?.split("@")[0] || "User",
+        email: authUser.email || "",
       });
     });
   }, []);

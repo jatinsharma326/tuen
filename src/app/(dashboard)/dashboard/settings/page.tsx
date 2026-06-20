@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { createClient } from "@/lib/supabase/client";
+import { createClient, getAuthUser } from "@/lib/supabase/client";
 import { User, Mail, Save } from "lucide-react";
 
 export default function SettingsPage() {
@@ -13,9 +13,9 @@ export default function SettingsPage() {
 
   useEffect(() => {
     const supabase = createClient();
-    supabase.auth.getUser().then(({ data }) => {
-      setEmail(data.user?.email || "");
-      setName(data.user?.user_metadata?.full_name || "");
+    getAuthUser(supabase).then((authUser) => {
+      setEmail(authUser?.email || "");
+      setName(authUser?.user_metadata?.full_name || "");
     });
   }, []);
 
@@ -24,7 +24,10 @@ export default function SettingsPage() {
     setSaving(true);
     const supabase = createClient();
     await supabase.auth.updateUser({ data: { full_name: name } });
-    await supabase.from("profiles").update({ full_name: name }).eq("id", (await supabase.auth.getUser()).data.user?.id);
+    const authUser = await getAuthUser(supabase);
+    if (authUser) {
+      await supabase.from("profiles").update({ full_name: name }).eq("id", authUser.id);
+    }
     setSaving(false);
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);

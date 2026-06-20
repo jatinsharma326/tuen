@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Copy, Check, Trash2, Plus, Key, Shield, Eye, EyeOff, ExternalLink } from "lucide-react";
 import { motion } from "framer-motion";
-import { createClient } from "@/lib/supabase/client";
+import { createClient, getAuthUser } from "@/lib/supabase/client";
 import { getPlan } from "@/lib/constants/plans";
 
 interface ApiKey {
@@ -27,8 +27,11 @@ export default function ApiKeysPage() {
 
   const fetchKeys = async () => {
     const supabase = createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return;
+    const user = await getAuthUser(supabase);
+    if (!user) {
+      setLoading(false);
+      return;
+    }
     const { data: profile } = await supabase.from("profiles").select("plan").eq("id", user.id).single();
     setPlanId(profile?.plan || "pro");
     const { data } = await supabase.from("api_keys").select("*").eq("user_id", user.id).order("created_at", { ascending: false });
@@ -47,8 +50,11 @@ export default function ApiKeysPage() {
   const createKey = async () => {
     setCreating(true);
     const supabase = createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return;
+    const user = await getAuthUser(supabase);
+    if (!user) {
+      setCreating(false);
+      return;
+    }
     const key = "tuen_sk_" + Array.from(crypto.getRandomValues(new Uint8Array(20)))
       .map((b) => b.toString(16).padStart(2, "0")).join("");
     await supabase.from("api_keys").insert({ user_id: user.id, key, name: newName || "Untitled" });

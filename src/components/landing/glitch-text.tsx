@@ -17,30 +17,52 @@ export function GlitchText({ text, className = "", delay = 0, speed = 30, onComp
   const [revealed, setRevealed] = useState(0);
   const [started, setStarted] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const onCompleteRef = useRef(onComplete);
+  const completedRef = useRef(false);
+  onCompleteRef.current = onComplete;
 
   useEffect(() => {
+    if (!started || revealed < text.length || completedRef.current) return;
+
+    completedRef.current = true;
+    const timer = setTimeout(() => {
+      onCompleteRef.current?.();
+    }, 0);
+
+    return () => clearTimeout(timer);
+  }, [revealed, text.length, started]);
+
+  useEffect(() => {
+    completedRef.current = false;
+    setDisplay("");
+    setRevealed(0);
+    setStarted(false);
+
     const timer = setTimeout(() => setStarted(true), delay);
     return () => clearTimeout(timer);
-  }, [delay]);
+  }, [text, delay]);
 
   useEffect(() => {
     if (!started) return;
 
     intervalRef.current = setInterval(() => {
-      setRevealed((prev) => {
-        if (prev >= text.length) {
-          if (intervalRef.current) clearInterval(intervalRef.current);
-          onComplete?.();
-          return prev;
-        }
-        return prev + 1;
-      });
+      setRevealed((prev) => Math.min(prev + 1, text.length));
     }, speed);
 
     return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
     };
-  }, [started, text, speed, onComplete]);
+  }, [started, text.length, speed]);
+
+  useEffect(() => {
+    if (revealed >= text.length && intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+  }, [revealed, text.length, started]);
 
   useEffect(() => {
     let result = "";

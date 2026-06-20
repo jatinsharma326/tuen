@@ -3,7 +3,7 @@
 import { useEffect, useState, Suspense } from "react";
 import { Check, ArrowUpRight, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
-import { createClient } from "@/lib/supabase/client";
+import { createClient, getAuthUser } from "@/lib/supabase/client";
 import { PLANS, getPlan, formatPrice } from "@/lib/constants/plans";
 import { useSearchParams } from "next/navigation";
 
@@ -18,9 +18,9 @@ function BillingContent() {
 
   const refresh = () => {
     const supabase = createClient();
-    supabase.auth.getUser().then(({ data }) => {
-      if (!data.user) return;
-      supabase.from("profiles").select("plan").eq("id", data.user.id).single()
+    getAuthUser(supabase).then((authUser) => {
+      if (!authUser) return;
+      supabase.from("profiles").select("plan").eq("id", authUser.id).single()
         .then(({ data: p }) => setPlanId(p?.plan ?? "trial"));
       fetch("/api/usage/counts").then(r => r.json()).then((c) => {
         setDaily(c.daily); setWeekly(c.weekly); setMonthly(c.monthly);
@@ -35,10 +35,10 @@ function BillingContent() {
     const targetPlan = searchParams?.get("plan") || "pro";
     if (isSuccess && planId === "trial") {
       const supabase = createClient();
-      supabase.auth.getUser().then(({ data }) => {
-        if (!data.user) return;
+      getAuthUser(supabase).then((authUser) => {
+        if (!authUser) return;
         supabase.from("profiles").update({ plan: targetPlan, updated_at: new Date().toISOString() })
-          .eq("id", data.user.id)
+          .eq("id", authUser.id)
           .then(() => refresh());
       });
     }

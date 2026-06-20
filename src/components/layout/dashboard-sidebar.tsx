@@ -19,7 +19,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { cn } from "@/lib/utils/cn";
-import { createClient } from "@/lib/supabase/client";
+import { createClient, getAuthUser } from "@/lib/supabase/client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -46,9 +46,9 @@ export function DashboardSidebar() {
 
   useEffect(() => {
     const supabase = createClient();
-    supabase.auth.getUser().then(({ data }) => {
-      if (!data.user) return;
-      supabase.from("profiles").select("plan").eq("id", data.user.id).single()
+    getAuthUser(supabase).then((authUser) => {
+      if (!authUser) return;
+      supabase.from("profiles").select("plan").eq("id", authUser.id).single()
         .then(({ data: p }) => { setPlan(p?.plan ?? "trial"); });
     });
   }, [pathname]);

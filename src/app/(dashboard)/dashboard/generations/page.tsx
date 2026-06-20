@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { createClient } from "@/lib/supabase/client";
+import { createClient, getAuthUser } from "@/lib/supabase/client";
 import { Image, Mic, FileAudio, Clock, History, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -26,12 +26,15 @@ export default function GenerationsPage() {
 
   useEffect(() => {
     const supabase = createClient();
-    supabase.auth.getUser().then(({ data }) => {
-      if (!data.user) return;
+    getAuthUser(supabase).then((authUser) => {
+      if (!authUser) {
+        setLoading(false);
+        return;
+      }
       supabase
         .from("usage_logs")
         .select("*")
-        .eq("user_id", data.user.id)
+        .eq("user_id", authUser.id)
         .order("created_at", { ascending: false })
         .limit(50)
         .then(({ data: rows }) => {

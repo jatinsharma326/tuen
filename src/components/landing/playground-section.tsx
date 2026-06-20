@@ -1,9 +1,21 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
+import type { ReactNode } from "react";
+
+const CODE_TOKEN_REGEX =
+  /(\/\/.*|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`(?:\\.|[^`\\])*`|\b(?:import|from|const|let|var|async|function|return|await|new|if|else|then|catch)\b|\b\d+\b|[{}()[\]])/g;
+
+function getTokenColor(token: string) {
+  if (token.startsWith("//")) return "rgba(255,255,255,0.25)";
+  if (/^["'`]/.test(token)) return "#c084fc";
+  if (/^\d+$/.test(token)) return "#06b6d4";
+  if (/^[{}()[\]]$/.test(token)) return "#ef4444";
+  return "#c084fc";
+}
 
 function CodeEditor() {
-  const [code, setCode] = useState(`import { TuenClient } from "@tuen/sdk";
+  const code = `import { TuenClient } from "@tuen/sdk";
 
 const client = new TuenClient({
   apiKey: process.env.TUEN_API_KEY,
@@ -19,19 +31,37 @@ async function generateImage() {
   return result.url;
 }
 
-generateImage().then(console.log);`);
+generateImage().then(console.log);`;
 
   const lines = code.split("\n");
 
   function highlight(line: string) {
-    // Simple syntax highlighting
-    let html = line
-      .replace(/(import|from|const|let|var|async|function|return|await|new|if|else|then|catch)/g, '<span style="color:#c084fc">$1</span>')
-      .replace(/(".*?"|'.*?'|`.*?`)/g, '<span style="color:#c084fc">$1</span>')
-      .replace(/(\d+)/g, '<span style="color:#06b6d4">$1</span>')
-      .replace(/(\/\/.*)/g, '<span style="color:rgba(255,255,255,0.25)">$1</span>')
-      .replace(/(\{|\}|\(|\)|\[|\])/g, '<span style="color:#ef4444">$1</span>');
-    return html;
+    if (!line) return "\u00A0";
+
+    const parts: ReactNode[] = [];
+    let lastIndex = 0;
+
+    for (const match of line.matchAll(CODE_TOKEN_REGEX)) {
+      const token = match[0];
+      const index = match.index ?? 0;
+
+      if (index > lastIndex) {
+        parts.push(line.slice(lastIndex, index));
+      }
+
+      parts.push(
+        <span key={`${index}-${token}`} style={{ color: getTokenColor(token) }}>
+          {token}
+        </span>,
+      );
+      lastIndex = index + token.length;
+    }
+
+    if (lastIndex < line.length) {
+      parts.push(line.slice(lastIndex));
+    }
+
+    return parts;
   }
 
   return (
@@ -59,7 +89,7 @@ generateImage().then(console.log);`);
               <span className="mr-4 inline-block w-6 select-none text-right text-white/20">
                 {i + 1}
               </span>
-              <span dangerouslySetInnerHTML={{ __html: highlight(line) || "&nbsp;" }} />
+              <span>{highlight(line)}</span>
             </div>
           ))}
         </div>

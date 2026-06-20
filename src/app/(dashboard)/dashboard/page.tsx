@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { createClient } from "@/lib/supabase/client";
+import { createClient, getAuthUser } from "@/lib/supabase/client";
 import { getPlan, SERVICE_LIMITS } from "@/lib/constants/plans";
 
 const SERVICES_LIST = [
@@ -77,14 +77,17 @@ export default function DashboardPage() {
 
   useEffect(() => {
     const supabase = createClient();
-    supabase.auth.getUser().then(({ data }) => {
-      if (!data.user) return;
-      setName(data.user.user_metadata?.full_name || data.user.email?.split("@")[0] || "");
-      supabase.from("profiles").select("plan").eq("id", data.user.id).single()
+    getAuthUser(supabase).then((authUser) => {
+      if (!authUser) {
+        setLoaded(true);
+        return;
+      }
+      setName(authUser.user_metadata?.full_name || authUser.email?.split("@")[0] || "");
+      supabase.from("profiles").select("plan").eq("id", authUser.id).single()
         .then(({ data: p }) => setPlanId(p?.plan ?? "trial"));
-      supabase.from("api_keys").select("id", { count: "exact", head: true }).eq("user_id", data.user.id)
+      supabase.from("api_keys").select("id", { count: "exact", head: true }).eq("user_id", authUser.id)
         .then(({ count }) => setApiKeyCount(count ?? 0));
-      supabase.from("usage_logs").select("*").eq("user_id", data.user.id).order("created_at", { ascending: false }).limit(5)
+      supabase.from("usage_logs").select("*").eq("user_id", authUser.id).order("created_at", { ascending: false }).limit(5)
         .then(({ data: rows }) => {
           const logs = (rows as LogEntry[]) || [];
           setRecentLogs(logs);
